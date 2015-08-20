@@ -8,4 +8,5 @@
     <string name="sex">性别</string>
     <string name="birth">生日</string>
     <string name="phone">电话</string>
+    <string name="production_detail">商品详细</string>
 </resources>
