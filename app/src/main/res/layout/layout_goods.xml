@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/first_relativelayout"
+        android:layout_width="450dp"
+        android:layout_height="300dp"
+        android:background="@mipmap/list_bg"
+        >
 
     <ImageView
         android:id="@+id/goods_img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/demo_goods"
+        android:layout_width="450dp"
+        android:layout_height="200dp"
+        android:src="@mipmap/goods_demo"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="60dp"
         />
     <TextView
         android:id="@+id/goods_title"
@@ -15,16 +25,18 @@
         android:text="商品标题"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:textSize="10dp"
+        android:textSize="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="40dp"
+
+        android:textColor="@color/white"
         />
 
     <ImageView
         android:id="@+id/like_img"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/like"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/detail_like"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
@@ -43,15 +55,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="售价:¥"
-            android:textSize="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/red"
+            android:layout_marginBottom="20dp"
             />
         <TextView
             android:id="@+id/money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="399"
-            android:textSize="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/red"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="10dp"
             />
     </LinearLayout>
-
+    </RelativeLayout>
 </RelativeLayout>

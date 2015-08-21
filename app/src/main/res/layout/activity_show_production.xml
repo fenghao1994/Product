@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_color"
     >
 
     <include
@@ -24,49 +26,89 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginLeft="20dp"
+                android:background="@color/blue"
                 >
-                <TextView
-                    android:id="@+id/caizhi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="材质"
-                    android:textSize="40dp"
-                    android:gravity="center"
-                    />
-                <TextView
-                    android:id="@+id/meaning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="含义"
-                    android:textSize="40dp"
-                    android:gravity="center"
-                    />
-                <TextView
-                    android:id="@+id/personality"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="人格"
-                    android:textSize="40dp"
-                    android:gravity="center"
-                    />
-                <TextView
+                <Button
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
                     android:id="@+id/theme"
                     android:layout_width="wrap_content"
                     android:layout_height="80dp"
                     android:text="主题"
-                    android:textSize="40dp"
+                    android:textSize="20dp"
                     android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/blue"
                     />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dark_blue"
+                    />
+
+                <Button
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/caizhi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:text="材质"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/blue"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dark_blue"
+                    />
+                <Button
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/meaning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:text="含义"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/blue"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dark_blue"
+                    />
+                <Button
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/personality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:text="人格"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/blue"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dark_blue"
+                    />
+
             </LinearLayout>
 
             <com.handmark.pulltorefresh.library.PullToRefreshGridView
                 android:id="@+id/main_gridview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numColumns="4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:numColumns="3"
                 android:layout_marginLeft="20dp"
-
+                android:horizontalSpacing="20dp"
+                android:verticalSpacing="20dp"
+                android:stretchMode="columnWidth"
                 ></com.handmark.pulltorefresh.library.PullToRefreshGridView>
         </LinearLayout>
 
@@ -76,7 +118,7 @@
             android:id="@+id/erweima_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/sao"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="40dp"

@@ -40,7 +40,7 @@ public class GridViewAdapter extends BaseAdapter {
 
     // DisplayImageOptions的初始化
     DisplayImageOptions options = new DisplayImageOptions.Builder()
-            .showImageForEmptyUri(R.mipmap.ic_launcher)
+            .showImageForEmptyUri(R.mipmap.goods_demo)
             .showImageOnLoading(R.mipmap.ic_launcher)
             .showImageOnFail(R.mipmap.ic_launcher)
             .cacheInMemory(true)

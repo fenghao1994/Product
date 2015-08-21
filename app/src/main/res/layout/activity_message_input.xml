@@ -2,41 +2,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@mipmap/bg"
+    >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:orientation="horizontal"
+        android:background="@color/black"
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            ></TextView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/message_input"
-            android:layout_gravity="center"
-            android:textSize="40dp"
-            android:layout_weight="1"
+            android:textSize="30dp"
+            android:textColor="@color/white"
             />
-        <TextView
+        <ImageView
             android:id="@+id/complete"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/complete"
-            android:textSize="30dp"
-            android:layout_gravity="right|center_vertical"
-            android:gravity="center"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="40dp"
+            android:src="@mipmap/complite"
             />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -46,33 +43,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/name"
-            android:textSize="40dp"
+            android:textSize="25dp"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="70dp"
             />
         <EditText
             android:id="@+id/edit_name"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:paddingLeft="10dp"
+            android:textSize="25dp"
+            android:text="xxx"
+            android:background="@drawable/edittext"
+            android:layout_weight="1"
+            />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40dp"
-            android:text="冯浩"
-            android:layout_weight="2"
+            android:layout_weight="1"
             />
-
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sex"
-            android:textSize="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:textSize="25dp"
+            android:layout_marginLeft="267dp"
             />
 
 
@@ -80,25 +83,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="0.9"
-            android:gravity="center"
+            android:layout_marginLeft="400dp"
             >
             <RadioButton
                 android:id="@+id/radio_man"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="男"
-                android:textSize="40dp"
+                android:textSize="25dp"
                 android:checked="true"
-                android:layout_weight="1"
                 ></RadioButton>
             <RadioButton
                 android:id="@+id/radio_women"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
+                android:textSize="25dp"
                 android:text="女"
-                android:layout_weight="1"
+                android:layout_marginLeft="100dp"
                 ></RadioButton>
         </RadioGroup>
 
@@ -109,9 +110,10 @@
             android:layout_weight="1"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -121,21 +123,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/phone"
-            android:textSize="40dp"
+            android:textSize="25dp"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="70dp"
             />
         <EditText
             android:id="@+id/edit_phone"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:paddingLeft="10dp"
+            android:textSize="25dp"
+            android:background="@drawable/edittext"
+            android:hint="@string/phone_number"
+            android:layout_weight="1"
+            />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40dp"
-            android:text="12345678900"
-            android:layout_weight="1.55"
+            android:layout_weight="1"
             />
     </LinearLayout>
-
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -156,6 +165,37 @@
             android:calendarViewShown="false"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+    </LinearLayout>-->
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/birth"
+            android:textSize="25dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_marginRight="70dp"
+            />
+        <EditText
+            android:id="@+id/time"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:paddingLeft="10dp"
+            android:textSize="25dp"
+            android:background="@drawable/edittext"
+            android:layout_weight="1"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

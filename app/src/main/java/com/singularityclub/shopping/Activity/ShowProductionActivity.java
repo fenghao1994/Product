@@ -1,6 +1,7 @@
 package com.singularityclub.shopping.Activity;
 
 import android.app.Activity;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -24,9 +25,9 @@ public class ShowProductionActivity extends Activity{
     @ViewById
     protected EditText search_text;
     @ViewById
-    protected ImageView search_img, shop_car, erweima_img;
+    protected ImageView shop_car, erweima_img;
     @ViewById
-    protected TextView caizhi, meaning, personality, theme;
+    protected Button caizhi, meaning, personality, theme;
     @ViewById
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView main_gridview;
 
