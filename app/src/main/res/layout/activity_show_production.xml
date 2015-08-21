@@ -11,94 +11,216 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <RelativeLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
         <LinearLayout
+            android:id="@+id/left_linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/blue"
+            >
+            <Button
+                android:paddingLeft="20dp"
+                android:paddingRight="30dp"
+                android:id="@+id/theme"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="主题"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_blue"
+                />
+
+            <Button
+                android:paddingLeft="20dp"
+                android:paddingRight="30dp"
+                android:id="@+id/caizhi"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="材质"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_blue"
+                />
+            <Button
+                android:paddingLeft="20dp"
+                android:paddingRight="30dp"
+                android:id="@+id/meaning"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="含义"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_blue"
+                />
+            <Button
+                android:paddingLeft="20dp"
+                android:paddingRight="30dp"
+                android:id="@+id/personality"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="人格"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_blue"
+                />
+        </LinearLayout>
+
+
+        <com.handmark.pulltorefresh.library.PullToRefreshGridView
+            android:layout_marginTop="20dp"
+            android:id="@+id/main_gridview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="0dp"
+            android:numColumns="3"
+            android:horizontalSpacing="20dp"
+            android:verticalSpacing="20dp"
+            android:stretchMode="columnWidth"
+            android:layout_marginLeft="100dp"
+            ></com.handmark.pulltorefresh.library.PullToRefreshGridView>
+
+        <GridView
+            android:id="@+id/second_gridview"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:background="@color/dark_blue"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:horizontalSpacing="10dp"
+            android:alpha="0.8"
+            android:layout_marginLeft="90dp"
+            android:visibility="gone"
+            ></GridView>
+
+        <ImageView
+            android:id="@+id/erweima_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/sao"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="right|bottom" />
+
+    </FrameLayout>
+
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        >
+            <LinearLayout
+                    android:id="@+id/left_linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/blue"
+                    >
+                    <Button
+                        android:paddingLeft="20dp"
+                        android:paddingRight="30dp"
+                        android:id="@+id/theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:text="主题"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@color/blue"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dark_blue"
+                        />
+
+                    <Button
+                        android:paddingLeft="20dp"
+                        android:paddingRight="30dp"
+                        android:id="@+id/caizhi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:text="材质"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@color/blue"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dark_blue"
+                        />
+                    <Button
+                        android:paddingLeft="20dp"
+                        android:paddingRight="30dp"
+                        android:id="@+id/meaning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:text="含义"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@color/blue"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dark_blue"
+                        />
+                    <Button
+                        android:paddingLeft="20dp"
+                        android:paddingRight="30dp"
+                        android:id="@+id/personality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:text="人格"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@color/blue"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dark_blue"
+                        />
+                </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/left_linearLayout"
             >
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@color/blue"
-                >
-                <Button
-                    android:paddingLeft="20dp"
-                    android:paddingRight="30dp"
-                    android:id="@+id/theme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="主题"
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:background="@color/blue"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dark_blue"
-                    />
-
-                <Button
-                    android:paddingLeft="20dp"
-                    android:paddingRight="30dp"
-                    android:id="@+id/caizhi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="材质"
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:background="@color/blue"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dark_blue"
-                    />
-                <Button
-                    android:paddingLeft="20dp"
-                    android:paddingRight="30dp"
-                    android:id="@+id/meaning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="含义"
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:background="@color/blue"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dark_blue"
-                    />
-                <Button
-                    android:paddingLeft="20dp"
-                    android:paddingRight="30dp"
-                    android:id="@+id/personality"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="人格"
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:background="@color/blue"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dark_blue"
-                    />
-
-            </LinearLayout>
 
             <com.handmark.pulltorefresh.library.PullToRefreshGridView
                 android:layout_marginTop="20dp"
@@ -106,12 +228,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:numColumns="3"
-                android:layout_marginLeft="20dp"
                 android:horizontalSpacing="20dp"
                 android:verticalSpacing="20dp"
                 android:stretchMode="columnWidth"
                 ></com.handmark.pulltorefresh.library.PullToRefreshGridView>
-        </LinearLayout>
+
+            <GridView
+                android:id="@+id/gridview"
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:background="@color/red"
+                android:numColumns="2"
+                android:stretchMode="columnWidth"
+                android:horizontalSpacing="10dp"
+                android:alpha="0.8"
+                ></GridView>
+
+        </FrameLayout>
+
 
 
 
@@ -126,6 +260,6 @@
             android:layout_marginBottom="40dp"
             />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </LinearLayout>
