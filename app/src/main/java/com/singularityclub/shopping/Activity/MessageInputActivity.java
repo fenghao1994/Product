@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.singularityclub.shopping.R;
 
@@ -37,9 +38,31 @@ public class MessageInputActivity extends Activity {
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MessageInputActivity.this, ShowProductionActivity_.class);
-                startActivity(intent);
+
+                if( edit_name.getText().length() != 0 && edit_phone.getText().length() != 0 && time.getText().length() != 0) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MessageInputActivity.this);
+                    builder.setTitle("确定提交吗？");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent();
+                            intent.setClass(MessageInputActivity.this, ShowProductionActivity_.class);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    Dialog dialog = builder.create();
+                    dialog.show();
+                }else{
+                    Toast.makeText(MessageInputActivity.this, "请将信息填写完整", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         time.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +78,7 @@ public class MessageInputActivity extends Activity {
 
                         int year = datePicker.getYear();
                         int month = datePicker.getMonth() + 1;
-                        int day = datePicker.getDayOfMonth() + 1;
+                        int day = datePicker.getDayOfMonth();
                         String date = year + "-" + month + "-" + day;
                         time.setText(date);
                        dialog.dismiss();
