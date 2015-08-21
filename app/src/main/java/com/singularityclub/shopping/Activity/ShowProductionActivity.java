@@ -17,6 +17,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.singularityclub.shopping.Adapter.GridViewAdapter;
 import com.singularityclub.shopping.Adapter.SecondLevelAdapter;
 import com.singularityclub.shopping.R;
+import com.singularityclub.shopping.zxing.activity.CaptureActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -116,6 +117,28 @@ public class ShowProductionActivity extends Activity{
                 backToInit();
             }
         });
+
+        erweima_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent  startScan = new Intent(ShowProductionActivity.this, CaptureActivity.class);
+                startActivityForResult(startScan, 0);
+            }
+
+        });
+
+
+    }
+
+    //通过onActivityResult方法将数据返回
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            //得到二维码里面包含的数据
+            String result = data.getExtras().getString("result");
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+        }
     }
 
     public void backToInit(){
