@@ -12,4 +12,5 @@
     <string name="phone_number">请输入手机号</string>
     <string name="key_word">输入关键字</string>
     <string name="choose_date">请选择时间</string>
+    <string name="shop_car">购物车</string>
 </resources>

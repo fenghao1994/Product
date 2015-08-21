@@ -1,6 +1,7 @@
 package com.singularityclub.shopping.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +50,14 @@ public class ShowProductionActivity extends Activity implements View.OnClickList
         secondLevelAdapter = new SecondLevelAdapter(this);
         second_gridview.setAdapter(secondLevelAdapter);
 
+        shop_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent t = new Intent(ShowProductionActivity.this, ShopCarActivity_.class);
+                startActivity(t);
+            }
+        });
+
     }
 
     @Override
@@ -58,6 +67,7 @@ public class ShowProductionActivity extends Activity implements View.OnClickList
             case R.id.meaning:break;
             case R.id.personality:break;
             case R.id.theme:break;
+
         }
     }
 }

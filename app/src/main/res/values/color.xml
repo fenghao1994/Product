@@ -4,6 +4,8 @@
     <color name="white">#ffffff</color>
     <color name="blue">#5283a1</color>
     <color name="dark_blue">#1e5e81</color>
-    <color name="red">#d22c30</color>
+    <color name="red">#e4393c</color>
     <color name="bg_color">#e1eaed</color>
+    <color name="buttom_bg">#6a7173</color>
+    <color name="total_money">#fb8c21</color>
 </resources>

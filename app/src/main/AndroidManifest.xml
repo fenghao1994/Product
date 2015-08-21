@@ -20,6 +20,9 @@
         <activity android:name=".Activity.ShowProductionActivity_"
               android:label="@string/app_name">
         </activity>
+        <activity android:name=".Activity.ShopCarActivity_"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>
