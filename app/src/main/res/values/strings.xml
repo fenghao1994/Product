@@ -9,4 +9,6 @@
     <string name="birth">生日</string>
     <string name="phone">电话</string>
     <string name="production_detail">商品详细</string>
+    <string name="phone_number">请输入手机号</string>
+    <string name="key_word">输入关键字</string>
 </resources>
