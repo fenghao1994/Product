@@ -1,13 +1,17 @@
 package com.singularityclub.shopping.Activity;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.singularityclub.shopping.Adapter.GridViewAdapter;
@@ -23,7 +27,7 @@ import org.androidannotations.annotations.ViewById;
  * 商品展示页面
  */
 @EActivity(R.layout.activity_show_production)
-public class ShowProductionActivity extends Activity implements View.OnClickListener{
+public class ShowProductionActivity extends Activity{
 
     @ViewById
     protected EditText search_text;
@@ -58,16 +62,69 @@ public class ShowProductionActivity extends Activity implements View.OnClickList
             }
         });
 
+        caizhi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToInit();
+                second_gridview.setVisibility(View.VISIBLE);
+                caizhi.setBackgroundColor( getResources().getColor( R.color.dark_blue));
+                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
+            }
+        });
+        meaning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToInit();
+                second_gridview.setVisibility(View.VISIBLE);
+                meaning.setBackgroundColor(getResources().getColor(R.color.dark_blue));
+                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
+            }
+        });
+        personality.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToInit();
+                second_gridview.setVisibility(View.VISIBLE);
+                personality.setBackgroundColor(getResources().getColor(R.color.dark_blue));
+                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
+            }
+        });
+        theme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToInit();
+                second_gridview.setVisibility(View.VISIBLE);
+                theme.setBackgroundColor(getResources().getColor(R.color.dark_blue));
+                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
+            }
+        });
+        main_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (second_gridview.getTranslationX() != 0.0f) {
+                    backToInit();
+                } else {
+                    //TODO 进入详细页面
+                }
+            }
+        });
+
+        second_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO 刷新商品内容
+                backToInit();
+            }
+        });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch( v.getId()){
-            case R.id.caizhi:break;
-            case R.id.meaning:break;
-            case R.id.personality:break;
-            case R.id.theme:break;
-
-        }
+    public void backToInit(){
+        caizhi.setBackgroundColor(getResources().getColor(R.color.blue));
+        meaning.setBackgroundColor(getResources().getColor(R.color.blue));
+        theme.setBackgroundColor(getResources().getColor(R.color.blue));
+        personality.setBackgroundColor(getResources().getColor(R.color.blue));
+        float x = second_gridview.getTranslationX();
+        second_gridview.setVisibility(View.GONE);
+        ObjectAnimator.ofFloat(second_gridview, "translationX", x, 0).setDuration(100).start();
     }
 }
