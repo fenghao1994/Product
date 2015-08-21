@@ -101,6 +101,7 @@
             </LinearLayout>
 
             <com.handmark.pulltorefresh.library.PullToRefreshGridView
+                android:layout_marginTop="20dp"
                 android:id="@+id/main_gridview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -121,7 +122,7 @@
             android:src="@mipmap/sao"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="40dp"
             />
 

@@ -22,13 +22,15 @@
         android:id="@+id/goods_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="商品标题"
+        android:text="商品标题商品标题商品标题商品标题"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:textSize="20dp"
+        android:textSize="16dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="40dp"
-
+        android:maxEms="7"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/white"
         />
 
@@ -39,7 +41,7 @@
         android:src="@mipmap/detail_like"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="60dp"
         />
 
     <LinearLayout
@@ -49,12 +51,12 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="80dp"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="售价:¥"
+            android:text="¥"
             android:textSize="20dp"
             android:textColor="@color/red"
             android:layout_marginBottom="20dp"
