@@ -29,12 +29,16 @@ public class MessageInputActivity extends Activity {
     protected EditText edit_name, edit_phone, time;
     @ViewById
     protected RadioButton radio_man, radio_women;
-//    @ViewById
-//    protected DatePicker datePicker;
+
 
 
     @AfterViews
     public void init(){
+        listen();
+    }
+
+    public void listen(){
+        //完成按钮的监听
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,34 +69,40 @@ public class MessageInputActivity extends Activity {
 
             }
         });
-        time.setOnClickListener(new View.OnClickListener() {
+
+
+        //点击选择时间的监听
+        time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MessageInputActivity.this);
-                View view =  View.inflate(MessageInputActivity.this, R.layout.layout_datepicker, null);
-                builder.setView(view);
-                final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datepicker);
-                builder.setPositiveButton("确 定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MessageInputActivity.this);
+                    View view =  View.inflate(MessageInputActivity.this, R.layout.layout_datepicker, null);
+                    builder.setView(view);
+                    final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datepicker);
+                    builder.setPositiveButton("确 定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        int year = datePicker.getYear();
-                        int month = datePicker.getMonth() + 1;
-                        int day = datePicker.getDayOfMonth();
-                        String date = year + "-" + month + "-" + day;
-                        time.setText(date);
-                       dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton("取 消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                            int year = datePicker.getYear();
+                            int month = datePicker.getMonth() + 1;
+                            int day = datePicker.getDayOfMonth();
+                            String date = year + "-" + month + "-" + day;
+                            time.setText(date);
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("取 消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
 
-                Dialog dialog = builder.create();
-                dialog.show();
+                    Dialog dialog = builder.create();
+                    dialog.show();
+                    time.clearFocus();
+                }
             }
         });
     }

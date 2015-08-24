@@ -54,7 +54,6 @@
             android:layout_height="60dp"
             android:paddingLeft="10dp"
             android:textSize="25dp"
-            android:text="xxx"
             android:background="@drawable/edittext"
             android:layout_weight="1"
             />
@@ -137,6 +136,7 @@
             android:background="@drawable/edittext"
             android:hint="@string/phone_number"
             android:layout_weight="1"
+            android:inputType="number"
             />
         <TextView
             android:layout_width="wrap_content"
