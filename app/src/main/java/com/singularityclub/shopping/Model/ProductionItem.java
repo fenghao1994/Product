@@ -2,7 +2,7 @@ package com.singularityclub.shopping.Model;
 
 /**
  * Created by fenghao on 2015/8/24.
- * ÿһ����Ʒ
+ * 每一项商品
  */
 public class ProductionItem {
 

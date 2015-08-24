@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -14,21 +16,36 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.loopj.android.http.RequestParams;
+import com.singularityclub.shopping.Adapter.FirstLevelAdapter;
 import com.singularityclub.shopping.Adapter.GridViewAdapter;
 import com.singularityclub.shopping.Adapter.SecondLevelAdapter;
 import com.singularityclub.shopping.Application.MyApplication;
+import com.singularityclub.shopping.Model.MainClassify;
+import com.singularityclub.shopping.Model.ProductionItem;
+import com.singularityclub.shopping.Model.SecondClassify;
 import com.singularityclub.shopping.R;
+import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
+import com.singularityclub.shopping.Utils.http.HttpClient;
+import com.singularityclub.shopping.Utils.http.HttpUrl;
+import com.singularityclub.shopping.Utils.http.JacksonMapper;
+import com.singularityclub.shopping.preferences.UserInfo_;
 import com.singularityclub.shopping.zxing.activity.CaptureActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.apache.http.Header;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by fenghao on 2015/8/19.
@@ -43,18 +60,22 @@ public class ShowProductionActivity extends Activity{
     protected EditText search_text;
     @ViewById
     protected ImageView shop_car, erweima_img;
-    @ViewById
-    protected Button caizhi, meaning, personality, theme;
+    /*@ViewById
+    protected Button caizhi, meaning, personality, theme;*/
     @ViewById
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView main_gridview;
     @ViewById
-    protected GridView second_gridview;
+    protected GridView second_gridview, first_gridview;
 
     protected SecondLevelAdapter secondLevelAdapter;
 
     protected GridViewAdapter gridViewAdapter;
 
     protected MyApplication myApplication;
+
+    protected FirstLevelAdapter firstLevelAdapter;
+    @Pref
+    protected UserInfo_ userInfo;
 
     @AfterViews
     protected void init(){
@@ -67,6 +88,10 @@ public class ShowProductionActivity extends Activity{
 
         secondLevelAdapter = new SecondLevelAdapter(this);
         second_gridview.setAdapter(secondLevelAdapter);
+
+        firstLevelAdapter = new FirstLevelAdapter(this);
+        first_gridview.setAdapter(firstLevelAdapter);
+
         listen();
 
     }
@@ -83,52 +108,24 @@ public class ShowProductionActivity extends Activity{
             }
         });
 
-        //材质按钮
-        caizhi.setOnClickListener(new View.OnClickListener() {
+        first_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 backToInit();
                 second_gridview.setVisibility(View.VISIBLE);
-                caizhi.setBackgroundColor( getResources().getColor( R.color.dark_blue));
-                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
+                for( int i = 0 ; i < firstLevelAdapter.color.length; i++){
+                    firstLevelAdapter.color[i] = false;
+                }
+                firstLevelAdapter.color[position] = true;
+                firstLevelAdapter.notifyDataSetChanged();
+                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 140F).setDuration(500).start();
             }
         });
-        //含义按钮
-        meaning.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToInit();
-                second_gridview.setVisibility(View.VISIBLE);
-                meaning.setBackgroundColor(getResources().getColor(R.color.dark_blue));
-                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
-            }
-        });
-        //人格按钮
-        personality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToInit();
-                second_gridview.setVisibility(View.VISIBLE);
-                personality.setBackgroundColor(getResources().getColor(R.color.dark_blue));
-                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
-            }
-        });
-
-        //主题按钮
-        theme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToInit();
-                second_gridview.setVisibility(View.VISIBLE);
-                theme.setBackgroundColor(getResources().getColor(R.color.dark_blue));
-                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 138F).setDuration(500).start();
-            }
-        });
-
         //商品gridview
         main_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 if (second_gridview.getTranslationX() != 0.0f) {
                     backToInit();
                 } else {
@@ -159,7 +156,7 @@ public class ShowProductionActivity extends Activity{
             @Override
             public void onClick(View v) {
 
-                if( search_text.getText().length() == 0){
+                if (search_text.getText().length() == 0) {
                     listview.setVisibility(View.VISIBLE);
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, myApplication.getList()));
                 }
@@ -201,6 +198,7 @@ public class ShowProductionActivity extends Activity{
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
+
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 listview.setVisibility(View.GONE);
@@ -236,10 +234,7 @@ public class ShowProductionActivity extends Activity{
      * 回到初始化状态
      */
     public void backToInit(){
-        caizhi.setBackgroundColor(getResources().getColor(R.color.blue));
-        meaning.setBackgroundColor(getResources().getColor(R.color.blue));
-        theme.setBackgroundColor(getResources().getColor(R.color.blue));
-        personality.setBackgroundColor(getResources().getColor(R.color.blue));
+
         listview.setVisibility(View.GONE);
         float x = second_gridview.getTranslationX();
         second_gridview.setVisibility(View.GONE);
@@ -250,5 +245,69 @@ public class ShowProductionActivity extends Activity{
     protected void onPause() {
         super.onPause();
         listview.setVisibility(View.GONE);
+    }
+
+    //TODO 放入init方法中初始化数据
+    protected void initShowProduction(){
+        RequestParams params = new RequestParams();
+        params.put("customer_id", userInfo.id().get());
+        HttpClient.post(this, HttpUrl.POST_SHOW_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                // TODO adapter 进行数据替换
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+        });
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+
+        return super.dispatchKeyEvent(event);
+    }
+
+    /**
+     * 显示搜索的商品
+     * TODO 搜索api
+     */
+    public void showSearchProduction(String search){
+        RequestParams params = new RequestParams();
+        params.put("", search);
+    }
+
+    /**
+     *初始化一级菜单
+     * TODO 放入init中
+     */
+    public void initMianClassify(){
+        HttpClient.get(this, HttpUrl.GET_MAIN_CALSSIFY, null, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<MainClassify> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<MainClassify>>() {
+                });
+                //TODO 得到list数据，显示左边一级菜单
+            }
+        });
+    }
+
+    /**
+     * 二级菜单
+     */
+    public void showSecondClassify(String id){
+        RequestParams params = new RequestParams();
+        params.put("main_classify_id", id);
+        HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<SecondClassify> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<SecondClassify>>() {
+                });
+                // TODO 得到数据，点击一级菜单时加载二级菜单
+            }
+        });
     }
 }

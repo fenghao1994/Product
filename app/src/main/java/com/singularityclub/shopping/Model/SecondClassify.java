@@ -2,7 +2,7 @@ package com.singularityclub.shopping.Model;
 
 /**
  * Created by fenghao on 2015/8/24.
- * 二级分类
+ * 浜岀骇鍒嗙被
  */
 public class SecondClassify {
     public String secondClassifyId;

@@ -1,6 +1,7 @@
 package com.singularityclub.shopping.preferences;
 
 import org.androidannotations.annotations.sharedpreferences.DefaultInt;
+import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
 /**
@@ -9,8 +10,8 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 @SharedPref(value = SharedPref.Scope.UNIQUE)
 public interface UserInfo {
 
-    @DefaultInt(-1)
-    int id();
+    @DefaultString("-1")
+    String id();
 
     /**
      * 购买商品的数量

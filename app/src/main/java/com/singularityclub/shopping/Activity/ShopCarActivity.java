@@ -9,12 +9,24 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.loopj.android.http.RequestParams;
 import com.singularityclub.shopping.Adapter.GridViewAdapter;
+import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.R;
+import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
+import com.singularityclub.shopping.Utils.http.HttpClient;
+import com.singularityclub.shopping.Utils.http.HttpUrl;
+import com.singularityclub.shopping.Utils.http.JacksonMapper;
+import com.singularityclub.shopping.preferences.UserInfo_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.apache.http.Header;
+import org.codehaus.jackson.type.TypeReference;
+
+import java.util.ArrayList;
 
 /**
  * Created by fenghao on 2015/8/21.
@@ -25,6 +37,8 @@ public class ShopCarActivity extends Activity {
     protected ImageView back, complete;
     @ViewById
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView car_gridview;
+    @Pref
+    protected UserInfo_ userInfo;
 
     protected GridViewAdapter gridViewAdapter;
     @AfterViews
@@ -64,6 +78,24 @@ public class ShopCarActivity extends Activity {
                 });
                 Dialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+    }
+
+
+    /**
+     * 购物车初始化
+     */
+
+    public void showProdaction(){
+        RequestParams params = new RequestParams();
+        params.put("customer_id", userInfo.id().get());
+        HttpClient.post(this, HttpUrl.POST_LOOK_CAR, params, new BaseJsonHttpResponseHandler(this){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                //TODO 得到了list数据，加载数据
             }
         });
     }
