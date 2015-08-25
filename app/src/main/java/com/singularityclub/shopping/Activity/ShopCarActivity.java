@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -81,6 +82,15 @@ public class ShopCarActivity extends Activity {
                 });
                 Dialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+        car_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ShopCarActivity.this, ProductionDetailActivity_.class);
+                intent.putExtra("product_id", gridViewAdapter.array.get(position).getId());
+                startActivity(intent);
             }
         });
     }

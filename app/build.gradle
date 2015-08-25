@@ -48,6 +48,7 @@ dependencies {
     compile 'org.androidannotations:androidannotations-api:3.3.1'
     compile 'com.loopj.android:android-async-http:1.4.5'
     compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile project(':pulltorefreshlibrary')
 }
 

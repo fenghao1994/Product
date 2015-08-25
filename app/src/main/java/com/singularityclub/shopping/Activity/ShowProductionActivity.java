@@ -1,14 +1,11 @@
 package com.singularityclub.shopping.Activity;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -50,9 +46,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.apache.http.Header;
 import org.codehaus.jackson.type.TypeReference;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by fenghao on 2015/8/19.
@@ -151,7 +145,9 @@ public class ShowProductionActivity extends Activity {
                 if (second_gridview.getTranslationX() != 0.0f) {
                     backToInit();
                 } else {
-                    //TODO 进入详细页面
+                    Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
+                    intent.putExtra("product_id", gridViewAdapter.array.get(p).getId());
+                    startActivity(intent);
                 }
             }
         });
