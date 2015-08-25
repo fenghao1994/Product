@@ -42,6 +42,8 @@ public class MessageInputActivity extends Activity {
     @Pref
     protected UserInfo_ userInfo;
 
+    protected RequestParams params;
+
 
     @AfterViews
     public void init(){
@@ -61,6 +63,7 @@ public class MessageInputActivity extends Activity {
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            sendInfo(params);
                             Intent intent = new Intent();
                             intent.setClass(MessageInputActivity.this, ShowProductionActivity_.class);
                             startActivity(intent);
@@ -75,7 +78,7 @@ public class MessageInputActivity extends Activity {
                     Dialog dialog = builder.create();
                     dialog.show();
 
-                    RequestParams params = new RequestParams();
+                    params = new RequestParams();
                     params.put("name", edit_name.getText().toString());
                     if ( radio_man.isChecked()){
                         params.put("sex", "男");
@@ -84,7 +87,7 @@ public class MessageInputActivity extends Activity {
                     }
                     params.put("birthday", time.getText().toString());
                     params.put("phone", edit_phone.getText().toString());
-                    sendInfo(params);
+
                 }else{
                     Toast.makeText(MessageInputActivity.this, "请将信息填写完整", Toast.LENGTH_LONG).show();
                 }
@@ -112,6 +115,7 @@ public class MessageInputActivity extends Activity {
                             String date = year + "-" + month + "-" + day;
                             time.setText(date);
                             dialog.dismiss();
+
                         }
                     });
                     builder.setNegativeButton("取 消", new DialogInterface.OnClickListener() {
@@ -136,7 +140,7 @@ public class MessageInputActivity extends Activity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 Map<String, Object> map = JacksonMapper.parse(responseString);
-                String id = (String) map.get("customer_id");
+                String id = map.get("id").toString();
                 userInfo.edit().id().put(id).apply();
 
                 Toast.makeText(MessageInputActivity.this, "提交信息成功", Toast.LENGTH_LONG).show();
@@ -144,6 +148,8 @@ public class MessageInputActivity extends Activity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(MessageInputActivity.this, responseString, Toast.LENGTH_LONG).show();
+
             }
         });
     }

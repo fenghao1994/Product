@@ -7,7 +7,7 @@ package com.singularityclub.shopping.Utils.http;
 public class HttpUrl {
 
     //根地址
-    public static final String ROOT = "http://dt.tavern.name/";
+    public static final String ROOT = "http://dt.tavern.name/front/";
 
     //上传资料
     public static final String POST_USERINFO = ROOT + "info_entry/index";
