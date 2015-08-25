@@ -36,8 +36,7 @@ public class GridViewAdapter extends BaseAdapter {
 
     public int[] array = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0};
 
-    @Pref
-    protected UserInfo_ userInfo;
+    public boolean[] img = new boolean[array.length];
 
     LayoutInflater inflater = null;
     Context context;
@@ -50,6 +49,10 @@ public class GridViewAdapter extends BaseAdapter {
     public GridViewAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+
+        for( int i = 0 ; i < img.length ; i++){
+            img[i] = false;
+        }
     }
 
     // DisplayImageOptions的初始化
@@ -92,18 +95,13 @@ public class GridViewAdapter extends BaseAdapter {
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-        ImageView img = holder.like_img;
-        holder.like_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 放入商品id,测试点击关注后是否发生了变化
-                RequestParams params = new RequestParams();
-                params.put("customer_id", userInfo.id().get());
-                params.put("product_id", "");
-                clickAttention(params, img);
-            }
-        });
 
+
+        if(img[position]){
+            holder.like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.cart_like));
+        }else{
+            holder.like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.detail_like));
+        }
         //imageLoader加载图像
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
@@ -111,15 +109,4 @@ public class GridViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    /**
-     * 单击关注时
-     */
-    public void clickAttention(RequestParams params, ImageView imageView){
-        HttpClient.post(context, HttpUrl.POST_PRODUCTION_ATTENTION, params, new BaseJsonHttpResponseHandler(context){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                     imageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.cart_like));
-            }
-        });
-    }
 }
