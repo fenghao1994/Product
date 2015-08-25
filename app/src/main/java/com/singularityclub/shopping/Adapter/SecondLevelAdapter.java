@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.singularityclub.shopping.Model.SecondClassify;
 import com.singularityclub.shopping.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by fenghao on 2015/8/21.
@@ -15,7 +18,7 @@ import com.singularityclub.shopping.R;
  */
 public class SecondLevelAdapter extends BaseAdapter{
 
-    public int[] array = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0};
+    public ArrayList<SecondClassify> array;
     LayoutInflater inflater = null;
     Context context;
 
@@ -23,14 +26,15 @@ public class SecondLevelAdapter extends BaseAdapter{
         TextView secondLevel;
     }
 
-    public SecondLevelAdapter( Context context) {
+    public SecondLevelAdapter( Context context, ArrayList<SecondClassify> array) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+        this.array = array;
     }
 
     @Override
     public int getCount() {
-        return array.length;
+        return array.size();
     }
 
     @Override
@@ -54,6 +58,7 @@ public class SecondLevelAdapter extends BaseAdapter{
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
+        holder.secondLevel.setText(array.get(position).getSecondClassifyName());
         return convertView;
     }
 }

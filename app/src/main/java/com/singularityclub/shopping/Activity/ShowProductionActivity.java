@@ -91,17 +91,10 @@ public class ShowProductionActivity extends Activity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initShowProduction();
+        initMianClassify();
         myApplication = (MyApplication) getApplication();
         main_gridview.setMode(PullToRefreshBase.Mode.BOTH);
 
-
-        secondLevelAdapter = new SecondLevelAdapter(this);
-        second_gridview.setAdapter(secondLevelAdapter);
-
-        firstLevelAdapter = new FirstLevelAdapter(this);
-        first_gridview.setAdapter(firstLevelAdapter);
-
-        initMianClassify();
         listen();
 
     }
@@ -122,6 +115,7 @@ public class ShowProductionActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 backToInit();
+                showSecondClassify( firstLevelAdapter.array.get(position).getMainClassifyId());
                 mainPosition = position;
                 second_gridview.setVisibility(View.VISIBLE);
                 for (int i = 0; i < firstLevelAdapter.color.length; i++) {
@@ -141,20 +135,6 @@ public class ShowProductionActivity extends Activity {
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*ObjectAnimator anim = ObjectAnimator
-                                .ofFloat(imageView, "zhy", 1.0F,  0.0F)
-                                .setDuration(500);
-                        anim.start();
-
-                        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                float cVal = (Float) animation.getAnimatedValue();
-                                imageView.setAlpha(cVal);
-                                imageView.setScaleX(cVal);
-                                imageView.setScaleY(cVal);
-                            }
-                        });*/
 
                         if (!gridViewAdapter.img[p]) {
                             gridViewAdapter.img[p] = true;
@@ -164,12 +144,10 @@ public class ShowProductionActivity extends Activity {
                         gridViewAdapter.notifyDataSetChanged();
                         RequestParams params = new RequestParams();
                         params.put("customer_id", userInfo.id().get());
-                        //TODO 放商品id
                         params.put("product_id", gridViewAdapter.array.get(p).getId());
                         addAttention(params);
                     }
                 });
-
                 if (second_gridview.getTranslationX() != 0.0f) {
                     backToInit();
                 } else {
@@ -182,6 +160,7 @@ public class ShowProductionActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO 刷新商品内容
+                showSecondProduction(secondLevelAdapter.array.get(position).getSecondClassifyId());
                 backToInit();
                 firstLevelAdapter.color[mainPosition] = false;
                 firstLevelAdapter.notifyDataSetChanged();
@@ -203,7 +182,6 @@ public class ShowProductionActivity extends Activity {
             public void onClick(View v) {
 
                 if (search_text.getText().length() == 0) {
-//                    listview.setVisibility(View.VISIBLE);
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, myApplication.getList()));
                 }
                 new Thread(new Runnable() {
@@ -277,6 +255,12 @@ public class ShowProductionActivity extends Activity {
         });
     }
 
+
+    /**
+     * 匹配历史搜索
+     * @param name
+     * @return
+     */
     public ArrayList<String> searchItem(String name) {
         ArrayList<String> mSearchList = new ArrayList<String>();
         for (int i = 0; i < myApplication.getList().size(); i++) {
@@ -318,7 +302,9 @@ public class ShowProductionActivity extends Activity {
         listview.setVisibility(View.GONE);
     }
 
-    //TODO 放入init方法中初始化数据
+    /**
+     * 与人格关联的商品展示
+     */
     protected void initShowProduction() {
         RequestParams params = new RequestParams();
         params.put("customer_id", userInfo.id().get());
@@ -333,16 +319,11 @@ public class ShowProductionActivity extends Activity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                String a = "a";
+                Toast.makeText(ShowProductionActivity.this, "查看关联人格", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-
-        return super.dispatchKeyEvent(event);
-    }
 
     /**
      * 显示搜索的商品
@@ -371,7 +352,6 @@ public class ShowProductionActivity extends Activity {
 
     /**
      * 初始化一级菜单
-     * TODO 放入init中
      */
     public void initMianClassify() {
         HttpClient.get(this, HttpUrl.GET_MAIN_CALSSIFY, null, new BaseJsonHttpResponseHandler(this) {
@@ -379,7 +359,8 @@ public class ShowProductionActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<MainClassify> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<MainClassify>>() {
                 });
-                //TODO 得到list数据，显示左边一级菜单
+                firstLevelAdapter = new FirstLevelAdapter(ShowProductionActivity.this, list);
+                first_gridview.setAdapter(firstLevelAdapter);
             }
 
             @Override
@@ -395,12 +376,18 @@ public class ShowProductionActivity extends Activity {
     public void showSecondClassify(String id) {
         RequestParams params = new RequestParams();
         params.put("main_classify_id", id);
-        HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this) {
+        HttpClient.post(this, HttpUrl.POST_SECOND_CALSSIFY_ID, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<SecondClassify> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<SecondClassify>>() {
                 });
-                // TODO 得到数据，点击一级菜单时加载二级菜单
+                secondLevelAdapter = new SecondLevelAdapter(ShowProductionActivity.this, list);
+                second_gridview.setAdapter(secondLevelAdapter);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "获取二级分类失败", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -417,6 +404,28 @@ public class ShowProductionActivity extends Activity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+        });
+    }
+
+    /**
+     * 点击二级二类后的商品
+     */
+    public void showSecondProduction(String id){
+        RequestParams params = new RequestParams();
+        params.put("second_classify_id", id);
+        HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                main_gridview.setAdapter(gridViewAdapter);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "二级分类里面的商品错误", Toast.LENGTH_LONG).show();
             }
         });
     }

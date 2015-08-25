@@ -15,8 +15,10 @@ public class HttpUrl {
     //展示的商品
     public static final String POST_SHOW_PRODUCTION = ROOT + "production/index";
 
-    //二级分类
+    //一级分类
     public static final String GET_MAIN_CALSSIFY = ROOT + "main_classify/index";
+    //一级分类里面的二级分类id
+    public static final String POST_SECOND_CALSSIFY_ID = ROOT + "main_classify/main_classify_children";
 
     //二级分类里面的商品
     public static final String POST_SECOND_CLASSIFY = ROOT + "second_classify/index";
@@ -29,7 +31,7 @@ public class HttpUrl {
     public static final String POST_ADD_CAR = ROOT + "production/add_in_cart";
 
     //查看购物车
-    public static final String POST_LOOK_CAR = ROOT + "production/shopping_cart";
+    public static final String POST_LOOK_CAR = ROOT + "production/show_attention";
 
     //搜索
     public static final String POST_SEARCH = ROOT + "production/search_product";

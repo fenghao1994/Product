@@ -1,17 +1,19 @@
 package com.singularityclub.shopping.Model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * Created by fenghao on 2015/8/24.
  * 二级分类
  */
+@JsonIgnoreProperties({"brief_des", "detail_des", "parent_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
 public class SecondClassify {
+    @JsonProperty("id")
     public String secondClassifyId;
+    @JsonProperty("name")
     public String secondClassifyName;
 
-    public SecondClassify(String secondClassifyId, String secondClassifyName) {
-        this.secondClassifyId = secondClassifyId;
-        this.secondClassifyName = secondClassifyName;
-    }
 
     public String getSecondClassifyId() {
         return secondClassifyId;
