@@ -3,11 +3,13 @@ package com.singularityclub.shopping.Activity;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,6 +40,7 @@ import com.singularityclub.shopping.zxing.activity.CaptureActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.apache.http.Header;
@@ -60,8 +63,6 @@ public class ShowProductionActivity extends Activity{
     protected EditText search_text;
     @ViewById
     protected ImageView shop_car, erweima_img;
-    /*@ViewById
-    protected Button caizhi, meaning, personality, theme;*/
     @ViewById
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView main_gridview;
     @ViewById
@@ -77,9 +78,14 @@ public class ShowProductionActivity extends Activity{
     @Pref
     protected UserInfo_ userInfo;
 
+    //点击了一级分类的位置
+    protected int mainPosition;
+
     @AfterViews
     protected void init(){
 
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         myApplication = (MyApplication) getApplication();
 
         gridViewAdapter = new GridViewAdapter(this);
@@ -112,19 +118,38 @@ public class ShowProductionActivity extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 backToInit();
+                mainPosition = position;
                 second_gridview.setVisibility(View.VISIBLE);
                 for( int i = 0 ; i < firstLevelAdapter.color.length; i++){
                     firstLevelAdapter.color[i] = false;
                 }
                 firstLevelAdapter.color[position] = true;
                 firstLevelAdapter.notifyDataSetChanged();
-                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 140F).setDuration(500).start();
+                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 290F).setDuration(500).start();
             }
         });
         //商品gridview
         main_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int p = position;
+                ImageView imageView = (ImageView) view.findViewById(R.id.like_img);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!gridViewAdapter.img[p]) {
+                            gridViewAdapter.img[p] = true;
+                        } else {
+                            gridViewAdapter.img[p] = false;
+                        }
+                        gridViewAdapter.notifyDataSetChanged();
+                        RequestParams params = new RequestParams();
+                        params.put("customer_id", userInfo.id().get());
+                        //TODO 放商品id
+                        params.put("product_id", "");
+                        addAttention(params);
+                    }
+                });
 
                 if (second_gridview.getTranslationX() != 0.0f) {
                     backToInit();
@@ -139,6 +164,8 @@ public class ShowProductionActivity extends Activity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO 刷新商品内容
                 backToInit();
+                firstLevelAdapter.color[mainPosition] = false;
+                firstLevelAdapter.notifyDataSetChanged();
             }
         });
 
@@ -157,9 +184,20 @@ public class ShowProductionActivity extends Activity{
             public void onClick(View v) {
 
                 if (search_text.getText().length() == 0) {
-                    listview.setVisibility(View.VISIBLE);
+//                    listview.setVisibility(View.VISIBLE);
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, myApplication.getList()));
                 }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(100);
+                            showHistorySearch();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
 
@@ -309,5 +347,22 @@ public class ShowProductionActivity extends Activity{
                 // TODO 得到数据，点击一级菜单时加载二级菜单
             }
         });
+    }
+
+    /**
+     * 关注商品OR取消关注
+     */
+
+    public void addAttention(RequestParams params){
+        HttpClient.post(this, HttpUrl.POST_PRODUCTION_ATTENTION, params, new BaseJsonHttpResponseHandler(this){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+            }
+        });
+    }
+
+    @UiThread
+    public void showHistorySearch(){
+        listview.setVisibility(View.VISIBLE);
     }
 }
