@@ -1,7 +1,9 @@
 package com.singularityclub.shopping.Activity;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.text.Editable;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,7 +59,7 @@ import java.util.Map;
  * 商品展示页面
  */
 @EActivity(R.layout.activity_show_production)
-public class ShowProductionActivity extends Activity{
+public class ShowProductionActivity extends Activity {
 
     @ViewById
     protected ListView listview;
@@ -82,15 +86,14 @@ public class ShowProductionActivity extends Activity{
     protected int mainPosition;
 
     @AfterViews
-    protected void init(){
+    protected void init() {
 
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        initShowProduction();
         myApplication = (MyApplication) getApplication();
-
-        gridViewAdapter = new GridViewAdapter(this);
         main_gridview.setMode(PullToRefreshBase.Mode.BOTH);
-        main_gridview.setAdapter(gridViewAdapter);
+
 
         secondLevelAdapter = new SecondLevelAdapter(this);
         second_gridview.setAdapter(secondLevelAdapter);
@@ -98,12 +101,13 @@ public class ShowProductionActivity extends Activity{
         firstLevelAdapter = new FirstLevelAdapter(this);
         first_gridview.setAdapter(firstLevelAdapter);
 
+        initMianClassify();
         listen();
 
     }
 
 
-    protected void listen(){
+    protected void listen() {
 
         //购物车按钮
         shop_car.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +124,7 @@ public class ShowProductionActivity extends Activity{
                 backToInit();
                 mainPosition = position;
                 second_gridview.setVisibility(View.VISIBLE);
-                for( int i = 0 ; i < firstLevelAdapter.color.length; i++){
+                for (int i = 0; i < firstLevelAdapter.color.length; i++) {
                     firstLevelAdapter.color[i] = false;
                 }
                 firstLevelAdapter.color[position] = true;
@@ -133,10 +137,25 @@ public class ShowProductionActivity extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final int p = position;
-                ImageView imageView = (ImageView) view.findViewById(R.id.like_img);
+                final ImageView imageView = (ImageView) view.findViewById(R.id.like_img);
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        /*ObjectAnimator anim = ObjectAnimator
+                                .ofFloat(imageView, "zhy", 1.0F,  0.0F)
+                                .setDuration(500);
+                        anim.start();
+
+                        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                float cVal = (Float) animation.getAnimatedValue();
+                                imageView.setAlpha(cVal);
+                                imageView.setScaleX(cVal);
+                                imageView.setScaleY(cVal);
+                            }
+                        });*/
+
                         if (!gridViewAdapter.img[p]) {
                             gridViewAdapter.img[p] = true;
                         } else {
@@ -146,7 +165,7 @@ public class ShowProductionActivity extends Activity{
                         RequestParams params = new RequestParams();
                         params.put("customer_id", userInfo.id().get());
                         //TODO 放商品id
-                        params.put("product_id", "");
+                        params.put("product_id", gridViewAdapter.array.get(p).getId());
                         addAttention(params);
                     }
                 });
@@ -198,6 +217,20 @@ public class ShowProductionActivity extends Activity{
                         }
                     }
                 }).start();
+            }
+        });
+
+        search_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    ((InputMethodManager) search_text.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(ShowProductionActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    showSearchProduction(search_text.getText().toString());
+                    myApplication.getList().add(0, search_text.getText().toString());
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -271,7 +304,7 @@ public class ShowProductionActivity extends Activity{
     /**
      * 回到初始化状态
      */
-    public void backToInit(){
+    public void backToInit() {
 
         listview.setVisibility(View.GONE);
         float x = second_gridview.getTranslationX();
@@ -286,7 +319,7 @@ public class ShowProductionActivity extends Activity{
     }
 
     //TODO 放入init方法中初始化数据
-    protected void initShowProduction(){
+    protected void initShowProduction() {
         RequestParams params = new RequestParams();
         params.put("customer_id", userInfo.id().get());
         HttpClient.post(this, HttpUrl.POST_SHOW_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
@@ -294,11 +327,13 @@ public class ShowProductionActivity extends Activity{
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                // TODO adapter 进行数据替换
+                gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                main_gridview.setAdapter(gridViewAdapter);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                String a = "a";
             }
         });
     }
@@ -311,18 +346,34 @@ public class ShowProductionActivity extends Activity{
 
     /**
      * 显示搜索的商品
-     * TODO 搜索api
      */
-    public void showSearchProduction(String search){
+    public void showSearchProduction(String search) {
         RequestParams params = new RequestParams();
-        params.put("", search);
+        params.put("content", search);
+        HttpClient.post(this, HttpUrl.POST_SEARCH, params, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                main_gridview.setAdapter(gridViewAdapter);
+                if (list.size() == 0){
+                    Toast.makeText(ShowProductionActivity.this, "无搜索结果", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "code " + statusCode, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
-     *初始化一级菜单
+     * 初始化一级菜单
      * TODO 放入init中
      */
-    public void initMianClassify(){
+    public void initMianClassify() {
         HttpClient.get(this, HttpUrl.GET_MAIN_CALSSIFY, null, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -330,13 +381,18 @@ public class ShowProductionActivity extends Activity{
                 });
                 //TODO 得到list数据，显示左边一级菜单
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "获取一级分类失败", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
     /**
      * 二级菜单
      */
-    public void showSecondClassify(String id){
+    public void showSecondClassify(String id) {
         RequestParams params = new RequestParams();
         params.put("main_classify_id", id);
         HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this) {
@@ -353,16 +409,20 @@ public class ShowProductionActivity extends Activity{
      * 关注商品OR取消关注
      */
 
-    public void addAttention(RequestParams params){
-        HttpClient.post(this, HttpUrl.POST_PRODUCTION_ATTENTION, params, new BaseJsonHttpResponseHandler(this){
+    public void addAttention(RequestParams params) {
+        HttpClient.post(this, HttpUrl.POST_PRODUCTION_ATTENTION, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
         });
     }
 
     @UiThread
-    public void showHistorySearch(){
+    public void showHistorySearch() {
         listview.setVisibility(View.VISIBLE);
     }
 }

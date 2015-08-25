@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.loopj.android.http.RequestParams;
@@ -36,6 +37,8 @@ public class ShopCarActivity extends Activity {
     @ViewById
     protected ImageView back, complete;
     @ViewById
+    protected TextView price;
+    @ViewById
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView car_gridview;
     @Pref
     protected UserInfo_ userInfo;
@@ -43,9 +46,9 @@ public class ShopCarActivity extends Activity {
     protected GridViewAdapter gridViewAdapter;
     @AfterViews
     protected void init(){
-        gridViewAdapter = new GridViewAdapter(this);
+        showProdaction();
         car_gridview.setMode(PullToRefreshBase.Mode.BOTH);
-        car_gridview.setAdapter(gridViewAdapter);
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +66,7 @@ public class ShopCarActivity extends Activity {
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO  清除本地客户数据
+                        userInfo.edit().id().put("-1").shopNumber().put(0).apply();
                         dialog.dismiss();
                         ShopCarActivity.this.finish();
                         Intent intent = new Intent(ShopCarActivity.this, MessageInputActivity_.class);
@@ -95,7 +98,13 @@ public class ShopCarActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                //TODO 得到了list数据，加载数据
+                gridViewAdapter = new GridViewAdapter(ShopCarActivity.this, list);
+                car_gridview.setAdapter(gridViewAdapter);
+                int sum = 0;
+                for (int i = 0 ; i < gridViewAdapter.array.size() ; i++){
+                    sum += Integer.parseInt(gridViewAdapter.array.get(i).getPrice());
+                }
+                price.setText(sum + "");
             }
         });
     }

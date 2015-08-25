@@ -21,10 +21,6 @@ public class MyApplication extends Application{
     public void onCreate() {
         super.onCreate();
         list = new ArrayList<>();
-        list.add("aaa");
-        list.add("bbb");
-        list.add("ccc");
-        list.add("ddd");
     }
 
     public ArrayList<String> getList() {

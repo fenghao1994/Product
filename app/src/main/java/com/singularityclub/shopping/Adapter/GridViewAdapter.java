@@ -15,6 +15,7 @@ import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.R;
 import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
 import com.singularityclub.shopping.Utils.http.HttpClient;
@@ -34,9 +35,9 @@ import java.util.ArrayList;
 public class GridViewAdapter extends BaseAdapter {
 
 
-    public int[] array = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0};
+    public ArrayList<ProductionItem> array;
 
-    public boolean[] img = new boolean[array.length];
+    public boolean[] img;
 
     LayoutInflater inflater = null;
     Context context;
@@ -46,10 +47,11 @@ public class GridViewAdapter extends BaseAdapter {
         TextView goods_title, money;
     }
 
-    public GridViewAdapter(Context context) {
+    public GridViewAdapter(Context context, ArrayList<ProductionItem> array) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
-
+        this.array = array;
+        img = new boolean[array.size()];
         for( int i = 0 ; i < img.length ; i++){
             img[i] = false;
         }
@@ -68,7 +70,7 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return array.length;
+        return array.size();
     }
 
     @Override
@@ -95,7 +97,8 @@ public class GridViewAdapter extends BaseAdapter {
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        holder.goods_title.setText(array.get(position).getName());
+        holder.money.setText(array.get(position).getName());
 
         if(img[position]){
             holder.like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.cart_like));

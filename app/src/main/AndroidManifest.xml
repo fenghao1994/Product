@@ -33,7 +33,9 @@
         <activity
             android:configChanges="orientation|keyboardHidden"
             android:name=".zxing.activity.CaptureActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="landscape"
+            >
         </activity>
     </application>
 

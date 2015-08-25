@@ -13,7 +13,7 @@ public class HttpUrl {
     public static final String POST_USERINFO = ROOT + "info_entry/index";
 
     //展示的商品
-    public static final String POST_SHOW_PRODUCTION = ROOT + "production_show/index";
+    public static final String POST_SHOW_PRODUCTION = ROOT + "production/index";
 
     //二级分类
     public static final String GET_MAIN_CALSSIFY = ROOT + "main_classify/index";
@@ -23,11 +23,14 @@ public class HttpUrl {
 
     //关注
 
-    public static final String POST_PRODUCTION_ATTENTION = ROOT + "production_show/attention";
+    public static final String POST_PRODUCTION_ATTENTION = ROOT + "production/attention";
 
     //加入购物车
-    public static final String POST_ADD_CAR = ROOT + "production_show/add_in_cart";
+    public static final String POST_ADD_CAR = ROOT + "production/add_in_cart";
 
     //查看购物车
-    public static final String POST_LOOK_CAR = ROOT + "production_show/shopping_cart";
+    public static final String POST_LOOK_CAR = ROOT + "production/shopping_cart";
+
+    //搜索
+    public static final String POST_SEARCH = ROOT + "production/search_product";
 }

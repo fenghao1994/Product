@@ -1,22 +1,19 @@
 package com.singularityclub.shopping.Model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * Created by fenghao on 2015/8/24.
  * 每一项商品
  */
+@JsonIgnoreProperties({"brief", "character", "area", "weight", "main_classify_id", "sub_classify_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
 public class ProductionItem {
 
     public String id;
-    public String urlImg;
+//    public String urlImg;
     public String name;
     public String price;
 
-    public ProductionItem(String id, String urlImg, String name, String price) {
-        this.id = id;
-        this.urlImg = urlImg;
-        this.name = name;
-        this.price = price;
-    }
 
     public String getId() {
         return id;
@@ -26,13 +23,13 @@ public class ProductionItem {
         this.id = id;
     }
 
-    public String getUrlImg() {
+   /* public String getUrlImg() {
         return urlImg;
     }
 
     public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
-    }
+    }*/
 
     public String getName() {
         return name;

@@ -47,6 +47,14 @@ public class MessageInputActivity extends Activity {
 
     @AfterViews
     public void init(){
+
+        if ( !userInfo.id().get().equals("-1")){
+            Intent intent = new Intent();
+            intent.setClass(MessageInputActivity.this, ShowProductionActivity_.class);
+            startActivity(intent);
+            return;
+        }
+
         listen();
     }
 
