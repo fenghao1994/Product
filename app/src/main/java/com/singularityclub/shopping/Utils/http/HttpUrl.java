@@ -35,4 +35,7 @@ public class HttpUrl {
 
     //搜索
     public static final String POST_SEARCH = ROOT + "production/search_product";
+
+    //传shop——id
+    public static final String POST_SHOP_ID = ROOT + "info_entry/customer_shop";
 }

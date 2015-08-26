@@ -12,11 +12,11 @@
 
     <ImageView
         android:id="@+id/goods_img"
-        android:layout_width="450dp"
-        android:layout_height="200dp"
+        android:layout_width="280dp"
+        android:layout_height="180dp"
         android:src="@mipmap/goods_demo"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="-15dp"
         />
     <TextView
         android:id="@+id/goods_title"

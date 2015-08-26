@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.loopj.android.http.RequestParams;
@@ -115,6 +116,11 @@ public class ShopCarActivity extends Activity {
                     sum += Integer.parseInt(gridViewAdapter.array.get(i).getPrice());
                 }
                 price.setText(sum + "");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShopCarActivity.this, "购物车 " + statusCode , Toast.LENGTH_LONG).show();
             }
         });
     }

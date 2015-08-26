@@ -37,8 +37,6 @@ public class GridViewAdapter extends BaseAdapter {
 
     public ArrayList<ProductionItem> array;
 
-    public boolean[] img;
-
     LayoutInflater inflater = null;
     Context context;
 
@@ -51,10 +49,6 @@ public class GridViewAdapter extends BaseAdapter {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
         this.array = array;
-        img = new boolean[array.size()];
-        for( int i = 0 ; i < img.length ; i++){
-            img[i] = false;
-        }
     }
 
     // DisplayImageOptions的初始化
@@ -99,16 +93,16 @@ public class GridViewAdapter extends BaseAdapter {
         }
         holder.goods_title.setText(array.get(position).getName());
         holder.money.setText(array.get(position).getName());
-
-        if(img[position]){
+        if (array.get(position).getAttention().equals("1")){
             holder.like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.cart_like));
         }else{
             holder.like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.detail_like));
         }
+
         //imageLoader加载图像
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-        imageLoader.displayImage(null, holder.goods_img, options);
+        imageLoader.displayImage(array.get(position).getUrlImg(), holder.goods_img, options);
         return convertView;
     }
 

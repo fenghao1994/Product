@@ -20,5 +20,8 @@ public interface UserInfo {
     @DefaultInt(0)
     int shopNumber();
 
+    @DefaultInt(-1)
+    int shop();
+
 
 }

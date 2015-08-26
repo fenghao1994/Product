@@ -33,6 +33,9 @@
         <activity android:name=".Activity.ProductionDetailActivity_"
             android:label="@string/app_name">
         </activity>
+        <activity android:name=".Activity.ShopIdActivity_"
+            android:label="@string/app_name">
+        </activity>
         <activity
             android:configChanges="orientation|keyboardHidden"
             android:name=".zxing.activity.CaptureActivity"

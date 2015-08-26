@@ -1,6 +1,7 @@
 package com.singularityclub.shopping.Model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Created by fenghao on 2015/8/24.
@@ -10,10 +11,20 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class ProductionItem {
 
     public String id;
-//    public String urlImg;
+    @JsonProperty("first_picture")
+    public String urlImg;
     public String name;
     public String price;
+    @JsonProperty("is_attention")
+    public String attention;
 
+    public String getAttention() {
+        return attention;
+    }
+
+    public void setAttention(String attention) {
+        this.attention = attention;
+    }
 
     public String getId() {
         return id;
@@ -23,14 +34,13 @@ public class ProductionItem {
         this.id = id;
     }
 
-   /* public String getUrlImg() {
+    public String getUrlImg() {
         return urlImg;
     }
 
     public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
-    }*/
-
+    }
     public String getName() {
         return name;
     }

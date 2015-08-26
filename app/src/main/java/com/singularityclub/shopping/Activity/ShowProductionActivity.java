@@ -130,11 +130,12 @@ public class ShowProductionActivity extends Activity {
                     @Override
                     public void onClick(View v) {
 
-                        if (!gridViewAdapter.img[p]) {
-                            gridViewAdapter.img[p] = true;
-                        } else {
-                            gridViewAdapter.img[p] = false;
+                        if( gridViewAdapter.array.get(p).getAttention().equals("1")){
+                            gridViewAdapter.array.get(p).setAttention("0");
+                        }else{
+                            gridViewAdapter.array.get(p).setAttention("1");
                         }
+
                         gridViewAdapter.notifyDataSetChanged();
                         RequestParams params = new RequestParams();
                         params.put("customer_id", userInfo.id().get());
@@ -309,8 +310,10 @@ public class ShowProductionActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                main_gridview.setAdapter(gridViewAdapter);
+                if (list != null){
+                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                    main_gridview.setAdapter(gridViewAdapter);
+                }
             }
 
             @Override
@@ -327,6 +330,7 @@ public class ShowProductionActivity extends Activity {
     public void showSearchProduction(String search) {
         RequestParams params = new RequestParams();
         params.put("content", search);
+        params.put("customer_id", userInfo.id().get());
         HttpClient.post(this, HttpUrl.POST_SEARCH, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -410,6 +414,7 @@ public class ShowProductionActivity extends Activity {
     public void showSecondProduction(String id){
         RequestParams params = new RequestParams();
         params.put("second_classify_id", id);
+        params.put("customer_id", userInfo.id().get());
         HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this){
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -421,7 +426,7 @@ public class ShowProductionActivity extends Activity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ShowProductionActivity.this, "二级分类里面的商品错误", Toast.LENGTH_LONG).show();
+                Toast.makeText(ShowProductionActivity.this, "二级分类里面的商品错误" + statusCode, Toast.LENGTH_LONG).show();
             }
         });
     }

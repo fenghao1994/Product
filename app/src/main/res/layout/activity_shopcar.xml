@@ -36,7 +36,7 @@
             />
         <ImageView
             android:id="@+id/complete"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:paddingRight="40dp"
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:textSize="30dp"
             android:textColor="@color/total_money"
-            android:text="1999"
+            android:text="0"
             />
 
     </LinearLayout>

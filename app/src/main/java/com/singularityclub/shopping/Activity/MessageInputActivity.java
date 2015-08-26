@@ -41,6 +41,8 @@ public class MessageInputActivity extends Activity {
     protected RadioButton radio_man, radio_women;
     @Pref
     protected UserInfo_ userInfo;
+    @ViewById
+    protected TextView shop_id;
 
     protected RequestParams params;
 
@@ -59,6 +61,16 @@ public class MessageInputActivity extends Activity {
     }
 
     public void listen(){
+
+        //编辑shop——id
+        shop_id.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                completeToShopId();
+            }
+        });
+
+
         //完成按钮的监听
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +84,6 @@ public class MessageInputActivity extends Activity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sendInfo(params);
-                            Intent intent = new Intent();
-                            intent.setClass(MessageInputActivity.this, ShowProductionActivity_.class);
-                            startActivity(intent);
                         }
                     });
                     builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -95,11 +104,9 @@ public class MessageInputActivity extends Activity {
                     }
                     params.put("birthday", time.getText().toString());
                     params.put("phone", edit_phone.getText().toString());
-
                 }else{
                     Toast.makeText(MessageInputActivity.this, "请将信息填写完整", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
@@ -144,12 +151,18 @@ public class MessageInputActivity extends Activity {
 
     //提交个人信息
     public void sendInfo(RequestParams params){
-        HttpClient.post(this, HttpUrl.POST_USERINFO, params, new BaseJsonHttpResponseHandler(this){
+        HttpClient.post(this, HttpUrl.POST_USERINFO, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 Map<String, Object> map = JacksonMapper.parse(responseString);
                 String id = map.get("id").toString();
                 userInfo.edit().id().put(id).apply();
+
+                if (userInfo.shop().get() != -1) {
+                    completeToShowProduction();
+                } else {
+                    completeToShopId();
+                }
 
                 Toast.makeText(MessageInputActivity.this, "提交信息成功", Toast.LENGTH_LONG).show();
             }
@@ -157,8 +170,27 @@ public class MessageInputActivity extends Activity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(MessageInputActivity.this, responseString, Toast.LENGTH_LONG).show();
-
             }
         });
+    }
+
+
+    /**
+     * 跳转到商品展示页面
+     */
+    public void completeToShowProduction(){
+        Intent intent = new Intent();
+        intent.setClass(MessageInputActivity.this, ShowProductionActivity_.class);
+        startActivity(intent);
+        MessageInputActivity.this.finish();
+    }
+
+    /**
+     * 跳转到shop——id页面
+     */
+    public void completeToShopId(){
+        Intent intent = new Intent();
+        intent.setClass(MessageInputActivity.this, ShopIdActivity_.class);
+        startActivity(intent);
     }
 }
