@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_colors"
+    android:id="@+id/frame"
     >
 
     <include
@@ -37,6 +38,16 @@
             android:layout_marginLeft="100dp"
             ></com.handmark.pulltorefresh.library.PullToRefreshGridView>
 
+        <!--阴影-->
+        <ImageView
+            android:id="@+id/yinyin"
+            android:layout_width="1800dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/b"
+            android:alpha="0.5"
+            android:visibility="gone"
+            />
+
         <GridView
             android:id="@+id/second_gridview"
             android:layout_width="140dp"
@@ -48,6 +59,7 @@
             android:layout_marginLeft="-50dp"
             android:visibility="gone"
             ></GridView>
+
 
         <ImageView
             android:id="@+id/erweima_img"
@@ -70,6 +82,7 @@
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             ></ListView>
+
 
     </FrameLayout>
 

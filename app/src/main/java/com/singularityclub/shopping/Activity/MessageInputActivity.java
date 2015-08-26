@@ -3,6 +3,7 @@ package com.singularityclub.shopping.Activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
@@ -44,6 +45,8 @@ public class MessageInputActivity extends Activity {
     @ViewById
     protected TextView shop_id;
 
+    protected ProgressDialog progressDialog;
+
     protected RequestParams params;
 
 
@@ -84,6 +87,7 @@ public class MessageInputActivity extends Activity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sendInfo(params);
+                            progressDialog = ProgressDialog.show(MessageInputActivity.this, "", "上传中！！！", true);
                         }
                     });
                     builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -157,7 +161,7 @@ public class MessageInputActivity extends Activity {
                 Map<String, Object> map = JacksonMapper.parse(responseString);
                 String id = map.get("id").toString();
                 userInfo.edit().id().put(id).apply();
-
+                progressDialog.dismiss();
                 if (userInfo.shop().get() != -1) {
                     completeToShowProduction();
                 } else {

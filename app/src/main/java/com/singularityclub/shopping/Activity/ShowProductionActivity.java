@@ -15,8 +15,10 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,11 +62,13 @@ public class ShowProductionActivity extends Activity {
     @ViewById
     protected EditText search_text;
     @ViewById
-    protected ImageView shop_car, erweima_img;
+    protected ImageView shop_car, erweima_img, yinyin;
     @ViewById
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView main_gridview;
     @ViewById
     protected GridView second_gridview, first_gridview;
+    @ViewById
+    protected LinearLayout frame;
 
     protected SecondLevelAdapter secondLevelAdapter;
 
@@ -96,6 +100,26 @@ public class ShowProductionActivity extends Activity {
 
     protected void listen() {
 
+        frame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float f = second_gridview.getTranslationX();
+                if( f != 0){
+                    ObjectAnimator.ofFloat(second_gridview, "translationX", 290F, 0).setDuration(300).start();
+                }
+            }
+        });
+
+        yinyin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firstLevelAdapter.color[mainPosition] = false;
+                firstLevelAdapter.notifyDataSetChanged();
+                second_gridview.setVisibility(View.GONE);
+                yinyin.setVisibility(View.GONE);
+            }
+        });
+
         //购物车按钮
         shop_car.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +132,20 @@ public class ShowProductionActivity extends Activity {
         first_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(500);
+                            showYinying();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+
                 backToInit();
                 showSecondClassify( firstLevelAdapter.array.get(position).getMainClassifyId());
                 mainPosition = position;
@@ -157,6 +195,7 @@ public class ShowProductionActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO 刷新商品内容
+                yinyin.setVisibility(View.GONE);
                 showSecondProduction(secondLevelAdapter.array.get(position).getSecondClassifyId());
                 backToInit();
                 firstLevelAdapter.color[mainPosition] = false;
@@ -177,7 +216,7 @@ public class ShowProductionActivity extends Activity {
         search_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                second_gridview.setVisibility(View.GONE);
                 if (search_text.getText().length() == 0) {
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, myApplication.getList()));
                 }
@@ -310,7 +349,7 @@ public class ShowProductionActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                if (list != null){
+                if (list != null) {
                     gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
                     main_gridview.setAdapter(gridViewAdapter);
                 }
@@ -434,5 +473,13 @@ public class ShowProductionActivity extends Activity {
     @UiThread
     public void showHistorySearch() {
         listview.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 显示阴影
+     */
+    @UiThread
+    public void showYinying(){
+        yinyin.setVisibility(View.VISIBLE);
     }
 }
