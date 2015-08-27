@@ -8,7 +8,7 @@
     <color name="bg_colors">#e1eaed</color>
     <color name="buttom_bg">#6a7173</color>
     <color name="total_money">#fb8c21</color>
-
+    <color name="green">#00CC00</color>
     <color name="bg_color">#EDEDED</color>
     <color name="contents_text">#ff000000</color>
     <color name="encode_view">#ffffffff</color>
@@ -38,4 +38,5 @@
     <color name="grgray">#686868</color>
     <color name="search_item">#F5F5F5</color>
     <color name="search_border">#DDDDDD</color>
+    <color name="lightgreen">#99CC33</color>
 </resources>
