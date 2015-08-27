@@ -128,7 +128,7 @@ public class ShowProductionActivity extends Activity {
             @Override
             public void onClick(View v) {
                 float f = second_gridview.getTranslationX();
-                if( f != 0){
+                if (f != 0) {
                     ObjectAnimator.ofFloat(second_gridview, "translationX", 290F, 0).setDuration(300).start();
                 }
             }
@@ -508,7 +508,7 @@ public class ShowProductionActivity extends Activity {
         RequestParams params = new RequestParams();
         params.put("second_classify_id", id);
         params.put("customer_id", userInfo.id().get());
-        HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this){
+        HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
@@ -538,7 +538,7 @@ public class ShowProductionActivity extends Activity {
         params.put("extra_type", action.getExtraType());
         params.put("total_minutes", action.getTotalMinutes());
 
-        HttpClient.post(this, HttpUrl.POST_ACTION, params, new BaseJsonHttpResponseHandler(this){
+        HttpClient.post(this, HttpUrl.POST_ACTION, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
             }
