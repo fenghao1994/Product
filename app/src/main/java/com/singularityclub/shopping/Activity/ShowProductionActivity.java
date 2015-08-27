@@ -317,7 +317,9 @@ public class ShowProductionActivity extends Activity {
         if (resultCode == RESULT_OK) {
             //得到二维码里面包含的数据
             String result = data.getExtras().getString("result");
-            Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
+            intent.putExtra("qrcode", result);
+            startActivity(intent);
         }
     }
 
