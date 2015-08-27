@@ -53,6 +53,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import com.singularityclub.shopping.Utils.Cache.*;
 
 /**
  * Created by fenghao on 2015/8/19.
@@ -88,6 +89,8 @@ public class ShowProductionActivity extends Activity {
 
     protected Action action;
 
+    protected ACache aCache;
+
 
     //消费者行为记录的时间
     protected Long startTime;
@@ -101,8 +104,16 @@ public class ShowProductionActivity extends Activity {
 
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        aCache = ACache.get(this);
+        ArrayList<MainClassify> list = (ArrayList<MainClassify>) aCache.getAsObject("first");
+        if (list == null){
+            initMianClassify();
+        }else{
+            firstLevelAdapter = new FirstLevelAdapter(this, list);
+            first_gridview.setAdapter(firstLevelAdapter);
+        }
         initShowProduction();
-        initMianClassify();
+
         myApplication = (MyApplication) getApplication();
         main_gridview.setMode(PullToRefreshBase.Mode.BOTH);
 
@@ -166,7 +177,14 @@ public class ShowProductionActivity extends Activity {
                 }).start();
 
                 backToInit();
-                showSecondClassify( firstLevelAdapter.array.get(position).getMainClassifyId());
+                if ( aCache.getAsObject("second" + firstLevelAdapter.array.get(position).getMainClassifyId())  == null){
+                    showSecondClassify( firstLevelAdapter.array.get(position).getMainClassifyId());
+                }else{
+                    ArrayList<SecondClassify> list = (ArrayList<SecondClassify>) aCache.getAsObject("second" + firstLevelAdapter.array.get(position).getMainClassifyId());
+                    secondLevelAdapter = new SecondLevelAdapter(ShowProductionActivity.this, list);
+                    second_gridview.setAdapter(secondLevelAdapter);
+                }
+
                 mainPosition = position;
                 second_gridview.setVisibility(View.VISIBLE);
                 for (int i = 0; i < firstLevelAdapter.color.length; i++) {
@@ -377,13 +395,14 @@ public class ShowProductionActivity extends Activity {
         HttpClient.post(this, HttpUrl.POST_SHOW_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                progressDialog.dismiss();
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 if (list != null) {
                     gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
                     main_gridview.setAdapter(gridViewAdapter);
                 }
-                progressDialog.dismiss();
+
             }
 
             @Override
@@ -430,6 +449,7 @@ public class ShowProductionActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<MainClassify> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<MainClassify>>() {
                 });
+                aCache.put("first", list, ACache.TIME_DAY);
                 firstLevelAdapter = new FirstLevelAdapter(ShowProductionActivity.this, list);
                 first_gridview.setAdapter(firstLevelAdapter);
             }
@@ -447,6 +467,7 @@ public class ShowProductionActivity extends Activity {
     public void showSecondClassify(String id) {
         RequestParams params = new RequestParams();
         params.put("main_classify_id", id);
+        final String i = id;
         HttpClient.post(this, HttpUrl.POST_SECOND_CALSSIFY_ID, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -454,6 +475,7 @@ public class ShowProductionActivity extends Activity {
                 });
                 secondLevelAdapter = new SecondLevelAdapter(ShowProductionActivity.this, list);
                 second_gridview.setAdapter(secondLevelAdapter);
+                aCache.put("second" + i, list, ACache.TIME_DAY);
             }
 
             @Override
@@ -519,12 +541,10 @@ public class ShowProductionActivity extends Activity {
         HttpClient.post(this, HttpUrl.POST_ACTION, params, new BaseJsonHttpResponseHandler(this){
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Toast.makeText(ShowProductionActivity.this, "上传信息成功", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ShowProductionActivity.this, "上传信息失败", Toast.LENGTH_LONG).show();
             }
         });
     }
