@@ -38,4 +38,7 @@ public class HttpUrl {
 
     //传shop——id
     public static final String POST_SHOP_ID = ROOT + "info_entry/customer_shop";
+
+    //上传消费行为记录
+    public static final String POST_ACTION = ROOT + "production/behavior_record";
 }

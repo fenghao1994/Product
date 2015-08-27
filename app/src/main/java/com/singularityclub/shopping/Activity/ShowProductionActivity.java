@@ -30,6 +30,7 @@ import com.singularityclub.shopping.Adapter.FirstLevelAdapter;
 import com.singularityclub.shopping.Adapter.GridViewAdapter;
 import com.singularityclub.shopping.Adapter.SecondLevelAdapter;
 import com.singularityclub.shopping.Application.MyApplication;
+import com.singularityclub.shopping.Model.Action;
 import com.singularityclub.shopping.Model.MainClassify;
 import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.Model.SecondClassify;
@@ -50,6 +51,8 @@ import org.apache.http.Header;
 import org.codehaus.jackson.type.TypeReference;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by fenghao on 2015/8/19.
@@ -82,6 +85,13 @@ public class ShowProductionActivity extends Activity {
     protected ProgressDialog progressDialog;
     @Pref
     protected UserInfo_ userInfo;
+
+    protected Action action;
+
+
+    //消费者行为记录的时间
+    protected Long startTime;
+    protected Long endTime;
 
     //点击了一级分类的位置
     protected int mainPosition;
@@ -135,6 +145,12 @@ public class ShowProductionActivity extends Activity {
         first_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                startTime = System.currentTimeMillis();
+                action = new Action();
+                action.setStartTime(new Date(startTime));
+                action.setCustomerId(Integer.parseInt(userInfo.id().get()));
+                action.setExtraType(Integer.parseInt(firstLevelAdapter.array.get(position).getMainClassifyId()));
 
                 new Thread(new Runnable() {
                     @Override
@@ -197,7 +213,15 @@ public class ShowProductionActivity extends Activity {
         second_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO 刷新商品内容
+
+                endTime = System.currentTimeMillis();
+                action.setEndTime(new Date(endTime));
+                action.setExtraId(Integer.parseInt(secondLevelAdapter.array.get(position).getSecondClassifyId()));
+                float time = ((float)(endTime - startTime)) / 1000;
+                action.setTotalMinutes(time);
+                postAction(action);
+
+
                 yinyin.setVisibility(View.GONE);
                 showSecondProduction(secondLevelAdapter.array.get(position).getSecondClassifyId());
                 backToInit();
@@ -385,7 +409,7 @@ public class ShowProductionActivity extends Activity {
                 });
                 gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
                 main_gridview.setAdapter(gridViewAdapter);
-                if (list.size() == 0){
+                if (list.size() == 0) {
                     Toast.makeText(ShowProductionActivity.this, "无搜索结果", Toast.LENGTH_LONG).show();
                 }
             }
@@ -474,6 +498,33 @@ public class ShowProductionActivity extends Activity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(ShowProductionActivity.this, "二级分类里面的商品错误" + statusCode, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    /**
+     * 消费者行为记录
+     */
+
+    public void postAction(Action action){
+        RequestParams params = new RequestParams();
+        params.put("customer_id", action.getCustomerId());
+        params.put("startTime", action.getStartTime());
+        params.put("endTime", action.getEndTime());
+        params.put("extra_id", action.getExtraId());
+        params.put("extra_type", action.getExtraType());
+        params.put("total_minutes", action.getTotalMinutes());
+
+        HttpClient.post(this, HttpUrl.POST_ACTION, params, new BaseJsonHttpResponseHandler(this){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Toast.makeText(ShowProductionActivity.this, "上传信息成功", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "上传信息失败", Toast.LENGTH_LONG).show();
             }
         });
     }
