@@ -2,6 +2,7 @@ package com.singularityclub.shopping.Activity;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
@@ -77,6 +78,8 @@ public class ShowProductionActivity extends Activity {
     protected MyApplication myApplication;
 
     protected FirstLevelAdapter firstLevelAdapter;
+
+    protected ProgressDialog progressDialog;
     @Pref
     protected UserInfo_ userInfo;
 
@@ -346,6 +349,7 @@ public class ShowProductionActivity extends Activity {
     protected void initShowProduction() {
         RequestParams params = new RequestParams();
         params.put("customer_id", userInfo.id().get());
+        progressDialog = ProgressDialog.show(this, "", "加载中！！！", true);
         HttpClient.post(this, HttpUrl.POST_SHOW_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -355,10 +359,12 @@ public class ShowProductionActivity extends Activity {
                     gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
                     main_gridview.setAdapter(gridViewAdapter);
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                progressDialog.dismiss();
                 Toast.makeText(ShowProductionActivity.this, "查看关联人格", Toast.LENGTH_LONG).show();
             }
         });

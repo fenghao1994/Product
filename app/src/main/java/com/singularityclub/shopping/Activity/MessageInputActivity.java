@@ -173,6 +173,7 @@ public class MessageInputActivity extends Activity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                progressDialog.dismiss();
                 Toast.makeText(MessageInputActivity.this, responseString, Toast.LENGTH_LONG).show();
             }
         });

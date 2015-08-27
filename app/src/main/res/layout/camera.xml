@@ -29,7 +29,7 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="Scan Barcode"
+            android:text="请扫描二维码"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -41,7 +41,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginBottom="75dp"
-            android:text="Cancel"
+            android:text="取消"
             android:textSize="15sp"
             android:textStyle="bold" />
 
