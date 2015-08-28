@@ -68,51 +68,57 @@ import com.singularityclub.shopping.Utils.Cache.*;
 @EActivity(R.layout.activity_show_production)
 public class ShowProductionActivity extends BaseActivity {
 
+    //历史搜索的下拉列表
     @ViewById
     protected ListView listview;
+    //搜索框
     @ViewById
     protected EditText search_text;
+    //购物车按钮，二维码，阴影
     @ViewById
     protected ImageView shop_car, erweima_img, yinyin;
+    //展示商品的gridview
     @ViewById
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView main_gridview;
+    //一级分类和二级分类的gridview
     @ViewById
     protected GridView second_gridview, first_gridview;
-    @ViewById
+   /* @ViewById
     protected LinearLayout frame;
-
+*/
+    //主题，分类按钮
     @ViewById
     protected Button type, theme;
-
+    @Pref
+    protected UserInfo_ userInfo;
+    //分类的二级分类Adapter
     protected SecondLevelAdapter secondLevelAdapter;
-
+    //展示商品的gridview的adapter
     protected GridViewAdapter gridViewAdapter;
 
     protected MyApplication myApplication;
 
+    //分类一级分类的adapter
     protected FirstLevelAdapter firstLevelAdapter;
 
+    //访问网络的时候的旋转
     protected ProgressDialog progressDialog;
-    @Pref
-    protected UserInfo_ userInfo;
 
-    protected Action action;
-
-    protected ACache aCache;
-
+    //一二级主题分类adapter
     protected FirstThemeAdapter firstThemeAdapter;
     protected SecondThemeAdapter secondThemeAdapter;
-
+    //消费者行为记录的model
+    protected Action action;
+    //缓存
+    protected ACache aCache;
     //二次退出
     protected long mkeyTime;
-
     //消费者行为记录的时间
     protected Long startTime;
     protected Long endTime;
-
     //点击了一级分类的位置
     protected int mainPosition;
-
+    //标记是点的主题还是分类按钮
     int flag = 0;
 
     @AfterViews
@@ -121,20 +127,18 @@ public class ShowProductionActivity extends BaseActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         aCache = ACache.get(this);
-
+        //返回与人格有关的商品
         initShowProduction();
-
         myApplication = (MyApplication) getApplication();
         main_gridview.setMode(PullToRefreshBase.Mode.BOTH);
-
         listen();
 
     }
 
-
+    /**
+     * 所以的监听事件
+     */
     protected void listen() {
-
-
         //分类
         type.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +158,7 @@ public class ShowProductionActivity extends BaseActivity {
             }
         });
 
+        //主题点击事件
         theme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +177,7 @@ public class ShowProductionActivity extends BaseActivity {
             }
         });
 
-        frame.setOnClickListener(new View.OnClickListener() {
+        /*frame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 float f = second_gridview.getTranslationX();
@@ -180,7 +185,9 @@ public class ShowProductionActivity extends BaseActivity {
                     ObjectAnimator.ofFloat(second_gridview, "translationX", 290F, 0).setDuration(300).start();
                 }
             }
-        });
+        });*/
+
+        //阴影部分点击事件
         yinyin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,6 +196,9 @@ public class ShowProductionActivity extends BaseActivity {
                 if (flag == 1){
                     firstLevelAdapter.color[mainPosition] = false;
                     firstLevelAdapter.notifyDataSetChanged();
+                }else{
+                    firstThemeAdapter.color[mainPosition] = false;
+                    firstThemeAdapter.notifyDataSetChanged();
                 }
                 second_gridview.setVisibility(View.GONE);
                 first_gridview.setVisibility(View.GONE);
@@ -205,6 +215,7 @@ public class ShowProductionActivity extends BaseActivity {
             }
         });
 
+        //一级分类点击
         first_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -214,25 +225,13 @@ public class ShowProductionActivity extends BaseActivity {
                 action.setStartTime(new Date(startTime));
                 action.setCustomerId(Integer.parseInt(userInfo.id().get()));
                 if (flag == 1){
+                    //1表示分类
                     action.setExtraType(1);
                 }else{
+                    //2表示主题
                     action.setExtraType(2);
                 }
-
                 yinyin.setVisibility(View.VISIBLE);
-
-               /* new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(200);
-                            showYinying();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }).start();*/
 
                 backToInit();
                 if (flag == 1) {
@@ -388,16 +387,15 @@ public class ShowProductionActivity extends BaseActivity {
             }
         });
 
+        //搜索框内容发生变化
         search_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-
                     ArrayList<String> list = searchItem(s.toString());
                     if (list.size() == 0){
                         listview.setVisibility(View.GONE);
