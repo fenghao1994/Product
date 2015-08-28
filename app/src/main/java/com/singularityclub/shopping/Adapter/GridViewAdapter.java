@@ -92,7 +92,7 @@ public class GridViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.goods_title.setText(array.get(position).getName());
-        holder.money.setText(array.get(position).getName());
+        holder.money.setText(array.get(position).getPrice());
         if (array.get(position).getAttention().equals("1")){
             holder.like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.cart_like));
         }else{

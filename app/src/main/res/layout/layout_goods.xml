@@ -41,7 +41,7 @@
         android:src="@mipmap/detail_like"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="60dp"
+        android:layout_marginRight="50dp"
         />
 
     <LinearLayout
@@ -51,7 +51,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="50dp"
         >
         <TextView
             android:layout_width="wrap_content"

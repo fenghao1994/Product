@@ -219,18 +219,20 @@ public class ShowProductionActivity extends BaseActivity {
                     action.setExtraType(2);
                 }
 
-                new Thread(new Runnable() {
+                yinyin.setVisibility(View.VISIBLE);
+
+               /* new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(200);
                             showYinying();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
                     }
-                }).start();
+                }).start();*/
 
                 backToInit();
                 if (flag == 1) {
@@ -351,6 +353,9 @@ public class ShowProductionActivity extends BaseActivity {
         search_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonBack();
+                yinyin.setVisibility(View.GONE);
+                first_gridview.setVisibility(View.GONE);
                 second_gridview.setVisibility(View.GONE);
                 if (search_text.getText().length() == 0) {
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, myApplication.getList()));
@@ -392,7 +397,11 @@ public class ShowProductionActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
+
                     ArrayList<String> list = searchItem(s.toString());
+                    if (list.size() == 0){
+                        listview.setVisibility(View.GONE);
+                    }
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, list));
                 } else {
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, myApplication.getList()));
@@ -408,7 +417,9 @@ public class ShowProductionActivity extends BaseActivity {
         search_text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (hasFocus){
+                    showHistorySearch();
+                }else{
                     listview.setVisibility(View.GONE);
                 }
             }
@@ -676,7 +687,12 @@ public class ShowProductionActivity extends BaseActivity {
 
     @UiThread
     public void showHistorySearch() {
-        listview.setVisibility(View.VISIBLE);
+        if ( myApplication.getList().size() != 0){
+            listview.setVisibility(View.VISIBLE);
+        }else{
+            listview.setVisibility(View.GONE);
+        }
+
     }
 
     /**
