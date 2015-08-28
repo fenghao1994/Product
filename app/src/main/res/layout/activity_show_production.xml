@@ -13,18 +13,63 @@
         android:layout_height="wrap_content" />
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/theme_type"
+        >
+        <Button
+            android:paddingLeft="20dp"
+            android:paddingRight="30dp"
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:text="分类"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/theme_type"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blue"
+            />
+
+
+        <Button
+            android:paddingLeft="20dp"
+            android:paddingRight="30dp"
+            android:id="@+id/theme"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:text="主题"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/theme_type"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blue"
+            />
+
+    </LinearLayout>
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <GridView
-            android:id="@+id/first_gridview"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:background="@color/blue"
-            android:numColumns="1"
-            >
-        </GridView>
+
 
         <com.handmark.pulltorefresh.library.PullToRefreshGridView
             android:layout_marginTop="20dp"
@@ -35,18 +80,29 @@
             android:horizontalSpacing="20dp"
             android:verticalSpacing="20dp"
             android:stretchMode="columnWidth"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="30dp"
             ></com.handmark.pulltorefresh.library.PullToRefreshGridView>
 
         <!--阴影-->
         <ImageView
             android:id="@+id/yinyin"
-            android:layout_width="1800dp"
+            android:layout_width="1565dp"
             android:layout_height="match_parent"
             android:src="@mipmap/b"
             android:alpha="0.5"
             android:visibility="gone"
             />
+        <GridView
+            android:id="@+id/first_gridview"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/blue"
+            android:numColumns="1"
+            android:visibility="gone"
+            >
+        </GridView>
+
+
 
         <GridView
             android:id="@+id/second_gridview"
@@ -85,7 +141,7 @@
 
 
     </FrameLayout>
-
+    </LinearLayout>
 
 
     <!--<RelativeLayout

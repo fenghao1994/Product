@@ -39,4 +39,5 @@
     <color name="search_item">#F5F5F5</color>
     <color name="search_border">#DDDDDD</color>
     <color name="lightgreen">#99CC33</color>
+    <color name="theme_type">#7AC5CD</color>
 </resources>

@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -27,13 +28,17 @@ import android.widget.Toast;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.loopj.android.http.RequestParams;
 import com.singularityclub.shopping.Adapter.FirstLevelAdapter;
+import com.singularityclub.shopping.Adapter.FirstThemeAdapter;
 import com.singularityclub.shopping.Adapter.GridViewAdapter;
 import com.singularityclub.shopping.Adapter.SecondLevelAdapter;
+import com.singularityclub.shopping.Adapter.SecondThemeAdapter;
 import com.singularityclub.shopping.Application.MyApplication;
 import com.singularityclub.shopping.Model.Action;
+import com.singularityclub.shopping.Model.FirstThemeClassify;
 import com.singularityclub.shopping.Model.MainClassify;
 import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.Model.SecondClassify;
+import com.singularityclub.shopping.Model.SecondThemeClassify;
 import com.singularityclub.shopping.R;
 import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
 import com.singularityclub.shopping.Utils.http.HttpClient;
@@ -50,6 +55,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.apache.http.Header;
 import org.codehaus.jackson.type.TypeReference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -75,6 +81,9 @@ public class ShowProductionActivity extends BaseActivity {
     @ViewById
     protected LinearLayout frame;
 
+    @ViewById
+    protected Button type, theme;
+
     protected SecondLevelAdapter secondLevelAdapter;
 
     protected GridViewAdapter gridViewAdapter;
@@ -91,6 +100,9 @@ public class ShowProductionActivity extends BaseActivity {
 
     protected ACache aCache;
 
+    protected FirstThemeAdapter firstThemeAdapter;
+    protected SecondThemeAdapter secondThemeAdapter;
+
     //二次退出
     protected long mkeyTime;
 
@@ -101,19 +113,15 @@ public class ShowProductionActivity extends BaseActivity {
     //点击了一级分类的位置
     protected int mainPosition;
 
+    int flag = 0;
+
     @AfterViews
     protected void init() {
 
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         aCache = ACache.get(this);
-        ArrayList<MainClassify> list = (ArrayList<MainClassify>) aCache.getAsObject("first");
-        if (list == null){
-            initMianClassify();
-        }else{
-            firstLevelAdapter = new FirstLevelAdapter(this, list);
-            first_gridview.setAdapter(firstLevelAdapter);
-        }
+
         initShowProduction();
 
         myApplication = (MyApplication) getApplication();
@@ -126,6 +134,44 @@ public class ShowProductionActivity extends BaseActivity {
 
     protected void listen() {
 
+
+        //分类
+        type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonBack();
+                flag = 1;
+                first_gridview.setVisibility(View.VISIBLE );
+                yinyin.setVisibility(View.VISIBLE);
+                type.setBackgroundColor(getResources().getColor(R.color.blue));
+                ArrayList<MainClassify> list = (ArrayList<MainClassify>) aCache.getAsObject("first");
+                if (list == null){
+                    initMianClassify();
+                }else{
+                    firstLevelAdapter = new FirstLevelAdapter(ShowProductionActivity.this, list);
+                    first_gridview.setAdapter(firstLevelAdapter);
+                }
+            }
+        });
+
+        theme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonBack();
+                flag = 2;
+                first_gridview.setVisibility(View.VISIBLE );
+                yinyin.setVisibility(View.VISIBLE);
+                theme.setBackgroundColor(getResources().getColor(R.color.blue));
+                ArrayList<FirstThemeClassify> list = (ArrayList<FirstThemeClassify>) aCache.getAsObject("first_theme");
+                if (list == null){
+                    getFirstTheme();
+                }else{
+                    firstThemeAdapter = new FirstThemeAdapter(ShowProductionActivity.this, list);
+                    first_gridview.setAdapter(firstThemeAdapter);
+                }
+            }
+        });
+
         frame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,13 +181,17 @@ public class ShowProductionActivity extends BaseActivity {
                 }
             }
         });
-
         yinyin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firstLevelAdapter.color[mainPosition] = false;
-                firstLevelAdapter.notifyDataSetChanged();
+                type.setBackgroundColor(getResources().getColor(R.color.theme_type));
+                theme.setBackgroundColor(getResources().getColor(R.color.theme_type));
+                if (flag == 1){
+                    firstLevelAdapter.color[mainPosition] = false;
+                    firstLevelAdapter.notifyDataSetChanged();
+                }
                 second_gridview.setVisibility(View.GONE);
+                first_gridview.setVisibility(View.GONE);
                 yinyin.setVisibility(View.GONE);
             }
         });
@@ -163,7 +213,11 @@ public class ShowProductionActivity extends BaseActivity {
                 action = new Action();
                 action.setStartTime(new Date(startTime));
                 action.setCustomerId(Integer.parseInt(userInfo.id().get()));
-                action.setExtraType(Integer.parseInt(firstLevelAdapter.array.get(position).getMainClassifyId()));
+                if (flag == 1){
+                    action.setExtraType(1);
+                }else{
+                    action.setExtraType(2);
+                }
 
                 new Thread(new Runnable() {
                     @Override
@@ -179,21 +233,37 @@ public class ShowProductionActivity extends BaseActivity {
                 }).start();
 
                 backToInit();
-                if ( aCache.getAsObject("second" + firstLevelAdapter.array.get(position).getMainClassifyId())  == null){
-                    showSecondClassify( firstLevelAdapter.array.get(position).getMainClassifyId());
+                if (flag == 1) {
+                    if (aCache.getAsObject("second" + firstLevelAdapter.array.get(position).getMainClassifyId()) == null) {
+                        showSecondClassify(firstLevelAdapter.array.get(position).getMainClassifyId());
+                    } else {
+                        ArrayList<SecondClassify> list = (ArrayList<SecondClassify>) aCache.getAsObject("second" + firstLevelAdapter.array.get(position).getMainClassifyId());
+                        secondLevelAdapter = new SecondLevelAdapter(ShowProductionActivity.this, list);
+                        second_gridview.setAdapter(secondLevelAdapter);
+                    }
+                    mainPosition = position;
+                    second_gridview.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < firstLevelAdapter.color.length; i++) {
+                        firstLevelAdapter.color[i] = false;
+                    }
+                    firstLevelAdapter.color[position] = true;
+                    firstLevelAdapter.notifyDataSetChanged();
                 }else{
-                    ArrayList<SecondClassify> list = (ArrayList<SecondClassify>) aCache.getAsObject("second" + firstLevelAdapter.array.get(position).getMainClassifyId());
-                    secondLevelAdapter = new SecondLevelAdapter(ShowProductionActivity.this, list);
-                    second_gridview.setAdapter(secondLevelAdapter);
+                    if (aCache.getAsObject("second_theme" + firstThemeAdapter.array.get(position).getFirstThemeId()) == null) {
+                        getSecondTheme(firstThemeAdapter.array.get(position).getFirstThemeId());
+                    } else {
+                        ArrayList<SecondThemeClassify> list = (ArrayList<SecondThemeClassify>) aCache.getAsObject("second_theme" + firstThemeAdapter.array.get(position).getFirstThemeId());
+                        secondThemeAdapter = new SecondThemeAdapter(ShowProductionActivity.this, list);
+                        second_gridview.setAdapter(secondThemeAdapter);
+                    }
+                    mainPosition = position;
+                    second_gridview.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < firstThemeAdapter.color.length; i++) {
+                        firstThemeAdapter.color[i] = false;
+                    }
+                    firstThemeAdapter.color[position] = true;
+                    firstThemeAdapter.notifyDataSetChanged();
                 }
-
-                mainPosition = position;
-                second_gridview.setVisibility(View.VISIBLE);
-                for (int i = 0; i < firstLevelAdapter.color.length; i++) {
-                    firstLevelAdapter.color[i] = false;
-                }
-                firstLevelAdapter.color[position] = true;
-                firstLevelAdapter.notifyDataSetChanged();
                 ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 290F).setDuration(500).start();
             }
         });
@@ -236,17 +306,35 @@ public class ShowProductionActivity extends BaseActivity {
 
                 endTime = System.currentTimeMillis();
                 action.setEndTime(new Date(endTime));
-                action.setExtraId(Integer.parseInt(secondLevelAdapter.array.get(position).getSecondClassifyId()));
+                if (flag == 1){
+                    action.setExtraId(Integer.parseInt(secondLevelAdapter.array.get(position).getSecondClassifyId()));
+                }else{
+                    action.setExtraId(Integer.parseInt(secondThemeAdapter.array.get(position).getSecondThemeId()));
+                }
                 float time = ((float)(endTime - startTime)) / 1000;
                 action.setTotalMinutes(time);
                 postAction(action);
 
 
+                first_gridview.setVisibility(View.GONE);
+                type.setBackgroundColor(getResources().getColor(R.color.theme_type));
+                theme.setBackgroundColor(getResources().getColor(R.color.theme_type));
+
                 yinyin.setVisibility(View.GONE);
-                showSecondProduction(secondLevelAdapter.array.get(position).getSecondClassifyId());
+                if (flag == 1){
+                    showSecondProduction(secondLevelAdapter.array.get(position).getSecondClassifyId());
+                }else{
+                    showSecondProduction(secondThemeAdapter.array.get(position).getSecondThemeId());
+                }
                 backToInit();
-                firstLevelAdapter.color[mainPosition] = false;
-                firstLevelAdapter.notifyDataSetChanged();
+                if (flag == 1){
+                    firstLevelAdapter.color[mainPosition] = false;
+                    firstLevelAdapter.notifyDataSetChanged();
+                }else{
+                    firstThemeAdapter.color[mainPosition] = false;
+                    firstThemeAdapter.notifyDataSetChanged();
+                }
+
             }
         });
 
@@ -551,6 +639,41 @@ public class ShowProductionActivity extends BaseActivity {
         });
     }
 
+    //得到一级主题分类
+    public void getFirstTheme(){
+        HttpClient.get(this, HttpUrl.GET_FIRST_THEME, null, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<FirstThemeClassify> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<FirstThemeClassify>>() {
+                });
+                aCache.put("first_theme", list, ACache.TIME_DAY);
+                firstThemeAdapter = new FirstThemeAdapter(ShowProductionActivity.this, list);
+                first_gridview.setAdapter(firstThemeAdapter);
+            }
+        });
+    }
+
+    //得到二级主题分类
+    public void getSecondTheme( String id){
+        RequestParams params = new RequestParams();
+        params.put("main_theme_id", id);
+        final String i = id;
+        HttpClient.post(this, HttpUrl.POST_SECOND_THEME, params, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<SecondThemeClassify> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<SecondThemeClassify>>() {
+                });
+                secondThemeAdapter = new SecondThemeAdapter(ShowProductionActivity.this, list);
+                second_gridview.setAdapter(secondThemeAdapter);
+                aCache.put("second_theme" + i, list, ACache.TIME_DAY);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBytes, Throwable throwable) {
+            }
+        });
+    }
+
     @UiThread
     public void showHistorySearch() {
         listview.setVisibility(View.VISIBLE);
@@ -577,5 +700,11 @@ public class ShowProductionActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    //分类和主题按钮点击后 还原
+    public void buttonBack(){
+        theme.setBackgroundColor(getResources().getColor(R.color.theme_type));
+        type.setBackgroundColor(getResources().getColor(R.color.theme_type));
     }
 }

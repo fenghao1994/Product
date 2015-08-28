@@ -41,4 +41,13 @@ public class HttpUrl {
 
     //上传消费行为记录
     public static final String POST_ACTION = ROOT + "production/behavior_record";
+
+    //得到一级主题
+    public static final String GET_FIRST_THEME = ROOT + "main_theme/index";
+
+    //得到二级主题
+    public static final String POST_SECOND_THEME = ROOT + "main_theme/main_theme_children";
+
+    //得到二级主题里面的商品
+    public static final String POST_SECOND_THEME_PRODUCTION = ROOT + "second_theme";
 }
