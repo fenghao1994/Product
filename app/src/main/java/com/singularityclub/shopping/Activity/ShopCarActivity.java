@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * Created by fenghao on 2015/8/21.
  */
 @EActivity(R.layout.activity_shopcar)
-public class ShopCarActivity extends Activity {
+public class ShopCarActivity extends BaseActivity {
     @ViewById
     protected ImageView back, complete;
     @ViewById

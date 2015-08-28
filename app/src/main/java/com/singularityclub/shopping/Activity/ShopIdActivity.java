@@ -24,7 +24,7 @@ import org.apache.http.Header;
  * Created by fenghao on 2015/8/26.
  */
 @EActivity(R.layout.layout_shop_id)
-public class ShopIdActivity extends Activity {
+public class ShopIdActivity extends BaseActivity {
 
     @ViewById
     protected ImageView shop_complete, save;
@@ -49,7 +49,13 @@ public class ShopIdActivity extends Activity {
                 if( !userInfo.id().get().equals("-1") && shop.getText().length() != 0){
                     completeShopId();
                 }else{
-                    Toast.makeText(ShopIdActivity.this, "店家信息为空,或者信息没有录入", Toast.LENGTH_LONG).show();
+                    if ( shop.getText().length() == 0){
+                        Toast.makeText(ShopIdActivity.this, "店家信息为空", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(ShopIdActivity.this, "请录入客户信息", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(ShopIdActivity.this, MessageInputActivity_.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });

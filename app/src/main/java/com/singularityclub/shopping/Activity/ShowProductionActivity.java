@@ -60,7 +60,7 @@ import com.singularityclub.shopping.Utils.Cache.*;
  * 商品展示页面
  */
 @EActivity(R.layout.activity_show_production)
-public class ShowProductionActivity extends Activity {
+public class ShowProductionActivity extends BaseActivity {
 
     @ViewById
     protected ListView listview;
@@ -91,6 +91,8 @@ public class ShowProductionActivity extends Activity {
 
     protected ACache aCache;
 
+    //二次退出
+    protected long mkeyTime;
 
     //消费者行为记录的时间
     protected Long startTime;
@@ -560,5 +562,20 @@ public class ShowProductionActivity extends Activity {
     @UiThread
     public void showYinying(){
         yinyin.setVisibility(View.VISIBLE);
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if((System.currentTimeMillis() - mkeyTime) > 2000){
+                mkeyTime = System.currentTimeMillis();
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_LONG).show();
+            }else{
+                MyApplication.getInstance().exit();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
