@@ -10,11 +10,22 @@
         android:background="@color/black"
         >
 
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:id="@id/back"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="30dp"
+            android:src="@mipmap/back"
+            android:visibility="gone"/>
+
         <RelativeLayout
+            android:id="@+id/search"
             android:layout_width="500dp"
             android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:visibility="visible"
             >
             <EditText
                 android:id="@+id/search_text"
@@ -40,6 +51,19 @@
                 android:layout_marginRight="15dp"
                 />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="18dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/product_detail"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:textSize="35dp"/>
+
         <ImageView
             android:id="@+id/shop_car"
             android:layout_width="80dp"

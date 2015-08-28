@@ -62,6 +62,10 @@
         <activity android:name=".Activity.ShopIdActivity_"
             android:label="@string/app_name">
         </activity>
+        <activity android:name=".Activity.ShowPhotoActivity_"
+            android:theme="@android:style/Theme.Dialog"
+            >
+        </activity>
 
         <activity
             android:configChanges="orientation|keyboardHidden"
