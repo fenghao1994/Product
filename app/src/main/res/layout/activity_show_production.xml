@@ -19,57 +19,13 @@
         android:orientation="horizontal"
         >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/theme_type"
-        >
-        <Button
-            android:paddingLeft="20dp"
-            android:paddingRight="30dp"
-            android:id="@+id/type"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:text="分类"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:background="@color/theme_type"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/blue"
-            />
 
-
-        <Button
-            android:paddingLeft="20dp"
-            android:paddingRight="30dp"
-            android:id="@+id/theme"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:text="主题"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:background="@color/theme_type"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/blue"
-            />
-
-    </LinearLayout>
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-
 
         <com.handmark.pulltorefresh.library.PullToRefreshGridView
             android:layout_marginTop="20dp"
@@ -80,7 +36,7 @@
             android:horizontalSpacing="20dp"
             android:verticalSpacing="20dp"
             android:stretchMode="columnWidth"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="100dp"
             ></com.handmark.pulltorefresh.library.PullToRefreshGridView>
 
         <!--阴影-->
@@ -92,6 +48,19 @@
             android:alpha="0.5"
             android:visibility="gone"
             />
+
+        <GridView
+            android:id="@+id/second_gridview"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/blue"
+            android:numColumns="1"
+            android:stretchMode="columnWidth"
+            android:horizontalSpacing="10dp"
+            android:layout_marginLeft="-50dp"
+            android:visibility="gone"
+            ></GridView>
+
         <GridView
             android:id="@+id/first_gridview"
             android:layout_width="100dp"
@@ -102,19 +71,39 @@
             >
         </GridView>
 
-
-
-        <GridView
-            android:id="@+id/second_gridview"
-            android:layout_width="140dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/dark_blue"
-            android:numColumns="2"
-            android:stretchMode="columnWidth"
-            android:horizontalSpacing="10dp"
-            android:layout_marginLeft="-50dp"
-            android:visibility="gone"
-            ></GridView>
+            android:orientation="vertical"
+            android:background="@color/blue"
+            >
+            <Button
+                android:paddingLeft="20dp"
+                android:paddingRight="30dp"
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="分类"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue"
+                />
+
+
+            <Button
+                android:paddingLeft="20dp"
+                android:paddingRight="30dp"
+                android:id="@+id/theme"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="主题"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue"
+                />
+        </LinearLayout>
 
 
         <ImageView
@@ -123,7 +112,7 @@
             android:layout_height="100dp"
             android:src="@mipmap/sao"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:layout_gravity="right|bottom" />
 
         <ListView

@@ -41,7 +41,7 @@ public class UpdateService extends Service {
         updateFirstTheme();
     }
 
-    //¸üÐÂ·ÖÀàµÄÒ»¼¶·ÖÀà
+    //æ›´æ–°åˆ†ç±»çš„ä¸€çº§åˆ†ç±»
     public void updateFirst() {
         HttpClient.get(this, HttpUrl.GET_MAIN_CALSSIFY, null, new BaseJsonHttpResponseHandler(this) {
             @Override
@@ -60,7 +60,7 @@ public class UpdateService extends Service {
         });
     }
 
-    //¸üÐÂ·ÖÀàµÄ¶þ¼¶·ÖÀà
+    //æ›´æ–°åˆ†ç±»çš„äºŒçº§åˆ†ç±»
     public void updateSecond(String id){
         RequestParams params = new RequestParams();
         params.put("main_classify_id", id);
@@ -79,7 +79,7 @@ public class UpdateService extends Service {
         });
     }
 
-    //¸üÐÂÖ÷ÌâµÄÒ»¼¶Ö÷Ìâ
+    //æ›´æ–°ä¸»é¢˜çš„ä¸€çº§ä¸»é¢˜
     public void updateFirstTheme(){
         HttpClient.get(this, HttpUrl.GET_FIRST_THEME, null, new BaseJsonHttpResponseHandler(this) {
             @Override
@@ -98,7 +98,7 @@ public class UpdateService extends Service {
         });
     }
 
-    //¸üÐÂÖ÷ÌâµÄ¶þ¼¶Ö÷Ìâ
+    //æ›´æ–°ä¸»é¢˜çš„äºŒçº§ä¸»é¢˜
     public void updateSecondTheme( String id){
         RequestParams params = new RequestParams();
         params.put("main_theme_id", id);

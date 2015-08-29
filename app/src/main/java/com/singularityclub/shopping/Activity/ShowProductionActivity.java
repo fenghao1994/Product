@@ -143,11 +143,13 @@ public class ShowProductionActivity extends BaseActivity {
         type.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mainPosition = 0;
+                second_gridview.setVisibility(View.GONE);
                 buttonBack();
                 flag = 1;
                 first_gridview.setVisibility(View.VISIBLE );
                 yinyin.setVisibility(View.VISIBLE);
-                type.setBackgroundColor(getResources().getColor(R.color.blue));
+                type.setBackgroundColor(getResources().getColor(R.color.dark_blue));
                 ArrayList<MainClassify> list = (ArrayList<MainClassify>) aCache.getAsObject("first");
                 if (list == null){
                     initMianClassify();
@@ -155,6 +157,8 @@ public class ShowProductionActivity extends BaseActivity {
                     firstLevelAdapter = new FirstLevelAdapter(ShowProductionActivity.this, list);
                     first_gridview.setAdapter(firstLevelAdapter);
                 }
+                ObjectAnimator.ofFloat(first_gridview, "translationX", 0F, 180F).setDuration(500).start();
+
             }
         });
 
@@ -162,11 +166,13 @@ public class ShowProductionActivity extends BaseActivity {
         theme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mainPosition = 0;
+                second_gridview.setVisibility(View.GONE);
                 buttonBack();
                 flag = 2;
                 first_gridview.setVisibility(View.VISIBLE );
                 yinyin.setVisibility(View.VISIBLE);
-                theme.setBackgroundColor(getResources().getColor(R.color.blue));
+                theme.setBackgroundColor(getResources().getColor(R.color.dark_blue));
                 ArrayList<FirstThemeClassify> list = (ArrayList<FirstThemeClassify>) aCache.getAsObject("first_theme");
                 if (list == null){
                     getFirstTheme();
@@ -174,25 +180,15 @@ public class ShowProductionActivity extends BaseActivity {
                     firstThemeAdapter = new FirstThemeAdapter(ShowProductionActivity.this, list);
                     first_gridview.setAdapter(firstThemeAdapter);
                 }
+                ObjectAnimator.ofFloat(first_gridview, "translationX", 0F, 180F).setDuration(500).start();
             }
         });
-
-        /*frame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                float f = second_gridview.getTranslationX();
-                if (f != 0) {
-                    ObjectAnimator.ofFloat(second_gridview, "translationX", 290F, 0).setDuration(300).start();
-                }
-            }
-        });*/
 
         //阴影部分点击事件
         yinyin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                type.setBackgroundColor(getResources().getColor(R.color.theme_type));
-                theme.setBackgroundColor(getResources().getColor(R.color.theme_type));
+                buttonBack();
                 if (flag == 1){
                     firstLevelAdapter.color[mainPosition] = false;
                     firstLevelAdapter.notifyDataSetChanged();
@@ -265,7 +261,7 @@ public class ShowProductionActivity extends BaseActivity {
                     firstThemeAdapter.color[position] = true;
                     firstThemeAdapter.notifyDataSetChanged();
                 }
-                ObjectAnimator.ofFloat(second_gridview, "translationX", 0, 290F).setDuration(500).start();
+                ObjectAnimator.ofFloat(second_gridview, "translationX", 360F, 478F).setDuration(500).start();
             }
         });
         //商品gridview
@@ -318,9 +314,7 @@ public class ShowProductionActivity extends BaseActivity {
 
 
                 first_gridview.setVisibility(View.GONE);
-                type.setBackgroundColor(getResources().getColor(R.color.theme_type));
-                theme.setBackgroundColor(getResources().getColor(R.color.theme_type));
-
+                buttonBack();
                 yinyin.setVisibility(View.GONE);
                 if (flag == 1){
                     showSecondProduction(secondLevelAdapter.array.get(position).getSecondClassifyId());
@@ -718,7 +712,7 @@ public class ShowProductionActivity extends BaseActivity {
 
     //分类和主题按钮点击后 还原
     public void buttonBack(){
-        theme.setBackgroundColor(getResources().getColor(R.color.theme_type));
-        type.setBackgroundColor(getResources().getColor(R.color.theme_type));
+        theme.setBackgroundColor(getResources().getColor(R.color.blue));
+        type.setBackgroundColor(getResources().getColor(R.color.blue));
     }
 }

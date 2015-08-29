@@ -13,13 +13,6 @@
         android:layout_gravity="center"
         android:textColor="@color/white"
         android:text="主题"
-        android:paddingLeft="20dp"
-        android:paddingRight="30dp"
         android:background="@color/blue"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/dark_blue"
         />
 </LinearLayout>

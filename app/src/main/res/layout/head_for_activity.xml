@@ -42,11 +42,11 @@
         </RelativeLayout>
         <ImageView
             android:id="@+id/shop_car"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:paddingRight="40dp"
-            android:src="@mipmap/detail_cart"
+            android:paddingRight="30dp"
+            android:src="@mipmap/cart"
             />
     </RelativeLayout>
 
