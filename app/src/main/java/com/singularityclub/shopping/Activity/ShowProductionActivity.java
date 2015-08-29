@@ -129,6 +129,9 @@ public class ShowProductionActivity extends BaseActivity {
         aCache = ACache.get(this);
         //返回与人格有关的商品
         initShowProduction();
+
+        //用户与商家绑定
+        bing();
         myApplication = (MyApplication) getApplication();
         main_gridview.setMode(PullToRefreshBase.Mode.BOTH);
         listen();
@@ -607,12 +610,20 @@ public class ShowProductionActivity extends BaseActivity {
      */
     public void showSecondProduction(String id){
         RequestParams params = new RequestParams();
-        params.put("second_classify_id", id);
-        params.put("customer_id", userInfo.id().get());
-        HttpClient.post(this, HttpUrl.POST_SECOND_CLASSIFY, params, new BaseJsonHttpResponseHandler(this) {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+        String url = "";
+        if (flag == 1){
+            params.put("second_classify_id", id);
+            params.put("customer_id", userInfo.id().get());
+            url = HttpUrl.POST_SECOND_CLASSIFY;
+        }else{
+            params.put("second_theme_id", id);
+            params.put("customer_id", userInfo.id().get());
+            url = HttpUrl.POST_SECOND_THEME_PRODUCTION;
+        }
+        HttpClient.post(this, url, params, new BaseJsonHttpResponseHandler(this) {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
                 main_gridview.setAdapter(gridViewAdapter);
@@ -681,6 +692,23 @@ public class ShowProductionActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBytes, Throwable throwable) {
+            }
+        });
+    }
+
+
+    //绑定商家与 用户
+    public void bing(){
+        RequestParams params = new RequestParams();
+        params.put("shop_id", userInfo.shop().get());
+        params.put("customer_id", userInfo.id().get());
+        HttpClient.post(this, HttpUrl.POST_BING, params, new BaseJsonHttpResponseHandler(this){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
         });
     }

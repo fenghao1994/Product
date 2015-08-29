@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * Created by fenghao on 2015/8/24.
  * 每一项商品
  */
-@JsonIgnoreProperties({"brief", "character", "area", "weight", "main_classify_id", "sub_classify_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
+@JsonIgnoreProperties({"intro", "brief", "character", "area", "weight", "main_classify_id", "sub_classify_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
 public class ProductionItem {
 
     public String id;

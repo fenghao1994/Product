@@ -58,8 +58,11 @@ public class HttpUrl {
     public static final String POST_SECOND_THEME = ROOT + "main_theme/main_theme_children";
 
     //得到二级主题里面的商品
-    public static final String POST_SECOND_THEME_PRODUCTION = ROOT + "second_theme";
+    public static final String POST_SECOND_THEME_PRODUCTION = ROOT + "second_theme/index";
 
     //二维码获取商品信息
     public static final String POST_SHOW_PRODUCT_CODE = ROOT + "production/qrcode_product";
+
+    //用户商家绑定
+    public static final String POST_BING = ROOT + "info_entry/customer_shop";
 }
