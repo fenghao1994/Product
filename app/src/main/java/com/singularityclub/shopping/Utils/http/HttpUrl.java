@@ -39,6 +39,15 @@ public class HttpUrl {
     //传shop——id
     public static final String POST_SHOP_ID = ROOT + "info_entry/customer_shop";
 
+    //查看商品详细
+    public static final String POST_PRODUCT_DETAIL = ROOT + "production/product_detail";
+
+    //获取商品所有图片
+    public static final String POST_GET_PHOTO = ROOT + "production/picture";
+
+    //获取所有商品录音
+    public static final String POST_GET_AUDIO = ROOT + "production/audio";
+
     //上传消费行为记录
     public static final String POST_ACTION = ROOT + "production/behavior_record";
 
@@ -50,4 +59,7 @@ public class HttpUrl {
 
     //得到二级主题里面的商品
     public static final String POST_SECOND_THEME_PRODUCTION = ROOT + "second_theme";
+
+    //二维码获取商品信息
+    public static final String POST_SHOW_PRODUCT_CODE = ROOT + "production/qrcode_product";
 }
