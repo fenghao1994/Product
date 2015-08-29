@@ -57,7 +57,7 @@
             android:numColumns="1"
             android:stretchMode="columnWidth"
             android:horizontalSpacing="10dp"
-            android:layout_marginLeft="-50dp"
+            android:layout_marginLeft="180dp"
             android:visibility="gone"
             ></GridView>
 
@@ -68,6 +68,7 @@
             android:background="@color/blue"
             android:numColumns="1"
             android:visibility="gone"
+            android:layout_marginLeft="90dp"
             >
         </GridView>
 

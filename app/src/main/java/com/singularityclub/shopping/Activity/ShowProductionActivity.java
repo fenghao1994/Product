@@ -147,7 +147,7 @@ public class ShowProductionActivity extends BaseActivity {
                 second_gridview.setVisibility(View.GONE);
                 buttonBack();
                 flag = 1;
-                first_gridview.setVisibility(View.VISIBLE );
+
                 yinyin.setVisibility(View.VISIBLE);
                 type.setBackgroundColor(getResources().getColor(R.color.dark_blue));
                 ArrayList<MainClassify> list = (ArrayList<MainClassify>) aCache.getAsObject("first");
@@ -157,8 +157,10 @@ public class ShowProductionActivity extends BaseActivity {
                     firstLevelAdapter = new FirstLevelAdapter(ShowProductionActivity.this, list);
                     first_gridview.setAdapter(firstLevelAdapter);
                 }
-                ObjectAnimator.ofFloat(first_gridview, "translationX", 0F, 180F).setDuration(500).start();
-
+                if (first_gridview.getVisibility() == View.GONE){
+                    ObjectAnimator.ofFloat(first_gridview, "translationX", -180F, 0F).setDuration(500).start();
+                }
+                first_gridview.setVisibility(View.VISIBLE );
             }
         });
 
@@ -170,7 +172,6 @@ public class ShowProductionActivity extends BaseActivity {
                 second_gridview.setVisibility(View.GONE);
                 buttonBack();
                 flag = 2;
-                first_gridview.setVisibility(View.VISIBLE );
                 yinyin.setVisibility(View.VISIBLE);
                 theme.setBackgroundColor(getResources().getColor(R.color.dark_blue));
                 ArrayList<FirstThemeClassify> list = (ArrayList<FirstThemeClassify>) aCache.getAsObject("first_theme");
@@ -180,7 +181,10 @@ public class ShowProductionActivity extends BaseActivity {
                     firstThemeAdapter = new FirstThemeAdapter(ShowProductionActivity.this, list);
                     first_gridview.setAdapter(firstThemeAdapter);
                 }
-                ObjectAnimator.ofFloat(first_gridview, "translationX", 0F, 180F).setDuration(500).start();
+                if (first_gridview.getVisibility() == View.GONE){
+                    ObjectAnimator.ofFloat(first_gridview, "translationX", -180F, 0F).setDuration(500).start();
+                }
+                first_gridview.setVisibility(View.VISIBLE );
             }
         });
 
@@ -239,7 +243,6 @@ public class ShowProductionActivity extends BaseActivity {
                         second_gridview.setAdapter(secondLevelAdapter);
                     }
                     mainPosition = position;
-                    second_gridview.setVisibility(View.VISIBLE);
                     for (int i = 0; i < firstLevelAdapter.color.length; i++) {
                         firstLevelAdapter.color[i] = false;
                     }
@@ -254,14 +257,16 @@ public class ShowProductionActivity extends BaseActivity {
                         second_gridview.setAdapter(secondThemeAdapter);
                     }
                     mainPosition = position;
-                    second_gridview.setVisibility(View.VISIBLE);
                     for (int i = 0; i < firstThemeAdapter.color.length; i++) {
                         firstThemeAdapter.color[i] = false;
                     }
                     firstThemeAdapter.color[position] = true;
                     firstThemeAdapter.notifyDataSetChanged();
                 }
-                ObjectAnimator.ofFloat(second_gridview, "translationX", 360F, 478F).setDuration(500).start();
+                if (second_gridview.getVisibility() == View.GONE){
+                    ObjectAnimator.ofFloat(second_gridview, "translationX", -180F, 0F).setDuration(500).start();
+                }
+                second_gridview.setVisibility(View.VISIBLE);
             }
         });
         //商品gridview
@@ -287,13 +292,16 @@ public class ShowProductionActivity extends BaseActivity {
                         addAttention(params);
                     }
                 });
-                if (second_gridview.getTranslationX() != 0.0f) {
+                /*if (second_gridview.getTranslationX() != 0.0f) {
                     backToInit();
                 } else {
                     Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
                     intent.putExtra("product_id", gridViewAdapter.array.get(p).getId());
                     startActivity(intent);
-                }
+                }*/
+                Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
+                intent.putExtra("product_id", gridViewAdapter.array.get(p).getId());
+                startActivity(intent);
             }
         });
         //二级分类gridview
@@ -322,6 +330,7 @@ public class ShowProductionActivity extends BaseActivity {
                     showSecondProduction(secondThemeAdapter.array.get(position).getSecondThemeId());
                 }
                 backToInit();
+                second_gridview.setVisibility(View.GONE);
                 if (flag == 1){
                     firstLevelAdapter.color[mainPosition] = false;
                     firstLevelAdapter.notifyDataSetChanged();
@@ -468,7 +477,6 @@ public class ShowProductionActivity extends BaseActivity {
 
         listview.setVisibility(View.GONE);
         float x = second_gridview.getTranslationX();
-        second_gridview.setVisibility(View.GONE);
         ObjectAnimator.ofFloat(second_gridview, "translationX", x, 0).setDuration(100).start();
     }
 
