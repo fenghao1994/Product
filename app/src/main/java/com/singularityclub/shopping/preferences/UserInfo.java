@@ -23,4 +23,8 @@ public interface UserInfo {
     @DefaultInt(-1)
     int shop();
 
+    //所属的人格
+    @DefaultInt(-1)
+    int person();
+
 }

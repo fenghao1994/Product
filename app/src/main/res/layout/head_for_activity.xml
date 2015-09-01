@@ -19,6 +19,19 @@
             android:src="@mipmap/back"
             android:visibility="gone"/>
 
+        <TextView
+            android:id="@+id/person"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:text="人格"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:visibility="gone"
+            />
+
         <RelativeLayout
             android:id="@+id/search"
             android:layout_width="500dp"

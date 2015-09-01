@@ -65,4 +65,7 @@ public class HttpUrl {
 
     //用户商家绑定
     public static final String POST_BING = ROOT + "info_entry/customer_shop";
+
+    //人格信息
+    public static final String GET_PERSON = ROOT + "info_entry/all_personality";
 }

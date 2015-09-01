@@ -192,7 +192,8 @@ public class MessageInputActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 Map<String, Object> map = JacksonMapper.parse(responseString);
                 String id = map.get("id").toString();
-                userInfo.edit().id().put(id).apply();
+                int person = (int) map.get("personality");
+                userInfo.edit().id().put(id).person().put( person).apply();
                 progressDialog.dismiss();
                 if (userInfo.shop().get() != -1) {
                     completeToShowProduction();
