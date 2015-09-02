@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,9 @@ public class ShopCarActivity extends BaseActivity {
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView car_gridview;
     @Pref
     protected UserInfo_ userInfo;
+    @ViewById
+    protected LinearLayout layout_back;
+
 
     protected GridViewAdapter gridViewAdapter;
     @AfterViews
@@ -51,6 +55,12 @@ public class ShopCarActivity extends BaseActivity {
         showProdaction();
         car_gridview.setMode(PullToRefreshBase.Mode.BOTH);
 
+        layout_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShopCarActivity.this.finish();
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +123,7 @@ public class ShopCarActivity extends BaseActivity {
                 car_gridview.setAdapter(gridViewAdapter);
                 int sum = 0;
                 for (int i = 0 ; i < gridViewAdapter.array.size() ; i++){
-                    sum += Integer.parseInt(gridViewAdapter.array.get(i).getPrice());
+                    sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());
                 }
                 price.setText(sum + "");
             }

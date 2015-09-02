@@ -10,7 +10,12 @@
         android:background="@color/black"
         >
 
-        <ImageView
+        <LinearLayout
+            android:id="@+id/layout_person"
+            android:layout_width="140dp"
+            android:layout_height="60dp">
+
+            <ImageView
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:id="@id/back"
@@ -19,18 +24,20 @@
             android:src="@mipmap/back"
             android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/person"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp"
-            android:text="人格"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:visibility="gone"
-            />
+            <TextView
+                android:id="@+id/person"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:text="人格"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+
 
         <RelativeLayout
             android:id="@+id/search"
@@ -77,14 +84,23 @@
             android:visibility="gone"
             android:textSize="35dp"/>
 
-        <ImageView
-            android:id="@+id/shop_car"
-            android:layout_width="70dp"
+        <LinearLayout
+            android:id="@+id/layout_shop"
+            android:layout_width="160dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:paddingRight="30dp"
-            android:src="@mipmap/cart"
-            />
+            android:gravity="right|center_vertical"
+            >
+            <ImageView
+                android:id="@+id/shop_car"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/cart"
+                android:layout_marginRight="40dp"
+                />
+        </LinearLayout>
+
+
     </RelativeLayout>
 
 </LinearLayout>

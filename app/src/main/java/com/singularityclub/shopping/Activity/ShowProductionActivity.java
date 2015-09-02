@@ -90,6 +90,8 @@ public class ShowProductionActivity extends BaseActivity {
     //主题，分类按钮
     @ViewById
     protected Button type, theme;
+    @ViewById
+    protected LinearLayout layout_shop, layout_person;
     @Pref
     protected UserInfo_ userInfo;
     //分类的二级分类Adapter
@@ -122,6 +124,9 @@ public class ShowProductionActivity extends BaseActivity {
     //标记是点的主题还是分类按钮
     int flag = 0;
 
+    //点击的二级主题的id
+    protected String second = "-1";
+
     @AfterViews
     protected void init() {
 
@@ -143,6 +148,23 @@ public class ShowProductionActivity extends BaseActivity {
      * 所以的监听事件
      */
     protected void listen() {
+
+        layout_person.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowProductionActivity.this, PersonActivity_.class);
+                startActivity(intent);
+            }
+        });
+
+        layout_shop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent t = new Intent(ShowProductionActivity.this, ShopCarActivity_.class);
+                startActivity(t);
+            }
+        });
+
         //分类
         type.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,6 +301,7 @@ public class ShowProductionActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final int p = position;
                 final ImageView imageView = (ImageView) view.findViewById(R.id.like_img);
+                final LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout_like);
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -296,13 +319,23 @@ public class ShowProductionActivity extends BaseActivity {
                         addAttention(params);
                     }
                 });
-                /*if (second_gridview.getTranslationX() != 0.0f) {
-                    backToInit();
-                } else {
-                    Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
-                    intent.putExtra("product_id", gridViewAdapter.array.get(p).getId());
-                    startActivity(intent);
-                }*/
+                layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (gridViewAdapter.array.get(p).getAttention().equals("1")) {
+                            gridViewAdapter.array.get(p).setAttention("0");
+                        } else {
+                            gridViewAdapter.array.get(p).setAttention("1");
+                        }
+
+                        gridViewAdapter.notifyDataSetChanged();
+                        RequestParams params = new RequestParams();
+                        params.put("customer_id", userInfo.id().get());
+                        params.put("product_id", gridViewAdapter.array.get(p).getId());
+                        addAttention(params);
+                    }
+                });
+
                 Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
                 intent.putExtra("product_id", gridViewAdapter.array.get(p).getId());
                 startActivity(intent);
@@ -330,8 +363,10 @@ public class ShowProductionActivity extends BaseActivity {
                 yinyin.setVisibility(View.GONE);
                 if (flag == 1) {
                     showSecondProduction(secondLevelAdapter.array.get(position).getSecondClassifyId());
+                    second = secondLevelAdapter.array.get(position).getSecondClassifyId();
                 } else {
                     showSecondProduction(secondThemeAdapter.array.get(position).getSecondThemeId());
+                    second = secondThemeAdapter.array.get(position).getSecondThemeId();
                 }
                 backToInit();
                 second_gridview.setVisibility(View.GONE);
@@ -763,5 +798,13 @@ public class ShowProductionActivity extends BaseActivity {
     public void buttonBack() {
         theme.setBackgroundColor(getResources().getColor(R.color.blue));
         type.setBackgroundColor(getResources().getColor(R.color.blue));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if ( !second.equals("-1")){
+            showSecondProduction(second);
+        }
     }
 }

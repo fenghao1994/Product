@@ -5,6 +5,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,9 @@ public class PersonActivity extends BaseActivity {
 
 
     @ViewById
+    protected LinearLayout layout_back;
+
+    @ViewById
     protected ImageView person_back;
     @ViewById
     protected GridView person_gridview;
@@ -52,6 +56,13 @@ public class PersonActivity extends BaseActivity {
         getPerson();
 
         person_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersonActivity.this.finish();
+            }
+        });
+
+        layout_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PersonActivity.this.finish();

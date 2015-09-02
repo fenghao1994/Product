@@ -90,4 +90,5 @@ public class ShopIdActivity extends BaseActivity {
         intent.setClass(this, ShowProductionActivity_.class);
         startActivity(intent);
     }
+
 }
