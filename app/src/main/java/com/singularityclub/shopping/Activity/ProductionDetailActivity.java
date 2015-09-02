@@ -26,6 +26,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.singularityclub.shopping.Adapter.AudioAdapter;
 import com.singularityclub.shopping.Adapter.MyFragmentPagerAdapter;
+import com.singularityclub.shopping.Application.MyApplication;
 import com.singularityclub.shopping.Model.Music;
 import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.R;
@@ -64,7 +65,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     @ViewById
     protected EditText search_text;
     @ViewById
-    protected ImageView photo, back, play, pause;
+    protected ImageView photo, back, play, pause, add_attention, cancel_attention;
     @ViewById
     protected RelativeLayout search;
     @ViewById
@@ -77,14 +78,16 @@ public class ProductionDetailActivity extends FragmentActivity {
 
     protected String productId;     //商品id
     protected String code;          //二维码
-    protected ArrayList<Music> audioList;
-    protected Boolean isPlay;
+    protected ArrayList<Music> audioList;  //音频对象list
+    protected Boolean isPlay;       //判断是否第一次点击播放按钮
+    protected Boolean isClick;      //录音菜单点击判断
     protected AudioManager audioManager;
     protected MediaPlayer player;
     protected AudioAdapter audioAdapter;
     protected int maxSound;
     protected int currentSound;
     protected Handler handler;
+    protected MyApplication myApplication;
 
     //消费者行为记录的时间
     protected Long startTime;
@@ -98,12 +101,18 @@ public class ProductionDetailActivity extends FragmentActivity {
         productId = intent.getStringExtra("product_id");
         code = intent.getStringExtra("qrcode");
 
+        myApplication = (MyApplication) getApplication();
+        myApplication.setProductID(productId);
+
+        //页面顶部显示调整
         back.setVisibility(View.VISIBLE);
         search.setVisibility(View.GONE);
         title.setVisibility(View.VISIBLE);
 
+        //音频相关数据
         audioList = new ArrayList<>();
         isPlay = false;
+        isClick = false;
         handler = new Handler();
         player = new MediaPlayer();
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);   //获取音量服务
@@ -127,14 +136,13 @@ public class ProductionDetailActivity extends FragmentActivity {
         //获取音频数据
         getAudio();
 
-
-        viewpager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
+        //底部分页栏
+        viewpager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), product));
         tabs.setViewPager(viewpager);
         tabs.setTextSize(30);
-        tabs.setTabPaddingLeftRight(100);
+        tabs.setTabPaddingLeftRight(200);
         tabs.setDividerColor(Color.TRANSPARENT);
         tabs.setUnderlineHeight(2);
-
     }
 
     //点击商品查看商品详细
@@ -151,7 +159,7 @@ public class ProductionDetailActivity extends FragmentActivity {
 
                 product_name.setText(product.getName());
                 product_price.setText(product.getPrice());
-
+                selectPicture();
                 // DisplayImageOptions的初始化
                 DisplayImageOptions options = new DisplayImageOptions.Builder()
                         .showImageForEmptyUri(R.mipmap.goods_demo)
@@ -165,6 +173,7 @@ public class ProductionDetailActivity extends FragmentActivity {
                 ImageLoader imageLoader = ImageLoader.getInstance();
                 imageLoader.init(ImageLoaderConfiguration.createDefault(ProductionDetailActivity.this));
                 imageLoader.displayImage(product.getUrlImg(), photo, options);
+
             }
 
             @Override
@@ -190,6 +199,7 @@ public class ProductionDetailActivity extends FragmentActivity {
 
                 product_name.setText(product.getName());
                 product_price.setText(product.getPrice());
+                selectPicture();
 
                 // DisplayImageOptions的初始化
                 DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -213,15 +223,34 @@ public class ProductionDetailActivity extends FragmentActivity {
         });
     }
 
+    //关注图片选择
+    protected void selectPicture(){
+        if(product.getAttention().equals("0") || product.getAttention().equals("")){
+            add_attention.setVisibility(View.VISIBLE);
+            cancel_attention.setVisibility(View.GONE);
+        } else {
+            add_attention.setVisibility(View.GONE);
+            cancel_attention.setVisibility(View.VISIBLE);
+        }
+    }
+
+
     //返回
     @Click(R.id.back)
     protected void doBack(){
-        ProductionDetailActivity.this.finish();
-
         //计时结束
         endTime = System.currentTimeMillis();
         totalTime = ((float)(endTime - startTime)) / 1000;
         actionMark();
+
+        player.stop();
+        try{
+            player.release();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        ProductionDetailActivity.this.finish();
     }
 
     //购物车
@@ -233,21 +262,35 @@ public class ProductionDetailActivity extends FragmentActivity {
         totalTime = ((float)(endTime - startTime)) / 1000;
         actionMark();
 
+        player.pause();
+
         Intent intent = new Intent(ProductionDetailActivity.this, ShopCarActivity_.class);
         startActivity(intent);
     }
 
     //关注
-    @Click(R.id.add_attention)
+    @Click(R.id.attention)
     protected void addCar(){
         RequestParams parms = new RequestParams();
         parms.put("customer_id", userInfo.id().get());
         parms.put("product_id", productId);
 
+        if (product.getAttention().equals("1")) {
+            product.setAttention("0");
+            selectPicture();
+        } else {
+            product.setAttention("1");
+            selectPicture();
+        }
+
         HttpClient.post(this, HttpUrl.POST_PRODUCTION_ATTENTION, parms, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Toast.makeText(getApplication(), "加入购物车成功", Toast.LENGTH_SHORT).show();
+                if (product.getAttention().equals("1")) {
+                    Toast.makeText(ProductionDetailActivity.this, "加入购物车成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ProductionDetailActivity.this, "已取消", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -292,7 +335,13 @@ public class ProductionDetailActivity extends FragmentActivity {
     @Click(R.id.audio_list)
     public void audioList(){
         if (audioList.size() != 0) {
-            menu.setVisibility(View.VISIBLE);
+            if(!isClick){
+                menu.setVisibility(View.VISIBLE);
+                isClick = true;
+            } else {
+                menu.setVisibility(View.GONE);
+                isClick = false;
+            }
 
             menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -314,10 +363,10 @@ public class ProductionDetailActivity extends FragmentActivity {
                                         player.start();
                                         int allTime = player.getDuration();
                                         update(allTime);
+                                        startBarUpdate();
                                     }
                                 });
                                 isPlay = true;
-                                startBarUpdate();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -359,14 +408,15 @@ public class ProductionDetailActivity extends FragmentActivity {
         handler.post(r);
     }
     Runnable r=new Runnable() {
-
         @Override
         public void run() {
-            int currentPosition = player.getCurrentPosition();
-            int mMax=player.getDuration();
-            procesee.setMax(mMax);
-            procesee.setProgress(currentPosition);
-            handler.postDelayed(r, 100);
+            if(player.isPlaying()) {
+                int currentPosition = player.getCurrentPosition();
+                int mMax = player.getDuration();
+                procesee.setMax(mMax);
+                procesee.setProgress(currentPosition);
+                handler.postDelayed(r, 100);
+            }
         }
     };
 
@@ -441,4 +491,12 @@ public class ProductionDetailActivity extends FragmentActivity {
         total_time.setText(showTime(allTime));
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(player != null){
+            play.setVisibility(View.VISIBLE);
+            pause.setVisibility(View.GONE);
+        }
+    }
 }

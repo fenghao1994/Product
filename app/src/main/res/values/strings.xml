@@ -15,4 +15,12 @@
     <string name="shop_car">购物车</string>
     <string name="audio_tip">可以收听录音介绍哦~</string>
     <string name="product_detail">商品详细</string>
+    <string name="product_name">名称</string>
+    <string name="product_price">价格</string>
+    <string name="product_area">产地</string>
+    <string name="product_weight">重量</string>
+    <string name="product_character">特性</string>
+    <string name="product_biref">简介</string>
+
+
 </resources>

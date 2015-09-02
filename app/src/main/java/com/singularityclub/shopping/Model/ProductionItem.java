@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * Created by fenghao on 2015/8/24.
  * 每一项商品
  */
-@JsonIgnoreProperties({"intro", "brief", "character", "area", "weight", "main_classify_id", "sub_classify_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
+@JsonIgnoreProperties({"main_classify_id", "sub_classify_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
 public class ProductionItem {
 
     public String id;
@@ -17,6 +17,11 @@ public class ProductionItem {
     public String price;
     @JsonProperty("is_attention")
     public String attention;
+    public String intro;
+    public String brief;
+    public String character;
+    public String area;
+    public String weight;
 
     public String getAttention() {
         return attention;
@@ -55,5 +60,45 @@ public class ProductionItem {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
+    }
+
+    public String getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(String character) {
+        this.character = character;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 }

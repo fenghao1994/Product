@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="630dp" android:layout_height="80dp"
+    android:layout_width="450dp" android:layout_height="60dp"
     android:background="@mipmap/music_bg"
     android:layout_gravity="center_horizontal">
 
     <FrameLayout
         android:id="@+id/play_pause_layout"
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp" >
 
@@ -17,34 +17,34 @@
             android:id="@+id/play"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="6dp"
-            android:src="@mipmap/music_play" />
+            android:src="@mipmap/music_play"
+            />
 
         <ImageView
             android:id="@+id/pause"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="6dp"
             android:src="@mipmap/music_end"
-            android:visibility="gone" />
+            android:visibility="gone"
+             />
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/linearlayout1"
-        android:layout_width="2dp"
+        android:layout_width="1dp"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_toRightOf="@+id/play_pause_layout"
         android:background="@mipmap/music_vline"></LinearLayout>
     
     <SeekBar
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/linearlayout1"
         android:id="@+id/procesee" />
 
@@ -55,34 +55,30 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/procesee"
         android:textColor="@color/white"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:text="00:00"/>
 
     <ImageView
         android:id="@+id/voice"
         android:layout_width="30dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/total_time"
         android:src="@mipmap/music_voice"/>
 
     <SeekBar
-        android:layout_width="150dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/voice"
         android:id="@+id/sound" />
 
     <LinearLayout
         android:id="@+id/linearlayout2"
-        android:layout_width="2dp"
+        android:layout_width="1dp"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_toRightOf="@+id/sound"
@@ -91,12 +87,12 @@
     <ImageView
         android:id="@+id/audio_list"
         android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:layout_toRightOf="@+id/linearlayout2"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="10dp"
         android:src="@mipmap/music_list" />
 
 </RelativeLayout>

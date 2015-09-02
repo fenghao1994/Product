@@ -58,7 +58,7 @@ public class ImageAdapter extends BaseAdapter {
 
         ImageView imageView = new ImageView(context);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setLayoutParams(new Gallery.LayoutParams(128, 192));
+        imageView.setLayoutParams(new Gallery.LayoutParams(750, 900));
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));

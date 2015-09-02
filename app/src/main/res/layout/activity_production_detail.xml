@@ -19,16 +19,16 @@
         <RelativeLayout
             android:layout_width="350dp"
             android:layout_height="350dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             android:layout_alignParentLeft="true"
             android:background="@mipmap/detail_bg"
             android:id="@+id/picture">
 
             <ImageView
                 android:id="@+id/photo"
-                android:layout_width="240dp"
+                android:layout_width="200dp"
                 android:layout_height="240dp"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="68dp"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/goods_demo"/>
         </RelativeLayout>
@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/picture"
             android:layout_marginTop="60dp"
+            android:layout_marginLeft="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -47,8 +48,7 @@
                 android:textSize="30dp"
                 android:maxEms="18"
                 android:maxLines="2"
-                android:ellipsize="end"
-                android:text="订货会嘿嘿fdk道理很简单很对你好聚代号利剑年度计划是的弗兰克惠农卡的话斯蒂法诺但是后来二分法uehfijddvnieih1u"/>
+                android:ellipsize="end" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,8 +90,8 @@
 
             <include
                 layout="@layout/layout_music"
-                android:layout_width="630dp"
-                android:layout_height="80dp"/>
+                android:layout_width="450dp"
+                android:layout_height="60dp"/>
 
         </LinearLayout>
 
@@ -122,6 +122,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/attention"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
@@ -133,23 +134,26 @@
             android:id="@+id/add_attention"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@mipmap/detail_like"/>
+            android:src="@mipmap/detail_like"
+            android:visibility="visible"/>
 
-        <!--<ImageView-->
-            <!--android:id="@+id/add_car"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="100dp"-->
-            <!--android:layout_marginTop="20dp"-->
-            <!--android:src="@mipmap/detail_cart"/>-->
+        <ImageView
+            android:id="@+id/cancel_attention"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/cart_like"
+            android:visibility="gone"/>
 
     </LinearLayout>
     
     <ListView
         android:id="@+id/menu"
-        android:layout_width="630dp"
+        android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="375dp"
-        android:layout_marginLeft="410dp"
-        android:visibility="gone"></ListView>
+        android:layout_marginTop="320dp"
+        android:layout_marginLeft="400dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        ></ListView>
 
 </RelativeLayout>

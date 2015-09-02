@@ -5,8 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.singularityclub.shopping.Fragment.ProIntroductionFragment;
 import com.singularityclub.shopping.Fragment.ProIntroductionFragment_;
+import com.singularityclub.shopping.Fragment.ProductionDataFragment;
 import com.singularityclub.shopping.Fragment.ProductionDataFragment_;
+import com.singularityclub.shopping.Model.ProductionItem;
 
 import java.util.ArrayList;
 
@@ -19,7 +22,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> mFragments;
     private ArrayList<String> mTitles;
 
-    public MyFragmentPagerAdapter(FragmentManager fm) {
+    public MyFragmentPagerAdapter(FragmentManager fm, ProductionItem product) {
         super(fm);
         mFragments = new ArrayList<>();
         mTitles = new ArrayList<>();
@@ -27,8 +30,15 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         mTitles.add("商品介绍");
         mTitles.add("规格参数");
 
-        mFragments.add(new ProIntroductionFragment_());
-        mFragments.add(new ProductionDataFragment_());
+        ProductionDataFragment dataFragment = new ProductionDataFragment_();
+        ProIntroductionFragment introFragment = new ProIntroductionFragment_();
+        mFragments.add(introFragment);
+        mFragments.add(dataFragment);
+
+//        Bundle data = new Bundle();
+//        data.putSerializable("data", (Serializable) product);
+//        dataFragment.setArguments(data);
+//        introFragment.setArguments(data);
     }
 
     @Override
@@ -46,4 +56,5 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return mFragments.size();
     }
+
 }

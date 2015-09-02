@@ -3,8 +3,6 @@ package com.singularityclub.shopping.Application;
 import android.app.Activity;
 import android.app.Application;
 
-
-
 import java.util.ArrayList;
 
 import cn.jpush.android.api.JPushInterface;
@@ -18,6 +16,7 @@ public class MyApplication extends Application{
     // 存放activity的集合
     private ArrayList<Activity> list1 = new ArrayList<Activity>();
     private static MyApplication instance;
+    public String productID;
 
     /**
      * 利用单例模式获取MyAppalication实例
@@ -82,5 +81,13 @@ public class MyApplication extends Application{
 
     public void setList(ArrayList<String> list) {
         this.list = list;
+    }
+
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
     }
 }
