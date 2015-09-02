@@ -29,6 +29,8 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.apache.http.Header;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*信息录入页面*/
 @EActivity(R.layout.activity_message_input)
@@ -80,7 +82,7 @@ public class MessageInputActivity extends BaseActivity {
             public void onClick(View v) {
 
                 if (edit_name.getText().length() != 0 && edit_phone.getText().length() != 0 && time.getText().length() != 0) {
-                    if ( edit_phone.getText().length() != 11){
+                    if ( !isMobileNO( edit_phone.getText().toString())){
                         Toast.makeText(MessageInputActivity.this, "请填入正确的手机号", Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -196,7 +198,7 @@ public class MessageInputActivity extends BaseActivity {
                 Map<String, Object> map = JacksonMapper.parse(responseString);
                 String id = map.get("id").toString();
                 int person = (int) map.get("personality");
-                userInfo.edit().id().put(id).person().put( person).apply();
+                userInfo.edit().id().put(id).person().put(person).apply();
                 progressDialog.dismiss();
                 if (userInfo.shop().get() != -1) {
                     completeToShowProduction();
@@ -233,5 +235,12 @@ public class MessageInputActivity extends BaseActivity {
         Intent intent = new Intent();
         intent.setClass(MessageInputActivity.this, ShopIdActivity_.class);
         startActivity(intent);
+    }
+
+    public boolean isMobileNO(String mobiles) {
+        Pattern p = Pattern
+                .compile( "[1][358]\\d{9}");
+        Matcher m = p.matcher(mobiles);
+        return m.matches();
     }
 }
