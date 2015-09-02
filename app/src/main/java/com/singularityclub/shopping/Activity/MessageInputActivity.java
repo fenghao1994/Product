@@ -80,7 +80,10 @@ public class MessageInputActivity extends BaseActivity {
             public void onClick(View v) {
 
                 if (edit_name.getText().length() != 0 && edit_phone.getText().length() != 0 && time.getText().length() != 0) {
-
+                    if ( edit_phone.getText().length() != 11){
+                        Toast.makeText(MessageInputActivity.this, "请填入正确的手机号", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     AlertDialog.Builder builder = new AlertDialog.Builder(MessageInputActivity.this);
                     builder.setTitle("确定提交吗？");
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
