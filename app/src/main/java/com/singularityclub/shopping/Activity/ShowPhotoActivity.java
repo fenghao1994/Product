@@ -1,6 +1,8 @@
 package com.singularityclub.shopping.Activity;
 
 import android.content.Intent;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.Gallery;
 import android.widget.Toast;
 
@@ -39,6 +41,14 @@ public class ShowPhotoActivity extends BaseActivity {
         productId = intent.getStringExtra("product_id");
 
         pictures = new ArrayList<>();
+
+        WindowManager m = getWindowManager();
+        Display display = m.getDefaultDisplay();
+        WindowManager.LayoutParams p = getWindow().getAttributes();  //获取对话框当前的参数值
+        p.height = (int) (display.getHeight() * 0.8);   //高度设置为屏幕的0.8
+        p.width = (int) (display.getWidth() * 0.8);    //宽度设置为屏幕的0.8
+        getWindow().setAttributes(p);     //设置生效
+
         getPhotoUri();
     }
 
@@ -57,8 +67,13 @@ public class ShowPhotoActivity extends BaseActivity {
                 for(int n = 0; n < list.size(); n++){
                     pictures.add(list.get(n).getImageURL());
                 }
-                show_photo.setAdapter(new ImageAdapter(ShowPhotoActivity.this, pictures));
 
+                if(list.size() == 0){
+                    Toast.makeText(ShowPhotoActivity.this, "当前没有可查看的图片", Toast.LENGTH_SHORT).show();
+                    ShowPhotoActivity.this.finish();
+                } else {
+                    show_photo.setAdapter(new ImageAdapter(ShowPhotoActivity.this, pictures));
+                }
             }
 
             @Override
