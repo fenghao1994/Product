@@ -24,6 +24,7 @@ import com.singularityclub.shopping.Utils.http.JacksonMapper;
 import com.singularityclub.shopping.preferences.UserInfo_;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -49,12 +50,13 @@ public class ShopCarActivity extends BaseActivity {
     protected LinearLayout layout_back;
 
 
+    @Bean
     protected GridViewAdapter gridViewAdapter;
     @AfterViews
     protected void init(){
         showProdaction();
         car_gridview.setMode(PullToRefreshBase.Mode.BOTH);
-
+        car_gridview.setAdapter(gridViewAdapter);
         layout_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,8 +121,7 @@ public class ShopCarActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                gridViewAdapter = new GridViewAdapter(ShopCarActivity.this, list);
-                car_gridview.setAdapter(gridViewAdapter);
+                gridViewAdapter.init(list);
                 int sum = 0;
                 for (int i = 0 ; i < gridViewAdapter.array.size() ; i++){
                     sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());

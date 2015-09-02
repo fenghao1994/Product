@@ -48,6 +48,7 @@ import com.singularityclub.shopping.preferences.UserInfo_;
 import com.singularityclub.shopping.zxing.activity.CaptureActivity;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -97,6 +98,7 @@ public class ShowProductionActivity extends BaseActivity {
     //分类的二级分类Adapter
     protected SecondLevelAdapter secondLevelAdapter;
     //展示商品的gridview的adapter
+    @Bean
     protected GridViewAdapter gridViewAdapter;
 
     protected MyApplication myApplication;
@@ -131,6 +133,7 @@ public class ShowProductionActivity extends BaseActivity {
     protected void init() {
 
         person.setVisibility(View.VISIBLE);
+        main_gridview.setAdapter(gridViewAdapter);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         aCache = ACache.get(this);
         //返回与人格有关的商品
@@ -299,45 +302,9 @@ public class ShowProductionActivity extends BaseActivity {
         main_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int p = position;
-                final ImageView imageView = (ImageView) view.findViewById(R.id.like_img);
-                final LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout_like);
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (gridViewAdapter.array.get(p).getAttention().equals("1")) {
-                            gridViewAdapter.array.get(p).setAttention("0");
-                        } else {
-                            gridViewAdapter.array.get(p).setAttention("1");
-                        }
-
-                        gridViewAdapter.notifyDataSetChanged();
-                        RequestParams params = new RequestParams();
-                        params.put("customer_id", userInfo.id().get());
-                        params.put("product_id", gridViewAdapter.array.get(p).getId());
-                        addAttention(params);
-                    }
-                });
-                layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (gridViewAdapter.array.get(p).getAttention().equals("1")) {
-                            gridViewAdapter.array.get(p).setAttention("0");
-                        } else {
-                            gridViewAdapter.array.get(p).setAttention("1");
-                        }
-
-                        gridViewAdapter.notifyDataSetChanged();
-                        RequestParams params = new RequestParams();
-                        params.put("customer_id", userInfo.id().get());
-                        params.put("product_id", gridViewAdapter.array.get(p).getId());
-                        addAttention(params);
-                    }
-                });
 
                 Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
-                intent.putExtra("product_id", gridViewAdapter.array.get(p).getId());
+                intent.putExtra("product_id", gridViewAdapter.array.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -551,8 +518,7 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 if (list != null) {
-                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                    main_gridview.setAdapter(gridViewAdapter);
+                    gridViewAdapter.init( list);
                 }
 
             }
@@ -578,8 +544,7 @@ public class ShowProductionActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                main_gridview.setAdapter(gridViewAdapter);
+                gridViewAdapter.init(list);
                 if (list.size() == 0) {
                     Toast.makeText(ShowProductionActivity.this, "无搜索结果", Toast.LENGTH_LONG).show();
                 }
@@ -673,8 +638,7 @@ public class ShowProductionActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                main_gridview.setAdapter(gridViewAdapter);
+                gridViewAdapter.init(list);
             }
 
             @Override
