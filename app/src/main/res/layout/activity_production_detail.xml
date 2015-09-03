@@ -1,125 +1,327 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@mipmap/bg">
 
     <include
-        layout="@layout/head_for_activity"
         android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <RelativeLayout
-        android:id="@+id/relativelayout1"
-        android:layout_below="@+id/head"
+        layout="@layout/head_for_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true" />
 
+
+    <ScrollView
+        android:id="@+id/detail_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@+id/head">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true">
         <RelativeLayout
-            android:layout_width="350dp"
-            android:layout_height="350dp"
-            android:layout_marginLeft="30dp"
-            android:layout_alignParentLeft="true"
-            android:background="@mipmap/detail_bg"
-            android:id="@+id/picture">
+            android:id="@+id/relativelayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/photo"
-                android:layout_width="200dp"
-                android:layout_height="240dp"
-                android:layout_marginLeft="68dp"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/goods_demo"/>
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="350dp"
+                android:layout_height="350dp"
+                android:layout_marginLeft="30dp"
+                android:layout_alignParentLeft="true"
+                android:background="@mipmap/detail_bg"
+                android:id="@+id/picture">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/picture"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30dp"
-                android:maxEms="18"
-                android:maxLines="2"
-                android:ellipsize="end" />
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="200dp"
+                    android:layout_height="240dp"
+                    android:layout_marginLeft="68dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/goods_demo"/>
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_toRightOf="@+id/picture"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/product_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:text="促售价："/>
+                    android:textSize="30dp"
+                    android:maxEms="14"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="促售价："/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="25dp"
+                        android:text="￥"
+                        android:textColor="@color/red"/>
+
+                    <TextView
+                        android:id="@+id/product_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="25dp"
+                        android:text="1690.00"
+                        android:textColor="@color/red"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/audio_name"
                     android:textSize="25dp"
-                    android:text="￥"
-                    android:textColor="@color/red"/>
+                    android:textColor="@color/blue"
+                    android:text="@string/audio_tip"/>
 
-                <TextView
-                    android:id="@+id/product_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="1690.00"
-                    android:textColor="@color/red"/>
+                <include
+                    layout="@layout/layout_music"
+                    android:layout_width="450dp"
+                    android:layout_height="60dp"/>
 
             </LinearLayout>
 
-            <TextView
+        </RelativeLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:shrinkColumns="0"
+            android:stretchColumns="0"
+            >
+
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:id="@+id/audio_name"
-                android:textSize="25dp"
-                android:textColor="@color/blue"
-                android:text="@string/audio_tip"/>
+                android:background="@color/black"
+                android:weightSum="4">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="@string/product_name"/>
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="2222"
+                    />
+            </TableRow>
 
-            <include
-                layout="@layout/layout_music"
-                android:layout_width="450dp"
-                android:layout_height="60dp"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:weightSum="4">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="@string/product_price"/>
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="2222"
+                    />
+            </TableRow>
 
-        </LinearLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:weightSum="4">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="@string/product_biref"/>
+                <TextView
+                    android:id="@+id/biref"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="2222"
+                    />
+            </TableRow>
 
-    </RelativeLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:weightSum="4">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="@string/product_character"/>
+                <TextView
+                    android:id="@+id/character"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="2222"
+                    />
+            </TableRow>
 
-    <RelativeLayout
-        android:id="@+id/content_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/relativelayout1"
-        android:orientation="vertical"
-        >
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:weightSum="4">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="@string/product_area"/>
+                <TextView
+                    android:id="@+id/area"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="2222"
+                    />
+            </TableRow>
 
-        <com.astuetz.PagerSlidingTabStrip
-            android:id="@+id/tabs"
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:weightSum="4">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="@string/product_weight"/>
+                <TextView
+                    android:id="@+id/weight"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="0.5dp"
+                    android:background="@color/white"
+                    android:textSize="20dp"
+                    android:text="2222"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <WebView
+            android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            />
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"></WebView>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_below="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    </LinearLayout>
 
-        </android.support.v4.view.ViewPager>
-
-    </RelativeLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/attention"
@@ -145,7 +347,7 @@
             android:visibility="gone"/>
 
     </LinearLayout>
-    
+
     <ListView
         android:id="@+id/menu"
         android:layout_width="450dp"

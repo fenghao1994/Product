@@ -3,29 +3,29 @@ package com.singularityclub.shopping.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.singularityclub.shopping.Adapter.AudioAdapter;
-import com.singularityclub.shopping.Adapter.MyFragmentPagerAdapter;
 import com.singularityclub.shopping.Application.MyApplication;
 import com.singularityclub.shopping.Model.Music;
 import com.singularityclub.shopping.Model.ProductionItem;
@@ -57,11 +57,7 @@ import java.util.Date;
 public class ProductionDetailActivity extends FragmentActivity {
 
     @ViewById
-    protected ViewPager viewpager;
-    @ViewById
-    protected PagerSlidingTabStrip tabs;
-    @ViewById
-    protected TextView product_name, product_price, audio_name, title, total_time;
+    protected TextView product_name, product_price, audio_name, title, total_time, name, price, biref, character, area, weight;
     @ViewById
     protected EditText search_text;
     @ViewById
@@ -72,6 +68,10 @@ public class ProductionDetailActivity extends FragmentActivity {
     protected ListView menu;
     @ViewById
     protected SeekBar procesee,sound;
+    @ViewById
+    protected WebView webview;
+    @ViewById
+    protected ScrollView detail_body;
     @Pref
     protected UserInfo_ userInfo;
     protected ProductionItem product;
@@ -88,6 +88,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     protected int currentSound;
     protected Handler handler;
     protected MyApplication myApplication;
+    protected Boolean showName;     //展示全部文字
 
     //消费者行为记录的时间
     protected Long startTime;
@@ -123,6 +124,8 @@ public class ProductionDetailActivity extends FragmentActivity {
         sound.setOnSeekBarChangeListener(new SeekBarListener());
         procesee.setOnSeekBarChangeListener(new ProcessListener());
 
+        showName = false;
+
         //浏览计时开始
         startTime = System.currentTimeMillis();
 
@@ -135,14 +138,6 @@ public class ProductionDetailActivity extends FragmentActivity {
 
         //获取音频数据
         getAudio();
-
-        //底部分页栏
-        viewpager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), product));
-        tabs.setViewPager(viewpager);
-        tabs.setTextSize(30);
-        tabs.setTabPaddingLeftRight(200);
-        tabs.setDividerColor(Color.TRANSPARENT);
-        tabs.setUnderlineHeight(2);
     }
 
     //点击商品查看商品详细
@@ -174,6 +169,7 @@ public class ProductionDetailActivity extends FragmentActivity {
                 imageLoader.init(ImageLoaderConfiguration.createDefault(ProductionDetailActivity.this));
                 imageLoader.displayImage(product.getUrlImg(), photo, options);
 
+                updateData(product);
             }
 
             @Override
@@ -182,7 +178,6 @@ public class ProductionDetailActivity extends FragmentActivity {
             }
         });
     }
-
 
     //二维码方式查看商品
     protected void showByCode(){
@@ -214,6 +209,8 @@ public class ProductionDetailActivity extends FragmentActivity {
                 ImageLoader imageLoader = ImageLoader.getInstance();
                 imageLoader.init(ImageLoaderConfiguration.createDefault(ProductionDetailActivity.this));
                 imageLoader.displayImage(product.getUrlImg(), photo, options);
+
+                updateData(product);
             }
 
             @Override
@@ -221,6 +218,28 @@ public class ProductionDetailActivity extends FragmentActivity {
                 Toast.makeText(ProductionDetailActivity.this, "数据出错--" + statusCode, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    //数据显示
+    @UiThread
+    public void updateData(ProductionItem product){
+        //表格数据
+        name.setText(product.getName());
+        price.setText(product.getPrice());
+        biref.setText(product.getBrief());
+        character.setText(product.getCharacter());
+        area.setText(product.getArea());
+        weight.setText(product.getWeight());
+
+        //webView数据
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        String html = product.getIntro();
+        webview.setVerticalScrollBarEnabled(false);
+        webview.loadDataWithBaseURL(null, "<style>img{width:100%;}</style>  <base href=\"" + HttpUrl.ROOT + "\" />" + html, "text/html", "utf-8", null);
     }
 
     //关注图片选择
@@ -234,9 +253,20 @@ public class ProductionDetailActivity extends FragmentActivity {
         }
     }
 
+    //展示全部标题
+    @Click(R.id.product_name)
+    protected void showProductName(){
+        if(!showName) {
+            product_name.setEllipsize(null);
+            showName = true;
+        } else {
+            product_name.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
+            showName = false;
+        }
+    }
 
     //返回
-    @Click(R.id.back)
+    @Click(R.id.layout_person)
     protected void doBack(){
         //计时结束
         endTime = System.currentTimeMillis();
@@ -254,7 +284,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     }
 
     //购物车
-    @Click(R.id.shop_car)
+    @Click(R.id.layout_shop)
     protected void goShopCar(){
 
         //计时结束

@@ -21,6 +21,6 @@
     <string name="product_weight">重量</string>
     <string name="product_character">特性</string>
     <string name="product_biref">简介</string>
-
+    <string name="tips">———— 继续拖动，查看图文信息 ————</string>
 
 </resources>

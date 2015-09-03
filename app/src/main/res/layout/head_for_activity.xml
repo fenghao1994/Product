@@ -12,15 +12,16 @@
 
         <LinearLayout
             android:id="@+id/layout_person"
-            android:layout_width="140dp"
-            android:layout_height="60dp">
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_click">
 
             <ImageView
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@id/back"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
             android:src="@mipmap/back"
             android:visibility="gone"/>
 
@@ -86,17 +87,18 @@
 
         <LinearLayout
             android:id="@+id/layout_shop"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="right|center_vertical"
+            android:background="@drawable/button_click"
             >
             <ImageView
                 android:id="@+id/shop_car"
                 android:layout_width="30dp"
                 android:layout_height="50dp"
                 android:src="@mipmap/cart"
-                android:layout_marginRight="40dp"
+                android:layout_marginRight="20dp"
                 />
         </LinearLayout>
 
