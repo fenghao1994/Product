@@ -128,6 +128,9 @@ public class ShowProductionActivity extends BaseActivity {
 
     //点击的二级主题的id
     protected String second = "-1";
+    //确定进行的操作
+    protected int flag1 = -1;
+
 
     @AfterViews
     protected void init() {
@@ -389,7 +392,18 @@ public class ShowProductionActivity extends BaseActivity {
                     ((InputMethodManager) search_text.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(ShowProductionActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     showSearchProduction(search_text.getText().toString());
-                    myApplication.getList().add(0, search_text.getText().toString());
+                    boolean b = false;
+                    for (int i = 0; i < myApplication.getList().size(); i++) {
+                        if (myApplication.getList().get(i).equals(search_text.getText().toString())) {
+                            b = true;
+                        }
+                    }
+                    if ( !b){
+                        myApplication.getList().add(0, search_text.getText().toString());
+
+                    }
+                    second = search_text.getText().toString();
+                    flag1 = 0;
                     return true;
                 }
                 return false;
@@ -451,6 +465,13 @@ public class ShowProductionActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowProductionActivity.this, PersonActivity_.class);
                 startActivity(intent);
+            }
+        });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showSearchProduction(myApplication.getList().get(position));
             }
         });
     }
@@ -518,8 +539,9 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 if (list != null) {
-                    gridViewAdapter.init( list);
+                    gridViewAdapter.init(list);
                 }
+                flag1 = 2;
 
             }
 
@@ -639,6 +661,7 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 gridViewAdapter.init(list);
+                flag1 = 1;
             }
 
             @Override
@@ -767,8 +790,17 @@ public class ShowProductionActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if ( !second.equals("-1")){
-            showSecondProduction(second);
+
+        if (flag1 == 0) {
+            if (!second.equals("-1")) {
+                showSearchProduction(second);
+            }
+        } else if (flag1 == 1) {
+            if (!second.equals("-1")) {
+                showSecondProduction(second);
+            }
+        } else if (flag1 == 2) {
+            initShowProduction();
         }
     }
 }
