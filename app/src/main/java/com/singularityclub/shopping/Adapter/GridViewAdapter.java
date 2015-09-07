@@ -48,6 +48,16 @@ public class GridViewAdapter extends BaseAdapter {
         this.context = context;
     }
 
+    public interface ClickChange{
+        void changePrice( int num);
+    }
+
+    public ClickChange clickChange;
+
+    public void setClickChange(ClickChange clickChange) {
+        this.clickChange = clickChange;
+    }
+
     public void init( ArrayList<ProductionItem> array){
         this.array = array;
         this.notifyDataSetChanged();
@@ -77,6 +87,14 @@ public class GridViewAdapter extends BaseAdapter {
         }else{
             goodsItem = (GoodsItem)convertView;
         }
+        goodsItem.setClickInterface(new GoodsItem.ClickInterface() {
+            @Override
+            public void change(int num) {
+                if ( clickChange!= null){
+                    clickChange.changePrice( num);
+                }
+            }
+        });
         goodsItem.update( array, position);
         return goodsItem;
 

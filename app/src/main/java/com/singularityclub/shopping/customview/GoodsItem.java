@@ -11,6 +11,7 @@ import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.singularityclub.shopping.Activity.ShopCarActivity;
 import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.R;
 import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
@@ -18,10 +19,7 @@ import com.singularityclub.shopping.Utils.http.HttpClient;
 import com.singularityclub.shopping.Utils.http.HttpUrl;
 import com.singularityclub.shopping.preferences.UserInfo_;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.apache.http.Header;
@@ -32,7 +30,7 @@ import java.util.ArrayList;
  * Created by fenghao on 2015/9/2.
  */
 @EViewGroup(R.layout.layout_goods)
-public class GoodsItem extends RelativeLayout {
+public class GoodsItem extends RelativeLayout{
 
     @ViewById
     protected ImageView goods_img, like_img;
@@ -42,6 +40,17 @@ public class GoodsItem extends RelativeLayout {
     protected UserInfo_ userInfo;
 
     protected Context context;
+
+    public interface ClickInterface{
+        void change( int num);
+    };
+
+    public ClickInterface clickInterface;
+
+
+    public void setClickInterface(ClickInterface clickInterface) {
+        this.clickInterface = clickInterface;
+    }
 
     // DisplayImageOptions的初始化
     DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -54,9 +63,11 @@ public class GoodsItem extends RelativeLayout {
             .build();
 
 
+
     public GoodsItem(Context context) {
         super(context);
         this.context = context;
+
     }
 
     public void update( final ArrayList<ProductionItem> productionItems ,final int position){
@@ -74,13 +85,20 @@ public class GoodsItem extends RelativeLayout {
         like_img.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( productionItems.get(position).getAttention().equals("1")){
+                if (productionItems.get(position).getAttention().equals("1")) {
                     like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.detail_like));
                     productionItems.get(position).setAttention("0");
-                }else{
+
+                } else {
                     like_img.setImageDrawable(context.getResources().getDrawable(R.mipmap.cart_like));
                     productionItems.get(position).setAttention("1");
                 }
+                if (context instanceof ShopCarActivity){
+                    if ( clickInterface != null) {
+                        clickInterface.change( Integer.parseInt(productionItems.get(position).getId()));
+                    }
+                }
+
                 RequestParams params = new RequestParams();
                 params.put("customer_id", userInfo.id().get());
                 params.put("product_id", productionItems.get(position).getId());

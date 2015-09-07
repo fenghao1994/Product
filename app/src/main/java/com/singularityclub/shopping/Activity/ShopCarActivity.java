@@ -1,6 +1,5 @@
 package com.singularityclub.shopping.Activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -21,6 +20,8 @@ import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
 import com.singularityclub.shopping.Utils.http.HttpClient;
 import com.singularityclub.shopping.Utils.http.HttpUrl;
 import com.singularityclub.shopping.Utils.http.JacksonMapper;
+import com.singularityclub.shopping.customview.GoodsItem;
+import com.singularityclub.shopping.customview.GoodsItem_;
 import com.singularityclub.shopping.preferences.UserInfo_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -50,6 +51,9 @@ public class ShopCarActivity extends BaseActivity {
     protected LinearLayout layout_back;
 
 
+    protected int sum;
+
+
     @Bean
     protected GridViewAdapter gridViewAdapter;
     @AfterViews
@@ -63,6 +67,22 @@ public class ShopCarActivity extends BaseActivity {
                 ShopCarActivity.this.finish();
             }
         });
+        gridViewAdapter.setClickChange(new GridViewAdapter.ClickChange() {
+            @Override
+            public void changePrice(int num) {
+                double sum = 0;
+                getChangePrice();
+                for (int  i = 0 ; i < gridViewAdapter.array.size(); i++){
+                    if (gridViewAdapter.array.get(i).getAttention().equals("1")){
+                        sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());
+                    }
+                }
+                price.setText(sum + "");
+
+            }
+        });
+
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,14 +136,14 @@ public class ShopCarActivity extends BaseActivity {
     public void showProdaction(){
         RequestParams params = new RequestParams();
         params.put("customer_id", userInfo.id().get());
-        HttpClient.post(this, HttpUrl.POST_LOOK_CAR, params, new BaseJsonHttpResponseHandler(this){
+        HttpClient.post(this, HttpUrl.POST_LOOK_CAR, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 gridViewAdapter.init(list);
-                int sum = 0;
-                for (int i = 0 ; i < gridViewAdapter.array.size() ; i++){
+                sum = 0;
+                for (int i = 0; i < gridViewAdapter.array.size(); i++) {
                     sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());
                 }
                 price.setText(sum + "");
@@ -131,8 +151,31 @@ public class ShopCarActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ShopCarActivity.this, "购物车 " + statusCode , Toast.LENGTH_LONG).show();
+                Toast.makeText(ShopCarActivity.this, "购物车 " + statusCode, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void getChangePrice(){
+        RequestParams params = new RequestParams();
+        params.put("customer_id", userInfo.id().get());
+        HttpClient.post(this, HttpUrl.POST_LOOK_CAR, params, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                gridViewAdapter.init(list);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showProdaction();
     }
 }
