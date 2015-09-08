@@ -59,6 +59,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:gravity="center"
+        android:paddingBottom="150dp"
         android:orientation="horizontal">
 
         <TextView

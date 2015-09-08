@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -79,7 +78,8 @@ public class ProductionDetailActivity extends FragmentActivity {
     protected String productId;     //商品id
     protected String code;          //二维码
     protected ArrayList<Music> audioList;  //音频对象list
-    protected Boolean isPlay;       //判断是否第一次点击播放按钮
+    protected Boolean isPlay;       //判断是否有mediaplayer对象在运行
+    protected Boolean isFirstPlay;  //判断是否第一次点击播放按钮
     protected Boolean isClick;      //录音菜单点击判断
     protected AudioManager audioManager;
     protected MediaPlayer player;
@@ -114,6 +114,7 @@ public class ProductionDetailActivity extends FragmentActivity {
         audioList = new ArrayList<>();
         isPlay = false;
         isClick = false;
+        isFirstPlay = false;
         handler = new Handler();
         player = new MediaPlayer();
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);   //获取音量服务
@@ -232,11 +233,7 @@ public class ProductionDetailActivity extends FragmentActivity {
         weight.setText(product.getWeight());
 
         //webView数据
-        WebSettings webSettings = webview.getSettings();
-        webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webview.getSettings().setJavaScriptEnabled(true);
         String html = product.getIntro();
         webview.setVerticalScrollBarEnabled(false);
         webview.loadDataWithBaseURL(null, "<style>img{width:100%;}</style>  <base href=\"" + HttpUrl.ROOT + "\" />" + html, "text/html", "utf-8", null);
@@ -273,8 +270,9 @@ public class ProductionDetailActivity extends FragmentActivity {
         totalTime = ((float)(endTime - startTime)) / 1000;
         actionMark();
 
-        player.stop();
+        isPlay = false;
         try{
+            player.stop();
             player.release();
         } catch(Exception e){
             e.printStackTrace();
@@ -397,6 +395,7 @@ public class ProductionDetailActivity extends FragmentActivity {
                                     }
                                 });
                                 isPlay = true;
+                                isFirstPlay = true;
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -417,10 +416,11 @@ public class ProductionDetailActivity extends FragmentActivity {
     //音频播放控制
     @Click(R.id.play)
     public void audioPlay(){
-        if(!isPlay){
+        if(!isFirstPlay){
             Toast.makeText(ProductionDetailActivity.this, "请选择音频", Toast.LENGTH_LONG).show();
         } else {
             player.start();
+            isPlay = true;
             play.setVisibility(View.GONE);
             pause.setVisibility(View.VISIBLE);
         }
@@ -428,7 +428,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     @Click(R.id.pause)
     public void audioPause(){
         player.pause();
-
+        isPlay = false;
         play.setVisibility(View.VISIBLE);
         pause.setVisibility(View.GONE);
     }
@@ -440,7 +440,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     Runnable r=new Runnable() {
         @Override
         public void run() {
-            if(player.isPlaying()) {
+            if(isPlay) {
                 int currentPosition = player.getCurrentPosition();
                 int mMax = player.getDuration();
                 procesee.setMax(mMax);
