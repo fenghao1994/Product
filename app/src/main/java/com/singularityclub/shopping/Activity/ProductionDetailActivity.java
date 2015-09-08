@@ -488,10 +488,14 @@ public class ProductionDetailActivity extends FragmentActivity {
         if(time > 60){
             minute = time / 60;
             second = time % 60;
+
+            if(minute > 60){
+                minute %= 60;
+            }
+        } else {
+            second = time;
         }
-        if(minute > 60){
-            minute %= 60;
-        }
+
         return String.format("%02d:%02d", minute, second);
     }
 
