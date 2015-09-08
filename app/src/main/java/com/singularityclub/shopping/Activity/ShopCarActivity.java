@@ -71,7 +71,7 @@ public class ShopCarActivity extends BaseActivity {
             @Override
             public void changePrice(int num) {
                 double sum = 0;
-                getChangePrice();
+//                getChangePrice();
                 for (int  i = 0 ; i < gridViewAdapter.array.size(); i++){
                     if (gridViewAdapter.array.get(i).getAttention().equals("1")){
                         sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());
