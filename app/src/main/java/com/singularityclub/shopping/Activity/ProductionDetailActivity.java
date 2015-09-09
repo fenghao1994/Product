@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.AdapterView;
@@ -363,12 +364,16 @@ public class ProductionDetailActivity extends FragmentActivity {
     @Click(R.id.audio_list)
     public void audioList(){
         if (audioList.size() != 0) {
+            detail_body.scrollTo(0,0);
+
             if(!isClick){
                 menu.setVisibility(View.VISIBLE);
                 isClick = true;
+                hideMenu();
             } else {
                 menu.setVisibility(View.GONE);
                 isClick = false;
+                hideMenu();
             }
 
             menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -411,6 +416,21 @@ public class ProductionDetailActivity extends FragmentActivity {
         } else {
             Toast.makeText(ProductionDetailActivity.this, "没有可播放音频", Toast.LENGTH_LONG).show();
         }
+    }
+
+    //页面滑动时音频菜单隐藏
+    public void hideMenu(){
+        detail_body.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_MOVE) {
+                    menu.setVisibility(View.GONE);
+                    isClick = false;
+                }
+
+                return false;
+            }
+        });
     }
 
     //音频播放控制
