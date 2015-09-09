@@ -256,9 +256,11 @@ public class ProductionDetailActivity extends FragmentActivity {
     protected void showProductName(){
         if(!showName) {
             product_name.setEllipsize(null);
+            product_name.setMaxLines(5);
             showName = true;
         } else {
             product_name.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
+            product_name.setMaxLines(2);
             showName = false;
         }
     }
