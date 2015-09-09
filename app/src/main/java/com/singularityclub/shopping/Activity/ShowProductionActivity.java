@@ -503,9 +503,17 @@ public class ShowProductionActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             //得到二维码里面包含的数据
             String result = data.getExtras().getString("result");
-            Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
-            intent.putExtra("qrcode", result);
-            startActivity(intent);
+            String []results = result.split("-");
+            if (results[0].equals("20150819032145")){
+                Intent intent = new Intent(ShowProductionActivity.this, ProductionDetailActivity_.class);
+                intent.putExtra("qrcode", result);
+                startActivity(intent);
+            }else{
+                second = result;
+                getErweimaProduction(result);
+
+            }
+
         }
     }
 
@@ -731,6 +739,25 @@ public class ShowProductionActivity extends BaseActivity {
         });
     }
 
+    public void getErweimaProduction(String qrcode){
+        RequestParams params = new RequestParams();
+        params.put("customer_id", userInfo.id().get());
+        params.put("qrcode", qrcode);
+        HttpClient.post(this, HttpUrl.POST_ERWEIMA, params, new BaseJsonHttpResponseHandler(this){
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                gridViewAdapter.init(list);
+                flag1 = 3;
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "扫描主题二位码内容错误" + statusCode, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
     //绑定商家与 用户
     public void bing() {
@@ -755,7 +782,6 @@ public class ShowProductionActivity extends BaseActivity {
         } else {
             listview.setVisibility(View.GONE);
         }
-
     }
 
     /**
@@ -801,6 +827,10 @@ public class ShowProductionActivity extends BaseActivity {
             }
         } else if (flag1 == 2) {
             initShowProduction();
+        } else if (flag1 == 3){
+            if (!second.equals("-1")) {
+                getErweimaProduction(second);
+            }
         }
     }
 }

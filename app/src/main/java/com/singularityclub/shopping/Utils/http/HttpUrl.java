@@ -68,4 +68,7 @@ public class HttpUrl {
 
     //人格信息
     public static final String GET_PERSON = ROOT + "info_entry/all_personality";
+
+    //得到二维码主题里面的商品
+    public static final String POST_ERWEIMA = ROOT + "production/qrcode_theme";
 }
