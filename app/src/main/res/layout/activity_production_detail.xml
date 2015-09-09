@@ -130,9 +130,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="4">
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:background="@drawable/text_border"
                     android:textSize="20dp"
                     android:text="@string/product_name"/>
@@ -152,9 +153,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="4">
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:background="@drawable/text_border"
                     android:textSize="20dp"
                     android:text="@string/product_price"/>
@@ -174,9 +176,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="4">
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:background="@drawable/text_border"
                     android:textSize="20dp"
                     android:text="@string/product_biref"/>
@@ -196,9 +199,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="4">
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:background="@drawable/text_border"
                     android:textSize="20dp"
                     android:text="@string/product_character"/>
@@ -209,7 +213,7 @@
                     android:layout_weight="3"
                     android:background="@drawable/text_border"
                     android:textSize="20dp"
-                    android:text="222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222"
+                    android:text="22222"
                     />
             </TableRow>
 
@@ -218,9 +222,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="4">
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:background="@drawable/text_border"
                     android:textSize="20dp"
                     android:text="@string/product_area"/>
@@ -240,9 +245,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="4">
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:background="@drawable/text_border"
                     android:textSize="20dp"
                     android:text="@string/product_weight"/>
