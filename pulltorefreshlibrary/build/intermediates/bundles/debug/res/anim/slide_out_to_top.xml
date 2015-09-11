@@ -19,4 +19,4 @@
     android:duration="@android:integer/config_longAnimTime"
     android:fromYDelta="0"
     android:toYDelta="-100%p" />
-<!-- From: file:/C:/Users/fenghao/Desktop/audio-wife-master/Shopping/pulltorefreshlibrary/src/main/res/anim/slide_out_to_top.xml -->
+<!-- From: file:/E:/Android/MyCode/Product/pulltorefreshlibrary/src/main/res/anim/slide_out_to_top.xml -->

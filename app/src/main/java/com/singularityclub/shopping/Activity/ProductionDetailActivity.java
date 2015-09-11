@@ -28,6 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.singularityclub.shopping.Adapter.AudioAdapter;
 import com.singularityclub.shopping.Application.MyApplication;
 import com.singularityclub.shopping.Model.Music;
+import com.singularityclub.shopping.Model.Picture;
 import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.R;
 import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
@@ -90,6 +91,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     protected Handler handler;
     protected MyApplication myApplication;
     protected Boolean showName;     //展示全部文字
+    protected ArrayList<String> pictures;   //全部介绍图片
 
     //消费者行为记录的时间
     protected Long startTime;
@@ -127,6 +129,7 @@ public class ProductionDetailActivity extends FragmentActivity {
         procesee.setOnSeekBarChangeListener(new ProcessListener());
 
         showName = false;
+        pictures = new ArrayList<>();
 
         //浏览计时开始
         startTime = System.currentTimeMillis();
@@ -331,12 +334,36 @@ public class ProductionDetailActivity extends FragmentActivity {
         });
     }
 
-    //点击查看图片
+    //获取图片数据,点击查看图片
     @Click(R.id.photo)
-    protected void goWatch(){
-        Intent intent = new Intent(ProductionDetailActivity.this, ShowPhotoActivity_.class);
-        intent.putExtra("product_id", productId);
-        startActivity(intent);
+    public void getPhotoUri(){
+        RequestParams parms = new RequestParams();
+        parms.put("product_id", productId);
+
+        HttpClient.post(this, HttpUrl.POST_GET_PHOTO, parms, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<Picture> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<Picture>>() {
+                });
+
+                for (int n = 0; n < list.size(); n++) {
+                    pictures.add(list.get(n).getImageURL());
+                }
+
+                if (pictures.size() == 0) {
+                    Toast.makeText(ProductionDetailActivity.this, "当前没有可查看的图片", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(ProductionDetailActivity.this, ShowPhotoActivity_.class);
+                    intent.putExtra("products", pictures);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(getApplication(), "数据提交失败---" + statusCode, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     //获取音频数据
