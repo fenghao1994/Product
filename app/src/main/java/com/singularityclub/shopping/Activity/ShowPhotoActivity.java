@@ -22,7 +22,6 @@ public class ShowPhotoActivity extends BaseActivity {
 
     @ViewById
     Gallery show_photo;
-
     protected ArrayList<String> pictures = new ArrayList<>();
 
     @AfterViews
@@ -39,4 +38,5 @@ public class ShowPhotoActivity extends BaseActivity {
 
         show_photo.setAdapter(new ImageAdapter(ShowPhotoActivity.this, pictures));
     }
+
 }

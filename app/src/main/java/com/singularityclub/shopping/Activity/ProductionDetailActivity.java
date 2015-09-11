@@ -91,7 +91,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     protected Handler handler;
     protected MyApplication myApplication;
     protected Boolean showName;     //展示全部文字
-    protected ArrayList<String> pictures;   //全部介绍图片
+    protected ArrayList<String> pictures;   //商品的全部图片
 
     //消费者行为记录的时间
     protected Long startTime;
