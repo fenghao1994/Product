@@ -92,6 +92,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     protected MyApplication myApplication;
     protected Boolean showName;     //展示全部文字
     protected ArrayList<String> pictures;   //商品的全部图片
+    protected int entranceFlag = -1;     //进入方式，0为点击商品参看详细，1为扫码查看详细
 
     //消费者行为记录的时间
     protected Long startTime;
@@ -137,12 +138,12 @@ public class ProductionDetailActivity extends FragmentActivity {
         //判断进入方式
         if(code == null || code.equals("")){
             showProduct();
+            entranceFlag = 0;
         } else if(productId == null || productId.equals("")){
             showByCode();
+            entranceFlag = 1;
         }
 
-        //获取音频数据
-        getAudio();
     }
 
     //点击商品查看商品详细
@@ -175,6 +176,9 @@ public class ProductionDetailActivity extends FragmentActivity {
                 imageLoader.displayImage(product.getUrlImg(), photo, options);
 
                 updateData(product);
+
+                //获取音频数据
+                getAudio();
             }
 
             @Override
@@ -197,6 +201,8 @@ public class ProductionDetailActivity extends FragmentActivity {
                 product = JacksonMapper.parseToList(responseString, new TypeReference<ProductionItem>() {
                 });
 
+                productId = product.getId();
+
                 product_name.setText(product.getName());
                 product_price.setText(product.getPrice());
                 selectPicture();
@@ -216,6 +222,9 @@ public class ProductionDetailActivity extends FragmentActivity {
                 imageLoader.displayImage(product.getUrlImg(), photo, options);
 
                 updateData(product);
+
+                //获取音频数据
+                getAudio();
             }
 
             @Override
@@ -368,6 +377,7 @@ public class ProductionDetailActivity extends FragmentActivity {
 
     //获取音频数据
     public void getAudio(){
+
         RequestParams params = new RequestParams();
         params.put("product_id", productId);
 
@@ -379,6 +389,38 @@ public class ProductionDetailActivity extends FragmentActivity {
                 audioList = list;
                 audioAdapter = new AudioAdapter(ProductionDetailActivity.this, audioList);
                 menu.setAdapter(audioAdapter);
+
+                //扫码进入的时候，直接播放
+                if(entranceFlag == 1){
+                    if(audioList.size() != 0) {
+                        String path = "http://dt.tavern.name/" + audioList.get(0).getAudioUrl();
+                        player.reset();
+                        try {
+                            player.setDataSource(path);
+                            player.prepareAsync();
+                            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                @Override
+                                public void onPrepared(MediaPlayer mp) {
+                                    player = mp;
+                                    player.start();
+                                    int allTime = player.getDuration();
+                                    update(allTime);
+                                    startBarUpdate();
+                                }
+                            });
+                            isPlay = true;
+                            isFirstPlay = true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        audio_name.setText(audioList.get(0).getName());
+                        play.setVisibility(View.GONE);
+                        pause.setVisibility(View.VISIBLE);
+                    } else {
+                        Toast.makeText(ProductionDetailActivity.this, "没有可播放音频", Toast.LENGTH_LONG).show();
+                    }
+                }
             }
 
             @Override
@@ -386,7 +428,6 @@ public class ProductionDetailActivity extends FragmentActivity {
                 Toast.makeText(getApplication(), "数据获取失败---" + statusCode, Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     //音频列表
