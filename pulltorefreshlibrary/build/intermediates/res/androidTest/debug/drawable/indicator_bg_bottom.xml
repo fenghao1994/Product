@@ -15,4 +15,4 @@
         android:topLeftRadius="@dimen/indicator_corner_radius"
         android:topRightRadius="@dimen/indicator_corner_radius" />
 
-</shape><!-- From: file:/C:/Users/fenghao/Desktop/audio-wife-master/Shopping/pulltorefreshlibrary/src/main/res/drawable/indicator_bg_bottom.xml --><!-- From: file:/C:/Users/fenghao/Desktop/audio-wife-master/Shopping/pulltorefreshlibrary/build/intermediates/bundles/debug/res/drawable/indicator_bg_bottom.xml -->
+</shape><!-- From: file:/E:/Android/MyCode/Product/pulltorefreshlibrary/src/main/res/drawable/indicator_bg_bottom.xml --><!-- From: file:/E:/Android/MyCode/Product/pulltorefreshlibrary/build/intermediates/bundles/debug/res/drawable/indicator_bg_bottom.xml -->
