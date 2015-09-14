@@ -513,6 +513,7 @@ public class ProductionDetailActivity extends FragmentActivity {
             isPlay = true;
             play.setVisibility(View.GONE);
             pause.setVisibility(View.VISIBLE);
+            startBarUpdate();
         }
     }
     @Click(R.id.pause)
