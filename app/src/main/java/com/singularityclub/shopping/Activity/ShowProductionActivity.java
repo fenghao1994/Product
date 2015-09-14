@@ -90,7 +90,7 @@ public class ShowProductionActivity extends BaseActivity {
     protected Button person;
 
     @ViewById
-    protected TextView tuijian;
+    protected TextView tuijian, choose_type;
     //主题，分类按钮
     @ViewById
     protected Button type, theme;
@@ -133,6 +133,7 @@ public class ShowProductionActivity extends BaseActivity {
     protected String second = "-1";
     //确定进行的操作
     protected int flag1 = -1;
+    protected String chooseType;
 
 
     @AfterViews
@@ -193,6 +194,8 @@ public class ShowProductionActivity extends BaseActivity {
                 }else{
                     initWithoutProduction();
                 }
+                chooseType = "推荐";
+                choose_type.setText(chooseType);
             }
         });
 
@@ -345,9 +348,12 @@ public class ShowProductionActivity extends BaseActivity {
                 action.setEndTime(new Date(endTime));
                 if (flag == 1) {
                     action.setExtraId(Integer.parseInt(secondLevelAdapter.array.get(position).getSecondClassifyId()));
+                    chooseType = secondLevelAdapter.array.get(position).getSecondClassifyName();
                 } else {
                     action.setExtraId(Integer.parseInt(secondThemeAdapter.array.get(position).getSecondThemeId()));
+                    chooseType = secondThemeAdapter.array.get(position).getSecondThemeName();
                 }
+                choose_type.setText(chooseType);
                 float time = ((float) (endTime - startTime)) / 1000;
                 action.setTotalMinutes(time);
                 postAction(action);
