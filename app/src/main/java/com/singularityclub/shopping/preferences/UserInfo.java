@@ -27,4 +27,7 @@ public interface UserInfo {
     @DefaultInt(-1)
     int person();
 
+    @DefaultString("")
+    String birthday();
+
 }

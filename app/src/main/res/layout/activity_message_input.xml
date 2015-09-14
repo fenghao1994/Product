@@ -251,6 +251,22 @@
             />
     </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            >
+
+            <TextView
+                android:id="@+id/without_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="直接进入"
+                android:textSize="30sp"
+                />
+        </LinearLayout>
+
     </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,7 +46,7 @@ public class MessageInputActivity extends BaseActivity {
     @Pref
     protected UserInfo_ userInfo;
     @ViewById
-    protected TextView shop_id;
+    protected TextView shop_id, without_login;
 
     protected ProgressDialog progressDialog;
 
@@ -54,7 +55,7 @@ public class MessageInputActivity extends BaseActivity {
 
     @AfterViews
     public void init(){
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if ( !userInfo.id().get().equals("-1")){
             Intent intent = new Intent();
             intent.setClass(MessageInputActivity.this, ShowProductionActivity_.class);
@@ -187,6 +188,34 @@ public class MessageInputActivity extends BaseActivity {
                 dialog.show();
             }
         });
+
+        without_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HttpClient.get(MessageInputActivity.this, HttpUrl.GET_LOGIN, null, new BaseJsonHttpResponseHandler( MessageInputActivity.this){
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+                        Map<String, Object> map = JacksonMapper.parse(responseString);
+                        String id = map.get("id").toString();
+                        int person = (int) map.get("personality");
+
+                        userInfo.edit().id().put(id).person().put(person).apply();
+                        if (userInfo.shop().get() != -1) {
+                            completeToShowProduction();
+                        } else {
+                            completeToShopId();
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBytes, Throwable throwable) {
+                        super.onFailure(statusCode, headers, responseBytes, throwable);
+                    }
+                });
+            }
+        });
     }
 
 
@@ -198,7 +227,8 @@ public class MessageInputActivity extends BaseActivity {
                 Map<String, Object> map = JacksonMapper.parse(responseString);
                 String id = map.get("id").toString();
                 int person = (int) map.get("personality");
-                userInfo.edit().id().put(id).person().put(person).apply();
+                String birth = (String) map.get("birthday");
+                userInfo.edit().id().put(id).person().put(person).birthday().put(birth).apply();
                 progressDialog.dismiss();
                 if (userInfo.shop().get() != -1) {
                     completeToShowProduction();

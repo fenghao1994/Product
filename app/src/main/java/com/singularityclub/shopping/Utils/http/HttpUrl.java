@@ -71,4 +71,10 @@ public class HttpUrl {
 
     //得到二维码主题里面的商品
     public static final String POST_ERWEIMA = ROOT + "production/qrcode_theme";
+
+    //直接进入
+    public static final String GET_LOGIN = ROOT + "info_entry/without_login";
+
+    //直接进入得到商品
+    public static final String POST_WITHOUT_PORDUCTION = ROOT + "production/without_login";
 }

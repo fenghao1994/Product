@@ -42,7 +42,6 @@ public class ShopIdActivity extends BaseActivity {
             shop.setText(userInfo.shop().get() + "");
         }
 
-
         shop_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -87,7 +87,10 @@ public class ShowProductionActivity extends BaseActivity {
     protected GridView second_gridview, first_gridview;
     //人格按钮
     @ViewById
-    protected TextView person;
+    protected Button person;
+
+    @ViewById
+    protected TextView tuijian;
     //主题，分类按钮
     @ViewById
     protected Button type, theme;
@@ -135,12 +138,18 @@ public class ShowProductionActivity extends BaseActivity {
     @AfterViews
     protected void init() {
 
-        person.setVisibility(View.VISIBLE);
+        tuijian.setVisibility(View.VISIBLE);
         main_gridview.setAdapter(gridViewAdapter);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         aCache = ACache.get(this);
-        //返回与人格有关的商品
-        initShowProduction();
+
+        if (userInfo.person().get() != 0){
+            //返回与人格有关的商品
+            initShowProduction();
+        }else{
+            initWithoutProduction();
+        }
+
 
         //用户与商家绑定
         bing();
@@ -158,8 +167,10 @@ public class ShowProductionActivity extends BaseActivity {
         layout_person.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowProductionActivity.this, PersonActivity_.class);
-                startActivity(intent);
+                initWithoutProduction();
+                if (userInfo.person().get() == -1) {
+                    Toast.makeText(ShowProductionActivity.this, "信息不完整，无推荐商品", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -168,6 +179,20 @@ public class ShowProductionActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent t = new Intent(ShowProductionActivity.this, ShopCarActivity_.class);
                 startActivity(t);
+            }
+        });
+
+
+        //推荐事件
+        tuijian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (userInfo.person().get() != 0){
+                    initShowProduction();
+                }else{
+                    initWithoutProduction();
+                }
             }
         });
 
@@ -534,6 +559,33 @@ public class ShowProductionActivity extends BaseActivity {
     }
 
     /**
+     * 免登陆获得商品
+     */
+
+    protected void initWithoutProduction(){
+        RequestParams params = new RequestParams();
+        params.put("customer_id", userInfo.id().get());
+        progressDialog = ProgressDialog.show(this, "", "加载中！！！", true);
+        HttpClient.post(this, HttpUrl.POST_WITHOUT_PORDUCTION, params, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                progressDialog.dismiss();
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                if (list != null) {
+                    gridViewAdapter.init(list);
+                }
+                flag1 = 4;
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    /**
      * 与人格关联的商品展示
      */
     protected void initShowProduction() {
@@ -831,6 +883,9 @@ public class ShowProductionActivity extends BaseActivity {
             if (!second.equals("-1")) {
                 getErweimaProduction(second);
             }
+        } else if (flag1 == 4){
+            initWithoutProduction();
         }
+
     }
 }

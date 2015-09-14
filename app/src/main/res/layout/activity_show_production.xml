@@ -42,7 +42,7 @@
         <!--阴影-->
         <ImageView
             android:id="@+id/yinyin"
-            android:layout_width="1565dp"
+            android:layout_width="1570dp"
             android:layout_height="match_parent"
             android:src="@mipmap/b"
             android:alpha="0.5"
@@ -99,6 +99,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
                 android:text="主题"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue"
+                />
+
+
+            <Button
+                android:paddingLeft="20dp"
+                android:paddingRight="30dp"
+                android:id="@+id/person"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="人格"
                 android:textSize="20dp"
                 android:gravity="center"
                 android:textColor="@color/white"

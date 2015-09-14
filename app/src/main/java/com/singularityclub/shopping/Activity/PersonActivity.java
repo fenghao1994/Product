@@ -42,7 +42,7 @@ public class PersonActivity extends BaseActivity {
     @ViewById
     protected GridView person_gridview;
     @ViewById
-    protected TextView person_title;
+    protected TextView person_title, birth;
     @ViewById
     protected WebView webview;
     @Pref
@@ -53,6 +53,14 @@ public class PersonActivity extends BaseActivity {
 
     @AfterViews
     public void init(){
+
+        if (userInfo.person().get() == 0){
+            birth.setVisibility(View.GONE);
+        }else{
+            birth.setVisibility(View.VISIBLE);
+            birth.setText("出生日期：" + userInfo.birthday().get().toString());
+        }
+
         getPerson();
 
         person_back.setOnClickListener(new View.OnClickListener() {
@@ -80,8 +88,11 @@ public class PersonActivity extends BaseActivity {
                 person = personAdapter.array.get(position);
                 if (userInfo.person().get() == person.getId()){
                     person_title.setText("我的人格");
+                    birth.setVisibility(View.VISIBLE);
+                    birth.setText( userInfo.birthday().get());
                 }else{
                     person_title.setText(person.getName());
+                    birth.setVisibility(View.GONE);
                 }
                 String mime = "text/html";
                 String encoding = "utf-8";
@@ -95,14 +106,15 @@ public class PersonActivity extends BaseActivity {
      * 获得所以的主题信息
      */
     public void getPerson(){
-        HttpClient.get(this, HttpUrl.GET_PERSON, null, new BaseJsonHttpResponseHandler(this){
+        HttpClient.get(this, HttpUrl.GET_PERSON, null, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<Person> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<Person>>() {
                 });
                 personAdapter = new PersonAdapter(PersonActivity.this, list);
-                person_gridview.setAdapter( personAdapter);
+                person_gridview.setAdapter(personAdapter);
                 loadWebview();
+
             }
 
             @Override
@@ -115,18 +127,31 @@ public class PersonActivity extends BaseActivity {
     //loadWebview
 
     public void loadWebview(){
-        for (int i = 0 ; i < personAdapter.array.size() ; i++){
-            if ( userInfo.person().get() == personAdapter.array.get(i).getId()){
-                String mime = "text/html";
-                String encoding = "utf-8";
-                webview.getSettings().setJavaScriptEnabled(true);
-                webview.loadDataWithBaseURL(null, "<style>img{width:100%;}</style>  <base href=\"" + HttpUrl.ROOT + "\" />" + personAdapter.array.get(i).getUrl(), mime, encoding, null);
+        String mime = "text/html";
+        String encoding = "utf-8";
+        webview.getSettings().setJavaScriptEnabled(true);
 
-                //改变左侧颜色
-                personAdapter.color[i] = true;
-                personAdapter.notifyDataSetChanged();
-                return;
+        if (userInfo.person().get() != 0){
+            for (int i = 0 ; i < personAdapter.array.size() ; i++){
+                if ( userInfo.person().get() == personAdapter.array.get(i).getId()){
+                    webview.loadDataWithBaseURL(null, "<style>img{width:100%;}</style>  <base href=\"" + HttpUrl.ROOT + "\" />" + personAdapter.array.get(i).getUrl(), mime, encoding, null);
+                    //改变左侧颜色
+                    personAdapter.color[i] = true;
+                    personAdapter.notifyDataSetChanged();
+                    return;
+                }
             }
+        }else{
+            webview.loadDataWithBaseURL(null, "<style>img{width:100%;}</style>  <base href=\"" + HttpUrl.ROOT + "\" />" + personAdapter.array.get(0).getUrl(), mime, encoding, null);
+            noMessageShow();
         }
+    }
+
+    //没有输入个人信息的显示
+
+    public void noMessageShow(){
+        personAdapter.color[0] = true;
+        personAdapter.notifyDataSetChanged();
+        person_title.setText(personAdapter.array.get(0).getName());
     }
 }

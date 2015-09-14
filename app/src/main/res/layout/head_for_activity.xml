@@ -26,12 +26,12 @@
             android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/person"
+                android:id="@+id/tuijian"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:text="人格"
+                android:text="推荐"
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:gravity="center"
