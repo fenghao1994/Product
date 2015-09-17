@@ -36,16 +36,32 @@ import java.util.ArrayList;
  * Created by fenghao on 2015/8/19.
  * gridview适配器
  */
-@EBean
+
 public class GridViewAdapter extends BaseAdapter {
 
 
     public ArrayList<ProductionItem> array = new ArrayList<>();
-    @RootContext
     protected Context context;
+    LayoutInflater inflater = null;
+    static class ViewHolder{
+        ImageView goods_img;
+        TextView money, goods_title;
+    }
 
-    public GridViewAdapter(Context context) {
+    // DisplayImageOptions的初始化
+    DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .showImageForEmptyUri(R.mipmap.goods_demo)
+            .showImageOnLoading(R.mipmap.ic_launcher)
+            .showImageOnFail(R.mipmap.ic_launcher)
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .build();
+
+    public GridViewAdapter(Context context, ArrayList<ProductionItem> array) {
+        this.array = array;
         this.context = context;
+        this.inflater = LayoutInflater.from(context);
     }
 
     public interface ClickChange{
@@ -58,8 +74,13 @@ public class GridViewAdapter extends BaseAdapter {
         this.clickChange = clickChange;
     }
 
-    public void init( ArrayList<ProductionItem> array){
-        this.array = array;
+//    public void init( ArrayList<ProductionItem> array){
+//        this.array = array;
+//        this.notifyDataSetChanged();
+//    }
+
+    public void add( ArrayList<ProductionItem> list){
+        array.addAll(list);
         this.notifyDataSetChanged();
     }
 
@@ -81,8 +102,25 @@ public class GridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        GoodsItem goodsItem = null;
-        if (convertView == null){
+        ViewHolder holder = null;
+        if(convertView == null){
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.layout_goods, null);
+            holder.goods_img = (ImageView) convertView.findViewById(R.id.goods_img);
+            holder.goods_title = (TextView) convertView.findViewById(R.id.goods_title);
+            holder.money = (TextView) convertView.findViewById(R.id.money);
+            convertView.setTag(holder);
+        }else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.goods_title.setText( array.get(position).getName());
+        holder.money.setText( array.get(position).getPrice());
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        imageLoader.displayImage(array.get(position).getUrlImg(), holder.goods_img, options);
+
+        return convertView;
+       /* if (convertView == null){
             goodsItem = GoodsItem_.build(context);
         }else{
             goodsItem = (GoodsItem)convertView;
@@ -96,7 +134,7 @@ public class GridViewAdapter extends BaseAdapter {
             }
         });
         goodsItem.update( array, position);
-        return goodsItem;
+        return goodsItem;*/
 
     }
 

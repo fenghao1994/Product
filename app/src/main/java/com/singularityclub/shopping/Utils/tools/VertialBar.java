@@ -27,7 +27,7 @@ public class VertialBar extends SeekBar {
     }
 
     /**
-     * ÓÃÓÚË¢ĞÂthumbµÄÎ»ÖÃ
+     * ç”¨äºåˆ·æ–°thumbçš„ä½ç½®
      */
     public void onSizeChanged() {
         onSizeChanged(getWidth(), getHeight(), 0, 0);

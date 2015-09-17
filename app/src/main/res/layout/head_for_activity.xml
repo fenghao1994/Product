@@ -96,7 +96,7 @@
                 android:id="@+id/shop_car"
                 android:layout_width="30dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/cart"
+                android:src="@mipmap/new_car"
                 android:layout_marginRight="20dp"
                 />
         </LinearLayout>

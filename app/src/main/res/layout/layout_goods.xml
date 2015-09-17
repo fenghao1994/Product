@@ -5,35 +5,25 @@
 
     <RelativeLayout
         android:id="@+id/first_relativelayout"
-        android:layout_width="450dp"
-        android:layout_height="300dp"
-        android:background="@mipmap/list_bg"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:background="#B2ffffff"
         >
 
     <ImageView
         android:id="@+id/goods_img"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="280dp"
+        android:layout_height="360dp"
         android:src="@mipmap/goods_demo"
-        android:layout_marginTop="45dp"
-        android:layout_marginLeft="45dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="50dp"
         android:scaleType="fitXY"
         />
-    <TextView
-        android:id="@+id/goods_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="商品标题商品标题商品标题商品标题"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:textSize="16dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="40dp"
-        android:maxEms="7"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:textColor="@color/white"
-        />
+
+
+
 
     <LinearLayout
         android:id="@+id/layout_like"
@@ -43,43 +33,80 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:gravity="right|top"
+        android:visibility="gone"
         >
         <ImageView
             android:id="@+id/like_img"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@mipmap/detail_like"
+            android:visibility="gone"
             />
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="50dp"
-        >
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¥"
-            android:textSize="20dp"
-            android:textColor="@color/red"
-            android:layout_marginBottom="20dp"
-            />
-        <TextView
-            android:id="@+id/money"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-20dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:paddingTop="20dp"
+            >
+
+            <TextView
+                android:id="@+id/goods_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商品标题商品标题商品标题商品标题"
+                android:textSize="16dp"
+                android:maxEms="7"
+                android:layout_gravity="bottom"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/goods_img"
+                android:layout_alignStart="@+id/goods_img" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="20dp"
+                    />
+                <TextView
+                    android:id="@+id/money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="399"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="10dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="399"
-            android:textSize="20dp"
-            android:textColor="@color/red"
-            android:layout_marginBottom="20dp"
+            android:src="@mipmap/jt"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             />
-    </LinearLayout>
+
     </RelativeLayout>
 </RelativeLayout>

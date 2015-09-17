@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@mipmap/background"
     >
 
     <LinearLayout
@@ -55,22 +56,25 @@
         </LinearLayout>
     </LinearLayout>
 
+
+    ////////////////////////
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
-        <GridView
+      <!--  <GridView
             android:id="@+id/person_gridview"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:numColumns="1"
             android:gravity="center"
             ></GridView>
-
+-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="350dp"
             android:orientation="vertical"
             >
             <LinearLayout
@@ -91,13 +95,257 @@
             <WebView
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></WebView>
-
+                android:layout_height="match_parent"
+                ></WebView>
         </LinearLayout>
 
+       <!-- <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">-->
+
+            <AbsoluteLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="-45dp"
+                >
+
+                <ImageView
+                    android:layout_width="800dp"
+                    android:layout_height="300dp"
+                    android:src="@mipmap/iconbg"
+                    android:layout_x="160dp"
+                    android:layout_y="30dp"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="140dp"
+                    android:layout_y="215dp"
+                    >
+                <ImageView
+                    android:id="@+id/person1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                    />
+                    <TextView
+                        android:id="@+id/text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格一"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="202dp"
+                    android:layout_y="110dp"
+                    >
+                <ImageView
+                    android:id="@+id/person2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+
+                    />
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="人格二"
+                    android:textColor="@color/new_black"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" />
+                </RelativeLayout>
 
 
-    </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/relativelayout3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="300dp"
+                    android:layout_y="44dp"
+                    >
+                <ImageView
+                    android:id="@+id/person3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                    />
+                    <TextView
+                        android:id="@+id/text3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格三"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="408dp"
+                    android:layout_y="6dp"
+                    >
+                <ImageView
+                    android:id="@+id/person4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                    />
+                    <TextView
+                        android:id="@+id/text4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格四"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="517dp"
+                    android:layout_y="0dp"
+                    >
+                <ImageView
+                    android:id="@+id/person5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                    />
+                    <TextView
+                        android:id="@+id/text5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格五"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="628dp"
+                    android:layout_y="6dp"
+                    >
+                <ImageView
+                    android:id="@+id/person6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                    />
+
+                    <TextView
+                        android:id="@+id/text6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格六"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relativelayout7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="733dp"
+                    android:layout_y="44dp"
+                    >
+                <ImageView
+                    android:id="@+id/person7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                    />
+                    <TextView
+                        android:id="@+id/text7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格七"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relativelayout8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="830dp"
+                    android:layout_y="110dp"
+                    >
+                <ImageView
+                    android:id="@+id/person8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                    />
+                    <TextView
+                        android:id="@+id/text8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格八"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="898dp"
+                    android:layout_y="215dp"
+                    >
+                <ImageView
+                    android:id="@+id/person9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/person3"
+                     />
+                    <TextView
+                        android:id="@+id/text9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人格九"
+                        android:textColor="@color/new_black"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+            </AbsoluteLayout>
+        </LinearLayout>
+    <!--</LinearLayout>-->
 
 
 </LinearLayout>

@@ -61,9 +61,9 @@ public class FirstThemeAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.layout_first_level, null);
             holder.firstLevel = (TextView) convertView.findViewById(R.id.first_level);
             convertView.setTag(holder);
-        }else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+    }else {
+        holder = (ViewHolder) convertView.getTag();
+    }
         holder.firstLevel.setText(array.get(position).getFirstThemeName());
 
         if( color[position]){

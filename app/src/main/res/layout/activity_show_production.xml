@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_colors"
+    android:background="@mipmap/bg1"
     android:id="@+id/frame"
     >
-
     <include
         layout="@layout/head_for_activity"
         android:layout_width="match_parent"
@@ -28,7 +27,6 @@
         >
 
         <com.handmark.pulltorefresh.library.PullToRefreshGridView
-            android:layout_marginTop="20dp"
             android:id="@+id/main_gridview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -36,7 +34,8 @@
             android:horizontalSpacing="20dp"
             android:verticalSpacing="20dp"
             android:stretchMode="columnWidth"
-            android:layout_marginLeft="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="30dp"
             ></com.handmark.pulltorefresh.library.PullToRefreshGridView>
 
 
@@ -48,6 +47,7 @@
             android:layout_gravity="bottom|center_vertical"
             android:gravity="center"
             android:layout_marginBottom="20dp"
+            android:visibility="gone"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -74,9 +74,9 @@
 
         <GridView
             android:id="@+id/second_gridview"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@color/blue"
+            android:background="@mipmap/thirdbd"
             android:numColumns="1"
             android:stretchMode="columnWidth"
             android:horizontalSpacing="10dp"
@@ -86,9 +86,9 @@
 
         <GridView
             android:id="@+id/first_gridview"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@color/blue"
+            android:background="@mipmap/secondbg"
             android:numColumns="1"
             android:visibility="gone"
             android:layout_marginLeft="90dp"
@@ -96,51 +96,119 @@
         </GridView>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/first_bg"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/blue"
+            android:background="@mipmap/firthbg"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
             >
-            <Button
-                android:paddingLeft="20dp"
-                android:paddingRight="30dp"
-                android:id="@+id/type"
+
+            <LinearLayout
+                android:id="@+id/layout_type"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:text="分类"
-                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:textColor="@color/white"
-                android:background="@color/blue"
-                />
+                android:layout_marginTop="30dp"
+                >
+                <ImageView
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/type0"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分类"
+                    android:textSize="20dp"
+                    android:textColor="#333333"
+                    />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                >
 
-            <Button
+            <ImageView
                 android:paddingLeft="20dp"
                 android:paddingRight="30dp"
                 android:id="@+id/theme"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:text="主题"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:background="@color/blue"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/them0"
                 />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="主题"
+                    android:textSize="20dp"
+                    android:textColor="#333333"
+                    />
+            </LinearLayout>
 
-            <Button
-                android:paddingLeft="20dp"
-                android:paddingRight="30dp"
-                android:id="@+id/person"
+        <LinearLayout
+            android:id="@+id/layout_person1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            >
+
+            <ImageView
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:src="@mipmap/person0"
+                    />
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:text="人格"
                 android:textSize="20dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:background="@color/blue"
+                android:textColor="#333333"
                 />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout_tujian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                >
+                <ImageView
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/tujian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/tuijian0"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="推荐"
+                    android:textSize="20dp"
+                    android:textColor="#333333"
+                    />
+
+            </LinearLayout>
         </LinearLayout>
 
 

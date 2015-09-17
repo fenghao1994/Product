@@ -54,7 +54,6 @@ public class ShopCarActivity extends BaseActivity {
     protected int sum;
 
 
-    @Bean
     protected GridViewAdapter gridViewAdapter;
     @AfterViews
     protected void init(){
@@ -67,7 +66,7 @@ public class ShopCarActivity extends BaseActivity {
                 ShopCarActivity.this.finish();
             }
         });
-        gridViewAdapter.setClickChange(new GridViewAdapter.ClickChange() {
+   /*     gridViewAdapter.setClickChange(new GridViewAdapter.ClickChange() {
             @Override
             public void changePrice(int num) {
                 double sum = 0;
@@ -81,7 +80,7 @@ public class ShopCarActivity extends BaseActivity {
 
             }
         });
-
+*/
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +140,8 @@ public class ShopCarActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                gridViewAdapter.init(list);
+                gridViewAdapter = new GridViewAdapter(ShopCarActivity.this, list);
+                car_gridview.setAdapter(gridViewAdapter);
                 sum = 0;
                 for (int i = 0; i < gridViewAdapter.array.size(); i++) {
                     sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());
@@ -164,7 +164,8 @@ public class ShopCarActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                gridViewAdapter.init(list);
+                gridViewAdapter = new GridViewAdapter(ShopCarActivity.this, list);
+                car_gridview.setAdapter(gridViewAdapter);
             }
 
             @Override

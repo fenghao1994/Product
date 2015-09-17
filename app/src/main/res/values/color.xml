@@ -40,4 +40,6 @@
     <color name="search_border">#DDDDDD</color>
     <color name="lightgreen">#99CC33</color>
     <color name="theme_type">#7993a3</color>
+    <color name="new_red">#cc6666</color>
+    <color name="new_black">#333333</color>
 </resources>
