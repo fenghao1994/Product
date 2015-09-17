@@ -20,7 +20,7 @@
             android:layout_height="30dp"
             android:id="@id/back"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="35dp"
             android:src="@mipmap/back"
             android:visibility="gone"/>
 
@@ -94,10 +94,10 @@
             >
             <ImageView
                 android:id="@+id/shop_car"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@mipmap/new_car"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="35dp"
                 />
         </LinearLayout>
 

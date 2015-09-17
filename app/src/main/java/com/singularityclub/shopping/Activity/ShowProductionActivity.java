@@ -189,11 +189,27 @@ public class ShowProductionActivity extends BaseActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                listview.setVisibility(View.GONE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 if (first_bg.getVisibility() == View.GONE) {
                     ObjectAnimator.ofFloat(first_bg, "translationX", -180f, 0F).setDuration(500).start();
                 }
                 first_bg.setVisibility(View.VISIBLE);
-                yinyin.setVisibility(View.VISIBLE);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(500);
+                            showYinying();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+//                yinyin.setVisibility(View.VISIBLE);
                 flag = 3;
             }
         });
@@ -201,7 +217,7 @@ public class ShowProductionActivity extends BaseActivity {
         main_gridview.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<GridView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-
+                main_gridview.onRefreshComplete();
             }
 
             //上拉加载
@@ -505,6 +521,7 @@ public class ShowProductionActivity extends BaseActivity {
 
 
                 first_gridview.setVisibility(View.GONE);
+                first_bg.setVisibility(View.GONE);
                 buttonBack();
                 yinyin.setVisibility(View.GONE);
                 if (flag == 1) {
@@ -544,6 +561,7 @@ public class ShowProductionActivity extends BaseActivity {
                 yinyin.setVisibility(View.GONE);
                 first_gridview.setVisibility(View.GONE);
                 second_gridview.setVisibility(View.GONE);
+                first_bg.setVisibility(View.GONE);
                 if (search_text.getText().length() == 0) {
                     listview.setAdapter(new ArrayAdapter<String>(ShowProductionActivity.this, R.layout.layout_search_item, R.id.search_item, myApplication.getList()));
                 }
@@ -707,8 +725,8 @@ public class ShowProductionActivity extends BaseActivity {
     public void backToInit() {
 
         listview.setVisibility(View.GONE);
-        float x = second_gridview.getTranslationX();
-        ObjectAnimator.ofFloat(second_gridview, "translationX", x, 0).setDuration(100).start();
+       /* float x = second_gridview.getTranslationX();
+        ObjectAnimator.ofFloat(second_gridview, "translationX", x, 0).setDuration(100).start();*/
     }
 
     @Override
