@@ -30,6 +30,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/body_mid"
             android:layout_width="match_parent"
             android:layout_height="450dp"
             android:orientation="horizontal">
@@ -49,12 +50,17 @@
                     android:src="@mipmap/goods_demo"/>
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="35dp"
-                android:layout_marginLeft="30dp"
                 android:layout_toRightOf="@+id/picture"
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="30dp">
+
+                <LinearLayout
+                android:id="@+id/linearlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
@@ -62,6 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="30dp"
+                    android:textColor="#333333"
                     android:maxEms="10"
                     android:maxLines="2"
                     android:ellipsize="end"
@@ -77,6 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="@string/product_price"/>
 
                     <TextView
@@ -84,6 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:textSize="25dp"
+                        android:textColor="#333333"
                         android:text="￥"/>
 
                     <TextView
@@ -91,6 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="25dp"
+                        android:textColor="#333333"
                         android:text="1690.00"/>
 
                 </LinearLayout>
@@ -104,6 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="@string/product_character"/>
 
                     <TextView
@@ -112,6 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="白红"/>
 
                 </LinearLayout>
@@ -125,6 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="@string/product_area"/>
 
                     <TextView
@@ -133,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="中国"/>
 
                 </LinearLayout>
@@ -146,6 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="@string/product_weight"/>
 
                     <TextView
@@ -154,6 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="200g"/>
 
                 </LinearLayout>
@@ -167,6 +183,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="@string/product_biref"/>
 
                     <TextView
@@ -175,25 +192,35 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:textSize="20dp"
+                        android:textColor="#333333"
                         android:text="和田玉四方股份的福尔恶狠狠地发uierfhidfire分火热的风景如画热乎乎地发福利局副如何黄日华第三方如何立法会if日发布了几分节日福利局"/>
 
                 </LinearLayout>
 
-                <TextView
+                <LinearLayout
+                    android:layout_width="450dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:id="@+id/audio_name"
+                    android:layout_marginTop="30dp"
                     android:textSize="25dp"
+                    android:textColor="#333333"
                     android:text="@string/audio_tip"/>
 
-                <include
-                    android:id="@+id/audio_player"
-                    layout="@layout/layout_music"
-                    android:layout_width="450dp"
-                    android:layout_height="60dp"/>
+                    <include
+                        android:id="@+id/audio_player"
+                        layout="@layout/layout_music"
+                        android:layout_gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"/>
+                </LinearLayout>
 
             </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -239,7 +266,7 @@
         android:id="@+id/menu"
         android:layout_height="wrap_content"
         android:layout_width="450dp"
-        android:layout_marginTop="446dp"
+        android:layout_marginTop="497dp"
         android:layout_marginLeft="500dp"
         android:background="#e0cfbb"
         android:visibility="gone"
@@ -248,9 +275,8 @@
     <com.singularityclub.shopping.Utils.tools.VertialBar
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="850dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="300dp"
         android:progressDrawable="@drawable/bg_bar"
         android:id="@+id/sound"
         android:visibility="gone"/>
