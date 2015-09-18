@@ -67,11 +67,9 @@ public class FirstThemeAdapter extends BaseAdapter {
         holder.firstLevel.setText(array.get(position).getFirstThemeName());
 
         if( color[position]){
-            convertView.setBackgroundColor(context.getResources().getColor(R.color.dark_blue));
-            holder.firstLevel.setBackgroundColor(context.getResources().getColor(R.color.dark_blue));
+            holder.firstLevel.setTextColor(context.getResources().getColor(R.color.new_red));
         }else{
-            holder.firstLevel.setBackgroundColor(context.getResources().getColor(R.color.blue));
-            convertView.setBackgroundColor(context.getResources().getColor(R.color.blue));
+            holder.firstLevel.setTextColor(context.getResources().getColor(R.color.new_black));
 
         }
         return convertView;

@@ -11,9 +11,9 @@
 
         <LinearLayout
             android:id="@+id/layout_person"
-            android:layout_width="80dp"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:background="@drawable/button_click">
+            >
 
             <ImageView
             android:layout_width="30dp"
@@ -21,7 +21,7 @@
             android:id="@id/back"
             android:layout_gravity="center"
             android:layout_marginLeft="35dp"
-            android:src="@mipmap/back"
+            android:src="@mipmap/new_back"
             android:visibility="gone"/>
 
             <TextView
@@ -80,17 +80,16 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:text="@string/product_detail"
-            android:textColor="@color/white"
+            android:textColor="@color/new_black"
             android:visibility="gone"
             android:textSize="35dp"/>
 
         <LinearLayout
             android:id="@+id/layout_shop"
-            android:layout_width="80dp"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="right|center_vertical"
-            android:background="@drawable/button_click"
             >
             <ImageView
                 android:id="@+id/shop_car"

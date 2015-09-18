@@ -2,6 +2,7 @@ package com.singularityclub.shopping.Activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
@@ -48,8 +49,8 @@ public class ShopCarActivity extends BaseActivity {
     @Pref
     protected UserInfo_ userInfo;
     @ViewById
-    protected LinearLayout layout_back;
-
+    protected LinearLayout layout_back, layout_complete;
+    protected ProgressDialog progressDialog;
 
     protected int sum;
 
@@ -57,7 +58,7 @@ public class ShopCarActivity extends BaseActivity {
     protected GridViewAdapter gridViewAdapter;
     @AfterViews
     protected void init(){
-        showProdaction();
+//        showProdaction();
         car_gridview.setMode(PullToRefreshBase.Mode.BOTH);
         car_gridview.setAdapter(gridViewAdapter);
         layout_back.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +88,33 @@ public class ShopCarActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 ShopCarActivity.this.finish();
+            }
+        });
+
+        layout_complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ShopCarActivity.this);
+                builder.setTitle("确定完成吗？");
+                builder.setMessage("确定后,将清除客户信息,无法恢复！");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        userInfo.edit().id().put("-1").shopNumber().put(0).apply();
+                        dialog.dismiss();
+                        ShopCarActivity.this.finish();
+                        Intent intent = new Intent(ShopCarActivity.this, MessageInputActivity_.class);
+                        startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -135,9 +163,11 @@ public class ShopCarActivity extends BaseActivity {
     public void showProdaction(){
         RequestParams params = new RequestParams();
         params.put("customer_id", userInfo.id().get());
+        progressDialog = ProgressDialog.show(this, "", "加载中111！！！", true);
         HttpClient.post(this, HttpUrl.POST_LOOK_CAR, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                progressDialog.dismiss();
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 gridViewAdapter = new GridViewAdapter(ShopCarActivity.this, list);
@@ -147,10 +177,12 @@ public class ShopCarActivity extends BaseActivity {
                     sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());
                 }
                 price.setText(sum + "");
+
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                progressDialog.dismiss();
                 Toast.makeText(ShopCarActivity.this, "购物车 " + statusCode, Toast.LENGTH_LONG).show();
             }
         });

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
@@ -27,7 +28,9 @@ import org.apache.http.Header;
 public class ShopIdActivity extends BaseActivity {
 
     @ViewById
-    protected ImageView shop_complete, save;
+    protected ImageView shop_complete;
+    @ViewById
+    protected TextView save;
 
     @ViewById
     protected EditText shop;
@@ -46,6 +49,7 @@ public class ShopIdActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if( !userInfo.id().get().equals("-1") && shop.getText().length() != 0){
+                    userInfo.edit().shop().put(Integer.parseInt(shop.getText().toString())).apply();
                     completeShopId();
                 }else{
                     if ( shop.getText().length() == 0){

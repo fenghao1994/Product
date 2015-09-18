@@ -254,14 +254,33 @@ public class ShowProductionActivity extends BaseActivity {
             }
         });
 
-      /*  layout_person.setOnClickListener(new View.OnClickListener() {
+      layout_person.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (first_gridview.getVisibility() == View.GONE) {
-                    ObjectAnimator.ofFloat(first_gridview, "translationX", 300f, 500F).setDuration(500).start();
+                listview.setVisibility(View.GONE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                if (first_bg.getVisibility() == View.GONE) {
+                    ObjectAnimator.ofFloat(first_bg, "translationX", -180f, 0F).setDuration(500).start();
                 }
+                first_bg.setVisibility(View.VISIBLE);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(500);
+                            showYinying();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+//                yinyin.setVisibility(View.VISIBLE);
+                flag = 3;
             }
-        });*/
+        });
 
         layout_shop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -357,7 +376,7 @@ public class ShowProductionActivity extends BaseActivity {
             }
         });
 
-        //主题点击事件
+        //主题`点击事件
         theme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

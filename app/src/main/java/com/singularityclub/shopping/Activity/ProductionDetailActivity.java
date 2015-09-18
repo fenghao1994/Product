@@ -170,9 +170,9 @@ public class ProductionDetailActivity extends FragmentActivity {
                 selectPicture();
                 // DisplayImageOptions的初始化
                 DisplayImageOptions options = new DisplayImageOptions.Builder()
-                        .showImageForEmptyUri(R.mipmap.goods_demo)
-                        .showImageOnLoading(R.mipmap.goods_demo)
-                        .showImageOnFail(R.mipmap.goods_demo)
+                        .showImageForEmptyUri(R.mipmap.load)
+                        .showImageOnLoading(R.mipmap.load)
+                        .showImageOnFail(R.mipmap.load)
                         .cacheInMemory(true)
                         .cacheOnDisk(true)
                         .bitmapConfig(Bitmap.Config.RGB_565)
@@ -216,9 +216,9 @@ public class ProductionDetailActivity extends FragmentActivity {
 
                 // DisplayImageOptions的初始化
                 DisplayImageOptions options = new DisplayImageOptions.Builder()
-                        .showImageForEmptyUri(R.mipmap.goods_demo)
-                        .showImageOnLoading(R.mipmap.goods_demo)
-                        .showImageOnFail(R.mipmap.goods_demo)
+                        .showImageForEmptyUri(R.mipmap.load)
+                        .showImageOnLoading(R.mipmap.load)
+                        .showImageOnFail(R.mipmap.load)
                         .cacheInMemory(true)
                         .cacheOnDisk(true)
                         .bitmapConfig(Bitmap.Config.RGB_565)

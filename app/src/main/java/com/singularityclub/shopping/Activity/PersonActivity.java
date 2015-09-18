@@ -70,7 +70,8 @@ public class PersonActivity extends BaseActivity {
 
     @AfterViews
     public void init(){
-
+        webview.setBackgroundResource(R.mipmap.bg_down);
+        webview.setBackgroundColor(Color.argb(0, 0, 0, 0));
         initArray();
         if (userInfo.person().get() == 0){
             birth.setVisibility(View.GONE);
@@ -97,29 +98,6 @@ public class PersonActivity extends BaseActivity {
 
         listen();
 
-      /*  person_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                for (int i = 0; i < personAdapter.array.size(); i++) {
-                    personAdapter.color[i] = false;
-                }
-                personAdapter.color[position] = true;
-                personAdapter.notifyDataSetChanged();
-                person = personAdapter.array.get(position);
-                if (userInfo.person().get() == person.getId()){
-                    person_title.setText("我的人格");
-                    birth.setVisibility(View.VISIBLE);
-                    birth.setText( userInfo.birthday().get());
-                }else{
-                    person_title.setText(person.getName());
-                    birth.setVisibility(View.GONE);
-                }
-                String mime = "text/html";
-                String encoding = "utf-8";
-                webview.getSettings().setJavaScriptEnabled(true);
-                webview.loadDataWithBaseURL(null, "<style>img{width:100%;}</style>  <base href=\"" + HttpUrl.ROOT + "\" />" + person.getUrl(), mime, encoding, null);
-            }
-        });*/
     }
 
     public void initArray(){
@@ -182,8 +160,6 @@ public class PersonActivity extends BaseActivity {
         String mime = "text/html";
         String encoding = "utf-8";
         webview.getSettings().setJavaScriptEnabled(true);
-        webview.setBackgroundResource(R.mipmap.background);
-        webview.setBackgroundColor(Color.argb(0, 0, 0, 0));
 
         if (userInfo.person().get() != 0){
             for (int i = 0 ; i < arrayList.size() ; i++){
@@ -232,88 +208,6 @@ public class PersonActivity extends BaseActivity {
                 }
             });
         }
-
-       /* relativelayout1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person1.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text1.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(0);
-            }
-        });
-        relativelayout2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person2.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text2.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(1);
-            }
-        });
-        relativelayout3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person3.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text3.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(2);
-            }
-        });
-        relativelayout4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person4.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text4.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(3);
-            }
-        });
-        relativelayout5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person5.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text5.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(4);
-            }
-        });
-        relativelayout6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person6.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text6.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(5);
-            }
-        });
-        relativelayout7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person7.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text7.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(6);
-            }
-        });
-        relativelayout8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person8.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text8.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(7);
-            }
-        });
-        relativelayout9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToinit();
-                person9.setImageDrawable(getResources().getDrawable(R.mipmap.person4));
-                text9.setTextColor(getResources().getColor(R.color.new_red));
-                loadWebView(8);
-            }
-        });*/
     }
 
     public void loadWebView(int num){
@@ -336,25 +230,6 @@ public class PersonActivity extends BaseActivity {
             images[i].setImageDrawable( getResources().getDrawable(R.mipmap.person3));
             texts[i].setTextColor(getResources().getColor(R.color.new_black));
         }
-//
-//        person1.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text1.setTextColor(getResources().getColor(R.color.new_black));
-//        person2.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text2.setTextColor(getResources().getColor(R.color.new_black));
-//        person3.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text3.setTextColor(getResources().getColor(R.color.new_black));
-//        person4.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text4.setTextColor(getResources().getColor(R.color.new_black));
-//        person5.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text5.setTextColor(getResources().getColor(R.color.new_black));person1.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        person6.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text6.setTextColor(getResources().getColor(R.color.new_black));
-//        person7.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text7.setTextColor(getResources().getColor(R.color.new_black));
-//        person8.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text8.setTextColor(getResources().getColor(R.color.new_black));
-//        person9.setImageDrawable(getResources().getDrawable(R.mipmap.person3));
-//        text9.setTextColor(getResources().getColor(R.color.new_black));
     }
 
 }
