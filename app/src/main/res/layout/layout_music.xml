@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="450dp" android:layout_height="60dp"
+    android:layout_width="400dp" android:layout_height="60dp"
     android:background="@mipmap/music_bg"
     android:layout_gravity="center_horizontal">
 
@@ -31,13 +31,14 @@
     </FrameLayout>
 
     <SeekBar
-        android:layout_width="280dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/play_pause_layout"
         android:maxHeight="8dp"
         android:minHeight="8dp"
+        android:thumb="@mipmap/corner"
         android:progressDrawable="@drawable/bg_bar"
         android:id="@+id/procesee" />
 
@@ -52,13 +53,13 @@
         android:text="00:00"
         android:visibility="gone"/>
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/voice"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/procesee"
-        android:src="@mipmap/music_voice"/>
+        android:src="@mipmap/music_voice"/>-->
 
     <!--<com.singularityclub.shopping.Utils.tools.VertialBar
         android:layout_width="wrap_content"
@@ -75,9 +76,10 @@
         android:id="@+id/audio_list"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/sound"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:src="@mipmap/music_list" />
 
 </RelativeLayout>

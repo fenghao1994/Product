@@ -62,9 +62,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="30dp"
-                    android:maxEms="10"
-                    android:maxLines="2"
+                    android:maxEms="18"
+                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:text="11111111111111111111111111111111111111111111111111111111111111111"
                     />
 
                 <LinearLayout
@@ -190,7 +191,7 @@
                 <include
                     android:id="@+id/audio_player"
                     layout="@layout/layout_music"
-                    android:layout_width="450dp"
+                    android:layout_width="400dp"
                     android:layout_height="60dp"/>
 
             </LinearLayout>
@@ -230,7 +231,7 @@
             android:id="@+id/cancel_attention"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@mipmap/cart_like"
+            android:src="@mipmap/delete"
             android:visibility="gone"/>
 
     </LinearLayout>
@@ -238,21 +239,21 @@
     <ListView
         android:id="@+id/menu"
         android:layout_height="wrap_content"
-        android:layout_width="450dp"
+        android:layout_width="400dp"
         android:layout_marginTop="446dp"
         android:layout_marginLeft="500dp"
         android:background="#e0cfbb"
         android:visibility="gone"
         ></ListView>
 
-    <com.singularityclub.shopping.Utils.tools.VertialBar
+    <!--<com.singularityclub.shopping.Utils.tools.VertialBar
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="850dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="260dp"
         android:progressDrawable="@drawable/bg_bar"
+        android:thumb="@color/lightgreen"
         android:id="@+id/sound"
-        android:visibility="gone"/>
+        android:visibility="gone"/>-->
 
 </RelativeLayout>

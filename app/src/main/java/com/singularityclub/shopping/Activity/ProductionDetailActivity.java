@@ -35,7 +35,6 @@ import com.singularityclub.shopping.Utils.http.BaseJsonHttpResponseHandler;
 import com.singularityclub.shopping.Utils.http.HttpClient;
 import com.singularityclub.shopping.Utils.http.HttpUrl;
 import com.singularityclub.shopping.Utils.http.JacksonMapper;
-import com.singularityclub.shopping.Utils.tools.VertialBar;
 import com.singularityclub.shopping.preferences.UserInfo_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -63,19 +62,21 @@ public class ProductionDetailActivity extends FragmentActivity {
     @ViewById
     protected EditText search_text;
     @ViewById
-    protected ImageView photo, back, play, pause, add_attention, cancel_attention, voice;
+    protected ImageView photo, back, play, pause, add_attention, cancel_attention;
     @ViewById
     protected RelativeLayout search;
     @ViewById
     protected ListView menu;
     @ViewById
     protected SeekBar procesee;
-    @ViewById
-    protected VertialBar sound;
+//    @ViewById
+//    protected VertialBar sound;
     @ViewById
     protected WebView webview;
     @ViewById
     protected ScrollView detail_body;
+    @ViewById
+    protected RelativeLayout audio_player;
     @Pref
     protected UserInfo_ userInfo;
     protected ProductionItem product;
@@ -129,10 +130,10 @@ public class ProductionDetailActivity extends FragmentActivity {
         player = new MediaPlayer();
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);   //获取音量服务
         maxSound = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);  //获取系统音量最大值
-        sound.setMax(maxSound * MULTIPLYING_POWER);
+//        sound.setMax(maxSound * MULTIPLYING_POWER);
         currentSound = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        sound.setProgress(currentSound * MULTIPLYING_POWER);
-        sound.setOnSeekBarChangeListener(new SeekBarListener());
+//        sound.setProgress(currentSound * MULTIPLYING_POWER);
+//        sound.setOnSeekBarChangeListener(new SeekBarListener());
         procesee.setOnSeekBarChangeListener(new ProcessListener());
 
         showName = false;
@@ -166,7 +167,7 @@ public class ProductionDetailActivity extends FragmentActivity {
 
                 product_name.setText(product.getName());
                 product_price.setText(product.getPrice());
-//                selectPicture();
+                selectPicture();
                 // DisplayImageOptions的初始化
                 DisplayImageOptions options = new DisplayImageOptions.Builder()
                         .showImageForEmptyUri(R.mipmap.goods_demo)
@@ -211,7 +212,7 @@ public class ProductionDetailActivity extends FragmentActivity {
 
                 product_name.setText(product.getName());
                 product_price.setText(product.getPrice());
-//                selectPicture();
+                selectPicture();
 
                 // DisplayImageOptions的初始化
                 DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -324,10 +325,10 @@ public class ProductionDetailActivity extends FragmentActivity {
 
         if (product.getAttention().equals("1")) {
             product.setAttention("0");
-//            selectPicture();
+            selectPicture();
         } else {
             product.setAttention("1");
-//            selectPicture();
+            selectPicture();
         }
 
         HttpClient.post(this, HttpUrl.POST_PRODUCTION_ATTENTION, parms, new BaseJsonHttpResponseHandler(this) {
@@ -441,6 +442,7 @@ public class ProductionDetailActivity extends FragmentActivity {
             detail_body.scrollTo(0,0);
 
             if(!isClick){
+
                 menu.setVisibility(View.VISIBLE);
                 isClick = true;
                 hideMenu();
@@ -493,25 +495,36 @@ public class ProductionDetailActivity extends FragmentActivity {
     }
 
     //声音控制显示
-    @Click(R.id.voice)
+   /* @Click(R.id.voice)
     public void showVoiceControl(){
+        detail_body.scrollTo(0,0);
+
+        *//*if(product_name.getTextSize() > 10){
+            RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+//            RelativeLayout.LayoutParams layoutParam = (RelativeLayout.LayoutParams) sound.getLayoutParams();
+            layoutParam.setMargins(290,0,0,850);
+            sound.setLayoutParams(layoutParam);
+        }*//*
         if(!voiceClick) {
             sound.setVisibility(View.VISIBLE);
+            voiceClick = true;
         } else {
             sound.setVisibility(View.GONE);
+            voiceClick = false;
         }
-    }
+    }*/
 
-    //页面滑动时音频菜单隐藏
+    //页面滑动时隐藏
+    @UiThread
     public void hideMenu(){
         detail_body.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction()==MotionEvent.ACTION_MOVE) {
+                if(event.getAction() == MotionEvent.ACTION_MOVE) {
                     menu.setVisibility(View.GONE);
-                    sound.setVisibility(View.GONE);
+//                    sound.setVisibility(View.GONE);
                     isClick = false;
-                    voiceClick = false;
+//                    voiceClick = false;
                 }
 
                 return false;
@@ -558,7 +571,7 @@ public class ProductionDetailActivity extends FragmentActivity {
     };
 
     //音量进度条
-    private class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
+   /* private class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
@@ -571,7 +584,7 @@ public class ProductionDetailActivity extends FragmentActivity {
         public void onStartTrackingTouch(SeekBar seekBar) {}
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {}
-    }
+    }*/
 
     //播放进度条
     private class ProcessListener implements SeekBar.OnSeekBarChangeListener {
