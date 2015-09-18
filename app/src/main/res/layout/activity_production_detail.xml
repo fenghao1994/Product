@@ -65,7 +65,8 @@
                     android:maxEms="18"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:text="11111111111111111111111111111111111111111111111111111111111111111"
+                    android:typeface="monospace"
+                    android:text="低负荷分分合合uf大大方方回复iffff1111111111111111111111111111111111111111111"
                     />
 
                 <LinearLayout
