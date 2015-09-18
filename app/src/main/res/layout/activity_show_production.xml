@@ -131,6 +131,32 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_tujian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                >
+                <ImageView
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/tujian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/tuijian0"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="推荐"
+                    android:textSize="20dp"
+                    android:textColor="#333333"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layout_theme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -183,32 +209,6 @@
                 />
             </LinearLayout>
 
-
-            <LinearLayout
-                android:id="@+id/layout_tujian"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginTop="30dp"
-                >
-                <ImageView
-                    android:paddingLeft="20dp"
-                    android:paddingRight="30dp"
-                    android:id="@+id/tujian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/tuijian0"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="推荐"
-                    android:textSize="20dp"
-                    android:textColor="#333333"
-                    />
-
-            </LinearLayout>
         </LinearLayout>
 
 

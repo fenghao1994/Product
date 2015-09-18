@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -559,6 +560,7 @@ public class ShowProductionActivity extends BaseActivity {
                     firstThemeAdapter.color[mainPosition] = false;
                     firstThemeAdapter.notifyDataSetChanged();
                 }
+                flag1 = 1;
 
             }
         });
@@ -730,8 +732,10 @@ public class ShowProductionActivity extends BaseActivity {
                 intent.putExtra("qrcode", result);
                 startActivity(intent);
             }else{
+                params = new RequestParams();
                 second = result;
                 getErweimaProduction(result);
+                flag1 = 3;
 
             }
 
@@ -769,7 +773,6 @@ public class ShowProductionActivity extends BaseActivity {
                 });
 
                 page4 = headers[4].getValue();
-                if (list.size() != 0){
                     if (upLoad){
                         gridViewAdapter.add(list);
                     }else{
@@ -779,12 +782,15 @@ public class ShowProductionActivity extends BaseActivity {
                     upLoad = false;
                     flag1 = 4;
                     params = new RequestParams();
-                }
                 main_gridview.onRefreshComplete();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                upLoad = false;
+                flag1 = 4;
+                params = new RequestParams();
+                main_gridview.onRefreshComplete();
                 progressDialog.dismiss();
             }
         });
@@ -803,24 +809,26 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 page2 = headers[4].getValue();
-                if (list.size() != 0){
-                    if (upLoad){
-                        gridViewAdapter.add( list);
-                    }else{
-                        gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                        main_gridview.setAdapter(gridViewAdapter);
-                    }
-                    upLoad = false;
-                    flag1 = 2;
-                    params = new RequestParams();
+                if (upLoad){
+                    gridViewAdapter.add( list);
+                }else{
+                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                    main_gridview.setAdapter(gridViewAdapter);
                 }
+                upLoad = false;
+                flag1 = 2;
                 main_gridview.onRefreshComplete();
+                params = new RequestParams();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                upLoad = false;
+                flag1 = 2;
+                main_gridview.onRefreshComplete();
+                params = new RequestParams();
                 progressDialog.dismiss();
-                Toast.makeText(ShowProductionActivity.this, "查看关联人格", Toast.LENGTH_LONG).show();
+                Toast.makeText(ShowProductionActivity.this, "查看关联人格" + responseString, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -839,7 +847,6 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 page0 = headers[4].getValue();
-                if (list.size() != 0){
                     if (upLoad){
                         gridViewAdapter.add(list);
                     }else{
@@ -851,7 +858,7 @@ public class ShowProductionActivity extends BaseActivity {
                         Toast.makeText(ShowProductionActivity.this, "无搜索结果", Toast.LENGTH_LONG).show();
                     }
                     params = new RequestParams();
-                }
+
                 main_gridview.onRefreshComplete();
             }
 
@@ -943,22 +950,26 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
                 page1 = headers[4].getValue();
-                if (list.size() != 0){
+
                     if (upLoad){
                         gridViewAdapter.add( list);
                     }else{
                         gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
                         main_gridview.setAdapter(gridViewAdapter);
                     }
-                    upLoad = false;
-                    flag1 = 1;
-                    params = new RequestParams();
-                }
+
+                upLoad = false;
+                flag1 = 1;
+                params = new RequestParams();
                 main_gridview.onRefreshComplete();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                upLoad = false;
+                flag1 = 1;
+                params = new RequestParams();
+                main_gridview.onRefreshComplete();
                 Toast.makeText(ShowProductionActivity.this, "二级分类里面的商品错误" + statusCode, Toast.LENGTH_LONG).show();
             }
         });
@@ -1031,8 +1042,9 @@ public class ShowProductionActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
+
+                Log.e("abc", list.size() + "");
                 page3 = headers[4].getValue();
-                if (list.size() != 0){
                     if (upLoad){
                         gridViewAdapter.add( list);
                     }else{
@@ -1042,12 +1054,15 @@ public class ShowProductionActivity extends BaseActivity {
                     upLoad = false;
                     flag1 = 3;
                     params = new RequestParams();
-                }
                 main_gridview.onRefreshComplete();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                upLoad = false;
+                flag1 = 3;
+                params = new RequestParams();
+                main_gridview.onRefreshComplete();
                 Toast.makeText(ShowProductionActivity.this, "扫描主题二位码内容错误" + statusCode, Toast.LENGTH_LONG).show();
             }
         });
@@ -1118,7 +1133,7 @@ public class ShowProductionActivity extends BaseActivity {
         page2 = "1";
         page3 = "1";
         page4 = "1";
-        if (flag1 == 0) {
+       /* if (flag1 == 0) {
             if (!second.equals("-1")) {
                 showSearchProduction(second);
             }
@@ -1134,7 +1149,7 @@ public class ShowProductionActivity extends BaseActivity {
             }
         } else if (flag1 == 4){
             initWithoutProduction();
-        }
+        }*/
 
     }
 }
