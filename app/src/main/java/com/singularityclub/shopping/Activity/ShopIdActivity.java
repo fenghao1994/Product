@@ -1,6 +1,5 @@
 package com.singularityclub.shopping.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
@@ -40,6 +39,8 @@ public class ShopIdActivity extends BaseActivity {
 
     @AfterViews
     protected void init(){
+
+        shop_complete.setVisibility(View.VISIBLE);
 
         if (userInfo.shop().get() != -1){
             shop.setText(userInfo.shop().get() + "");
