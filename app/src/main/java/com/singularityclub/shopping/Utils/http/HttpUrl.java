@@ -77,4 +77,17 @@ public class HttpUrl {
 
     //直接进入得到商品
     public static final String POST_WITHOUT_PORDUCTION = ROOT + "production/without_login";
+
+    //得到活动的图片
+    public static final String GET_ACTIVITY_IMAGE = ROOT + "notice";
+
+
+    /*
+    *
+    * */
+
+    //商品排序
+    public static final String POST_ORDER_PRODUCTION = ROOT + "";
+    //按照商品价格去商品
+    public static final String POST_PRICE_PRODUCTION = ROOT + "";
 }

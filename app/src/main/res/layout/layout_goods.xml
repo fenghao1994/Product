@@ -5,15 +5,15 @@
 
     <RelativeLayout
         android:id="@+id/first_relativelayout"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
         android:background="#B2ffffff"
         >
 
     <ImageView
         android:id="@+id/goods_img"
-        android:layout_width="280dp"
-        android:layout_height="360dp"
+        android:layout_width="190dp"
+        android:layout_height="230dp"
         android:src="@mipmap/goods_demo"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
@@ -52,7 +52,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="-20dp"
             android:gravity="center_vertical"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:paddingTop="20dp"
             >
 
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="商品标题商品标题商品标题商品标题"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:maxEms="7"
                 android:layout_gravity="bottom"
                 android:singleLine="true"

@@ -199,8 +199,9 @@ public class MessageInputActivity extends BaseActivity {
                         Map<String, Object> map = JacksonMapper.parse(responseString);
                         String id = map.get("id").toString();
                         int person = (int) map.get("personality");
+                        String sex = (String) map.get("sex");
 
-                        userInfo.edit().id().put(id).person().put(person).apply();
+                        userInfo.edit().id().put(id).person().put(person).sex().put(sex).isSign().put(false).apply();
                         if (userInfo.shop().get() != -1) {
                             completeToShowProduction();
                         } else {
@@ -228,14 +229,14 @@ public class MessageInputActivity extends BaseActivity {
                 String id = map.get("id").toString();
                 int person = (int) map.get("personality");
                 String birth = (String) map.get("birthday");
-                userInfo.edit().id().put(id).person().put(person).birthday().put(birth).apply();
+                String sex = (String) map.get("sex");
+                userInfo.edit().id().put(id).person().put(person).birthday().put(birth).sex().put(sex).isSign().put(true).apply();
                 progressDialog.dismiss();
                 if (userInfo.shop().get() != -1) {
                     completeToShowProduction();
                 } else {
                     completeToShopId();
                 }
-
                 Toast.makeText(MessageInputActivity.this, "提交信息成功", Toast.LENGTH_LONG).show();
             }
 

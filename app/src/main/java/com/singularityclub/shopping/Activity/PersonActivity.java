@@ -57,7 +57,7 @@ public class PersonActivity extends BaseActivity {
   /*  @ViewById
     protected GridView person_gridview;*/
     @ViewById
-    protected TextView person_title, birth;
+    protected TextView person_title, birth, sex;
     @ViewById
     protected WebView webview;
     @Pref
@@ -75,9 +75,12 @@ public class PersonActivity extends BaseActivity {
         initArray();
         if (userInfo.person().get() == 0){
             birth.setVisibility(View.GONE);
+            sex.setVisibility(View.GONE);
         }else{
             birth.setVisibility(View.VISIBLE);
             birth.setText("出生日期：" + userInfo.birthday().get().toString());
+            sex.setVisibility(View.VISIBLE);
+            sex.setText("性别：" + userInfo.sex().get().toString());
         }
 
         getPerson();
@@ -215,9 +218,12 @@ public class PersonActivity extends BaseActivity {
             person_title.setText("我的人格");
             birth.setVisibility(View.VISIBLE);
             birth.setText( userInfo.birthday().get());
+            sex.setVisibility(View.VISIBLE);
+            sex.setText( userInfo.sex().get());
         }else{
             person_title.setText(arrayList.get(num).getName());
             birth.setVisibility(View.GONE);
+            sex.setVisibility(View.GONE);
         }
         String mime = "text/html";
         String encoding = "utf-8";

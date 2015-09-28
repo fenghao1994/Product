@@ -87,6 +87,8 @@ public class ShowProductionActivity extends BaseActivity {
     //一级分类和二级分类的gridview
     @ViewById
     protected GridView second_gridview, first_gridview;
+    @ViewById
+    protected TextView birth,my_person;
   /*  //人格按钮
     @ViewById
     protected Button person;*/
@@ -97,7 +99,7 @@ public class ShowProductionActivity extends BaseActivity {
 //    @ViewById
 //    protected Button type, theme;
     @ViewById
-    protected LinearLayout layout_shop, layout_person, first_bg, layout_type, layout_theme, layout_person1, layout_tujian;
+    protected LinearLayout layout_shop, layout_person, first_bg, layout_type, layout_theme, layout_person1, layout_tujian, my_person_layout;
     @Pref
     protected UserInfo_ userInfo;
     //分类的二级分类Adapter
@@ -145,11 +147,14 @@ public class ShowProductionActivity extends BaseActivity {
 
     @AfterViews
     protected void init() {
-
+        isShowPersonName();
         back.setVisibility(View.VISIBLE);
         back.setImageDrawable(getResources().getDrawable(R.mipmap.guide));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         aCache = ACache.get(this);
+
+        //启动展示活动的dialog
+        startActivity(new Intent(this, DialogActivity_.class));
 
         if (userInfo.person().get() != 0){
             //返回与人格有关的商品
@@ -186,6 +191,15 @@ public class ShowProductionActivity extends BaseActivity {
      * 所以的监听事件
      */
     protected void listen() {
+
+
+        my_person_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowProductionActivity.this, PersonActivity_.class);
+                startActivity(intent);
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,6 +265,18 @@ public class ShowProductionActivity extends BaseActivity {
                     params.put("page", Integer.parseInt(page4) + 1);
                     upLoad = true;
                     initWithoutProduction();
+                }else if (flag1 == 5){
+                    //商品价格排序
+                    params = new RequestParams();
+                    params.put("page", Integer.parseInt(page4) + 1);
+                    upLoad = true;
+                    orderProduction();
+                }else if (flag1 == 6){
+                    //按照价格区间取商品
+                    params = new RequestParams();
+                    params.put("page", Integer.parseInt(page4) + 1);
+                    upLoad = true;
+                    getPriceProduction();
                 }
             }
         });
@@ -296,6 +322,7 @@ public class ShowProductionActivity extends BaseActivity {
         tujian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isShowPersonName();
                 buttonBack();
                 yinyin.setVisibility(View.GONE);
                 first_bg.setVisibility(View.GONE);
@@ -773,15 +800,15 @@ public class ShowProductionActivity extends BaseActivity {
                 });
 
                 page4 = headers[4].getValue();
-                    if (upLoad){
-                        gridViewAdapter.add(list);
-                    }else{
-                        gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                        main_gridview.setAdapter(gridViewAdapter);
-                    }
-                    upLoad = false;
-                    flag1 = 4;
-                    params = new RequestParams();
+                if (upLoad) {
+                    gridViewAdapter.add(list);
+                } else {
+                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                    main_gridview.setAdapter(gridViewAdapter);
+                }
+                upLoad = false;
+                flag1 = 4;
+                params = new RequestParams();
                 main_gridview.onRefreshComplete();
             }
 
@@ -1151,5 +1178,85 @@ public class ShowProductionActivity extends BaseActivity {
             initWithoutProduction();
         }*/
 
+    }
+
+    //人格名字转换
+    public String changePersonName(int num){
+        switch (num){
+            case 1: return "一";
+            case 2: return "二";
+            case 3: return "三";
+            case 4: return "四";
+            case 5: return "五";
+            case 6: return "六";
+            case 7: return "七";
+            case 8: return "八";
+            case 9: return "九";
+        }
+        return null;
+    }
+
+    public void isShowPersonName(){
+        if (userInfo.isSign().get()){
+            my_person_layout.setVisibility(View.VISIBLE);
+            birth.setText("我的出生日期：" + userInfo.birthday().get());
+            my_person.setText("我的人格：" + changePersonName(userInfo.person().get()) + "型人");
+        }else{
+            my_person_layout.setVisibility(View.GONE);
+        }
+    }
+
+
+    //商品按照价格正序或倒叙  flag1 = 5
+    public void orderProduction(){
+        HttpClient.post(this, HttpUrl.POST_ORDER_PRODUCTION, params, new BaseJsonHttpResponseHandler(this){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                page1 = headers[4].getValue();
+
+                if (upLoad){
+                    gridViewAdapter.add( list);
+                }else{
+                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                    main_gridview.setAdapter(gridViewAdapter);
+                }
+                upLoad = false;
+                flag1 = 5;
+                params = new RequestParams();
+                main_gridview.onRefreshComplete();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "排序失败" + statusCode , Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    //按照商品价格来取商品 flag1= 6；
+    public void getPriceProduction(){
+        HttpClient.post(this, HttpUrl.POST_PRICE_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                page1 = headers[4].getValue();
+
+                if (upLoad){
+                    gridViewAdapter.add( list);
+                }else{
+                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                    main_gridview.setAdapter(gridViewAdapter);
+                }
+                upLoad = false;
+                flag1 = 6;
+                params = new RequestParams();
+                main_gridview.onRefreshComplete();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ShowProductionActivity.this, "获取价格区间商品失败" + statusCode , Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

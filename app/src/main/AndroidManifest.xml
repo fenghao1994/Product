@@ -69,6 +69,9 @@
             android:theme="@style/Theme.AppCompat.Dialog"
             >
         </activity>
+        <activity android:name=".Activity.DialogActivity_"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            ></activity>
 
         <activity
             android:configChanges="orientation|keyboardHidden"
