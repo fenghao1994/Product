@@ -12,6 +12,11 @@
         android:layout_height="wrap_content" />
 
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -95,11 +100,12 @@
         <!--阴影-->
         <ImageView
             android:id="@+id/yinyin"
-            android:layout_width="1570dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/b"
+            android:src="@drawable/tanchu"
             android:alpha="0.5"
             android:visibility="gone"
+            android:layout_marginLeft="18dp"
             />
 
         <GridView
