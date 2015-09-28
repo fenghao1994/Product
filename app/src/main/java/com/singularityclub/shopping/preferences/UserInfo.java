@@ -1,5 +1,6 @@
 package com.singularityclub.shopping.preferences;
 
+import org.androidannotations.annotations.sharedpreferences.DefaultBoolean;
 import org.androidannotations.annotations.sharedpreferences.DefaultInt;
 import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
@@ -27,7 +28,15 @@ public interface UserInfo {
     @DefaultInt(-1)
     int person();
 
+    //性别 0表示难 1表示女
+    @DefaultString("男")
+    String sex();
+
     @DefaultString("")
     String birthday();
+
+    //注册true还是直接进入false
+    @DefaultBoolean(false)
+    boolean isSign();
 
 }
