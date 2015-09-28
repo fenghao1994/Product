@@ -40,8 +40,6 @@ public class ShopIdActivity extends BaseActivity {
     @AfterViews
     protected void init(){
 
-        shop_complete.setVisibility(View.VISIBLE);
-
         if (userInfo.shop().get() != -1){
             shop.setText(userInfo.shop().get() + "");
         }
