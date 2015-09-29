@@ -163,6 +163,7 @@ public class ShopCarActivity extends BaseActivity {
     public void showProdaction(){
         RequestParams params = new RequestParams();
         params.put("customer_id", userInfo.id().get());
+        params.put("shop_id", userInfo.shop().get());
         progressDialog = ProgressDialog.show(this, "", "加载中！！！", true);
         HttpClient.post(this, HttpUrl.POST_LOOK_CAR, params, new BaseJsonHttpResponseHandler(this) {
             @Override

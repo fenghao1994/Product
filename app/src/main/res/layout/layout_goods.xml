@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/first_relativelayout"
         android:layout_width="200dp"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:background="#B2ffffff"
         >
 

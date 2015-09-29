@@ -32,6 +32,7 @@ import com.loopj.android.http.RequestParams;
 import com.singularityclub.shopping.Adapter.FirstLevelAdapter;
 import com.singularityclub.shopping.Adapter.FirstThemeAdapter;
 import com.singularityclub.shopping.Adapter.GridViewAdapter;
+import com.singularityclub.shopping.Adapter.PriceAdapter;
 import com.singularityclub.shopping.Adapter.SecondLevelAdapter;
 import com.singularityclub.shopping.Adapter.SecondThemeAdapter;
 import com.singularityclub.shopping.Application.MyApplication;
@@ -86,7 +87,7 @@ public class ShowProductionActivity extends BaseActivity {
     protected com.handmark.pulltorefresh.library.PullToRefreshGridView main_gridview;
     //一级分类和二级分类的gridview
     @ViewById
-    protected GridView second_gridview, first_gridview;
+    protected GridView second_gridview, first_gridview, price_gridview;
     @ViewById
     protected TextView birth,my_person;
   /*  //人格按钮
@@ -152,6 +153,18 @@ public class ShowProductionActivity extends BaseActivity {
         back.setImageDrawable(getResources().getDrawable(R.mipmap.guide));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         aCache = ACache.get(this);
+
+        String[] s = new String[]{"0 - 1999元","2000 - 5999元", "6000 - 19999元", "20000 - 39999元", "40000元以上"};
+        final PriceAdapter priceAdapter = new PriceAdapter(this, s);
+        price_gridview.setAdapter(priceAdapter);
+        price_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                priceAdapter.initColor();
+                priceAdapter.getColor()[position] = true;
+                priceAdapter.notifyDataSetChanged();
+            }
+        });
 
         //启动展示活动的dialog
         startActivity(new Intent(this, DialogActivity_.class));
@@ -791,6 +804,7 @@ public class ShowProductionActivity extends BaseActivity {
 
     protected void initWithoutProduction(){
         params.put("customer_id", userInfo.id().get());
+        params.put("shop_id", userInfo.shop().get());
         progressDialog = ProgressDialog.show(this, "", "加载中！！！", true);
         HttpClient.post(this, HttpUrl.POST_WITHOUT_PORDUCTION, params, new BaseJsonHttpResponseHandler(this) {
             @Override
@@ -828,6 +842,7 @@ public class ShowProductionActivity extends BaseActivity {
      */
     protected void initShowProduction() {
         params.put("customer_id", userInfo.id().get());
+        params.put("shop_id", userInfo.shop().get());
         progressDialog = ProgressDialog.show(this, "", "加载中！！！", true);
         HttpClient.post(this, HttpUrl.POST_SHOW_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
             @Override
@@ -868,6 +883,7 @@ public class ShowProductionActivity extends BaseActivity {
 
         params.put("content", search);
         params.put("customer_id", userInfo.id().get());
+        params.put("shop_id", userInfo.shop().get());
         HttpClient.post(this, HttpUrl.POST_SEARCH, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -971,6 +987,7 @@ public class ShowProductionActivity extends BaseActivity {
             params.put("customer_id", userInfo.id().get());
             url = HttpUrl.POST_SECOND_THEME_PRODUCTION;
         }
+        params.put("shop_id", userInfo.shop().get());
         HttpClient.post(this, url, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -1065,6 +1082,7 @@ public class ShowProductionActivity extends BaseActivity {
     public void getErweimaProduction(String qrcode){
         params.put("customer_id", userInfo.id().get());
         params.put("qrcode", qrcode);
+        params.put("shop_id", userInfo.shop().get());
         HttpClient.post(this, HttpUrl.POST_ERWEIMA, params, new BaseJsonHttpResponseHandler(this){
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
@@ -1209,6 +1227,7 @@ public class ShowProductionActivity extends BaseActivity {
 
     //商品按照价格正序或倒叙  flag1 = 5
     public void orderProduction(){
+        params.put("shop_id", userInfo.shop().get());
         HttpClient.post(this, HttpUrl.POST_ORDER_PRODUCTION, params, new BaseJsonHttpResponseHandler(this){
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -1235,6 +1254,7 @@ public class ShowProductionActivity extends BaseActivity {
     }
     //按照商品价格来取商品 flag1= 6；
     public void getPriceProduction(){
+        params.put("shop_id", userInfo.shop().get());
         HttpClient.post(this, HttpUrl.POST_PRICE_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {

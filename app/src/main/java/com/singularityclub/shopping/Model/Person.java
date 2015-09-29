@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * Created by fenghao on 2015/9/1.
  * 人格model
  */
-@JsonIgnoreProperties({"deleted_at", "created_at", "updated_at"})
+@JsonIgnoreProperties({"deleted_at", "created_at", "updated_at", "sex"})
 public class Person {
 
     public int id;
