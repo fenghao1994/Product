@@ -217,9 +217,9 @@ public class PersonActivity extends BaseActivity {
         if (userInfo.person().get() == arrayList.get(num).getId()){
             person_title.setText("我的人格");
             birth.setVisibility(View.VISIBLE);
-            birth.setText( userInfo.birthday().get());
+            birth.setText("出生日期：" + userInfo.birthday().get());
             sex.setVisibility(View.VISIBLE);
-            sex.setText( userInfo.sex().get());
+            sex.setText("性别：" + userInfo.sex().get());
         }else{
             person_title.setText(arrayList.get(num).getName());
             birth.setVisibility(View.GONE);

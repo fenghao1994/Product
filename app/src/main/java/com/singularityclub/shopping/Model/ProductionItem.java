@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * Created by fenghao on 2015/8/24.
  * 每一项商品
  */
-@JsonIgnoreProperties({"self_price", "main_classify_id", "sub_classify_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
+@JsonIgnoreProperties({ "main_classify_id", "sub_classify_id", "deleted_at", "shop_id", "is_common", "created_at", "updated_at"})
 public class ProductionItem {
 
     public String id;
@@ -22,6 +22,16 @@ public class ProductionItem {
     public String character;
     public String area;
     public String weight;
+    @JsonProperty("self_price")
+    public String selfPrice;
+
+    public String getSelfPrice() {
+        return selfPrice;
+    }
+
+    public void setSelfPrice(String selfPrice) {
+        this.selfPrice = selfPrice;
+    }
 
     public String getAttention() {
         return attention;

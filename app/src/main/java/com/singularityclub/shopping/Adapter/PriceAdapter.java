@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.singularityclub.shopping.Model.PriceRange;
 import com.singularityclub.shopping.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by fenghao on 2015/9/29.
@@ -16,13 +19,13 @@ public class PriceAdapter extends BaseAdapter {
 
     TextView textView;
     Context context;
-    String[] strings;
+    ArrayList<PriceRange> list;
     Boolean[] color;
 
-    public PriceAdapter(Context context, String[] strings) {
+    public PriceAdapter(Context context, ArrayList<PriceRange> list) {
         this.context = context;
-        this.strings = strings;
-        color = new Boolean[strings.length];
+        this.list = list;
+        color = new Boolean[list.size()];
         initColor();
     }
 
@@ -34,12 +37,12 @@ public class PriceAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return strings.length;
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return strings[position];
+        return list.get(position);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class PriceAdapter extends BaseAdapter {
         }else{
             textView.setTextColor(context.getResources().getColor(R.color.new_black));
         }
-        textView.setText(strings[position]);
+        textView.setText(list.get(position).getLow() + " - " + list.get(position).getHigh());
         return convertView;
     }
 
@@ -71,5 +74,13 @@ public class PriceAdapter extends BaseAdapter {
 
     public void setColor(Boolean[] color) {
         this.color = color;
+    }
+
+    public ArrayList<PriceRange> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<PriceRange> list) {
+        this.list = list;
     }
 }

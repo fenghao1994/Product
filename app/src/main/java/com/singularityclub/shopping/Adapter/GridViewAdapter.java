@@ -114,7 +114,7 @@ public class GridViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.goods_title.setText( array.get(position).getName());
-        holder.money.setText( array.get(position).getPrice());
+        holder.money.setText( array.get(position).getSelfPrice());
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         imageLoader.displayImage(array.get(position).getUrlImg(), holder.goods_img, options);

@@ -82,12 +82,13 @@ public class HttpUrl {
     public static final String GET_ACTIVITY_IMAGE = ROOT + "notice";
 
 
-    /*
-    *
-    * */
-
-    //商品排序
-    public static final String POST_ORDER_PRODUCTION = ROOT + "";
     //按照商品价格去商品
-    public static final String POST_PRICE_PRODUCTION = ROOT + "";
+    public static final String POST_PRICE_PRODUCTION = ROOT + "production/index_price_range";
+    //没有登录的情况下按照商品价格去商品
+    public static final String POST_PRICE_PRODUCTION_WITHOUT = ROOT + " 'production/without_login_price_range";
+    //得到价格区间
+    public static final String GET_PRICE_RANGE = ROOT + "production/price_range";
+
+
+
 }

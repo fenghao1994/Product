@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 /**
  * Created by Howe on 2015/8/27.
  */
-@JsonIgnoreProperties({"id", "product_id", "deleted_at", "created_at", "updated_at", "avatar_content_type", "avatar_file_size", "avatar_updated_at", "avatar_file_name"})
+@JsonIgnoreProperties({"sex", "id", "product_id", "deleted_at", "created_at", "updated_at", "avatar_content_type", "avatar_file_size", "avatar_updated_at", "avatar_file_name"})
 public class Music {
     @JsonProperty("url")
     public String audioUrl;

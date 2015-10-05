@@ -39,6 +39,7 @@ import com.singularityclub.shopping.Application.MyApplication;
 import com.singularityclub.shopping.Model.Action;
 import com.singularityclub.shopping.Model.FirstThemeClassify;
 import com.singularityclub.shopping.Model.MainClassify;
+import com.singularityclub.shopping.Model.PriceRange;
 import com.singularityclub.shopping.Model.ProductionItem;
 import com.singularityclub.shopping.Model.SecondClassify;
 import com.singularityclub.shopping.Model.SecondThemeClassify;
@@ -62,6 +63,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.IllegalFormatCodePointException;
 import java.util.Map;
 
 import com.singularityclub.shopping.Utils.Cache.*;
@@ -89,7 +91,7 @@ public class ShowProductionActivity extends BaseActivity {
     @ViewById
     protected GridView second_gridview, first_gridview, price_gridview;
     @ViewById
-    protected TextView birth,my_person;
+    protected TextView birth,my_person, price_high, price_low;
   /*  //人格按钮
     @ViewById
     protected Button person;*/
@@ -119,6 +121,9 @@ public class ShowProductionActivity extends BaseActivity {
     //一二级主题分类adapter
     protected FirstThemeAdapter firstThemeAdapter;
     protected SecondThemeAdapter secondThemeAdapter;
+
+
+    protected PriceAdapter priceAdapter;
     //消费者行为记录的model
     protected Action action;
     //缓存
@@ -143,8 +148,13 @@ public class ShowProductionActivity extends BaseActivity {
     public String page2 = "1";//当前的页数
     public String page3 = "1";//当前的页数
     public String page4 = "1";//当前的页数
+    public String page5 = "1";
     public RequestParams params = new RequestParams();
     public boolean upLoad;
+
+    public boolean b;
+    public int position;
+    public int rangeId;
 
     @AfterViews
     protected void init() {
@@ -154,17 +164,8 @@ public class ShowProductionActivity extends BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         aCache = ACache.get(this);
 
-        String[] s = new String[]{"0 - 1999元","2000 - 5999元", "6000 - 19999元", "20000 - 39999元", "40000元以上"};
-        final PriceAdapter priceAdapter = new PriceAdapter(this, s);
-        price_gridview.setAdapter(priceAdapter);
-        price_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                priceAdapter.initColor();
-                priceAdapter.getColor()[position] = true;
-                priceAdapter.notifyDataSetChanged();
-            }
-        });
+        //得到价格区间
+        getPriceRange();
 
         //启动展示活动的dialog
         startActivity(new Intent(this, DialogActivity_.class));
@@ -186,6 +187,29 @@ public class ShowProductionActivity extends BaseActivity {
     }
 
     /**
+     * 获取价格区间
+     */
+    public void getPriceRange(){
+        HttpClient.get(this, HttpUrl.GET_PRICE_RANGE, null, new BaseJsonHttpResponseHandler(this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<PriceRange> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<PriceRange>>() {
+                });
+                if (list != null) {
+                    priceAdapter = new PriceAdapter(ShowProductionActivity.this, list);
+                    price_gridview.setAdapter(priceAdapter);
+                } else {
+                    Toast.makeText(ShowProductionActivity.this, "获取价格区间失败" + statusCode, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+        });
+    }
+
+    /**
      * 初始化pulltorefresh
      */
     private void initListView(){
@@ -200,12 +224,101 @@ public class ShowProductionActivity extends BaseActivity {
         endLabels.setReleaseLabel("放开进行加载！！！");
     }
 
+    public void postPriceRange(){
+        String url;
+        if (userInfo.person().get() != 0){
+            url = HttpUrl.POST_PRICE_PRODUCTION;
+        }else{
+            url = HttpUrl.POST_PRICE_PRODUCTION_WITHOUT;
+        }
+        params.put("customer_id", userInfo.id().get());
+        params.put("shop_id", userInfo.shop().get());
+        params.put("page", page5);
+        params.put("price_range_id", priceAdapter.getList().get(position).getId());
+        params.put("default", b);
+        progressDialog = ProgressDialog.show(this, "", "加载中！！！", true);
+        HttpClient.post(ShowProductionActivity.this, url, params, new BaseJsonHttpResponseHandler(ShowProductionActivity.this) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                progressDialog.dismiss();
+                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
+                });
+                if (list.size() != 0){
+                    page5 = headers[4].getValue();
+                }
+                if (upLoad) {
+                    gridViewAdapter.add(list);
+                } else {
+                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                    main_gridview.setAdapter(gridViewAdapter);
+                }
+                upLoad = false;
+                flag1 = 5;
+                main_gridview.onRefreshComplete();
+                params = new RequestParams();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                upLoad = false;
+                flag1 = 2;
+                main_gridview.onRefreshComplete();
+                params = new RequestParams();
+                progressDialog.dismiss();
+                Toast.makeText(ShowProductionActivity.this, "ccc" + statusCode, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     /**
      * 所以的监听事件
      */
     protected void listen() {
 
+        price_high.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                price_low.setTextColor(getResources().getColor(R.color.new_black));
+                price_high.setTextColor(getResources().getColor(R.color.new_red));
+                if ( !b){
+                    b = true;
+                    chooseApi();
+                }
+            }
+        });
 
+        price_low.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                price_high.setTextColor(getResources().getColor(R.color.new_black));
+                price_low.setTextColor(getResources().getColor(R.color.new_red));
+                if ( b){
+                    b = false;
+                    chooseApi();
+                }
+            }
+        });
+
+        price_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                page0 = "1";
+                page1 = "1";
+                page2 = "1";
+                page3 = "1";
+                page4 = "1";
+                page5 = "1";
+                rangeId = priceAdapter.getList().get(position).getId();
+                priceAdapter.initColor();
+                priceAdapter.getColor()[position] = true;
+                priceAdapter.notifyDataSetChanged();
+                ShowProductionActivity.this.position = position;
+                ShowProductionActivity.this.b = true;
+                price_low.setTextColor(getResources().getColor(R.color.new_black));
+                price_high.setTextColor(getResources().getColor(R.color.new_black));
+                chooseApi();
+            }
+        });
         my_person_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,45 +364,37 @@ public class ShowProductionActivity extends BaseActivity {
             //上拉加载
             @Override
             public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+                params = new RequestParams();
+                if (rangeId != 0){
+                    params.put("price_range_id", rangeId);
+                }
                 if (flag1 == 0) {
-                    params = new RequestParams();
                     params.put("page", Integer.parseInt(page0) + 1);
                     upLoad = true;
                     showSearchProduction(second);
 
                 } else if (flag1 == 1) {
-                    params = new RequestParams();
                     params.put("page", Integer.parseInt(page1) + 1);
                     upLoad = true;
                     showSecondProduction(second);
 
                 } else if (flag1 == 2) {
-                    params = new RequestParams();
                     params.put("page", Integer.parseInt(page2) + 1);
                     upLoad = true;
                     initShowProduction();
                 } else if (flag1 == 3) {
-                    params = new RequestParams();
                     params.put("page", Integer.parseInt(page3) + 1);
                     upLoad = true;
                     getErweimaProduction(second);
                 } else if (flag1 == 4) {
-                    params = new RequestParams();
                     params.put("page", Integer.parseInt(page4) + 1);
                     upLoad = true;
                     initWithoutProduction();
                 }else if (flag1 == 5){
-                    //商品价格排序
-                    params = new RequestParams();
-                    params.put("page", Integer.parseInt(page4) + 1);
-                    upLoad = true;
-                    orderProduction();
-                }else if (flag1 == 6){
                     //按照价格区间取商品
-                    params = new RequestParams();
-                    params.put("page", Integer.parseInt(page4) + 1);
+                    params.put("page", Integer.parseInt(page5) + 1);
                     upLoad = true;
-                    getPriceProduction();
+                    postPriceRange();
                 }
             }
         });
@@ -335,6 +440,7 @@ public class ShowProductionActivity extends BaseActivity {
         tujian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                priceAndSortToBack();
                 isShowPersonName();
                 buttonBack();
                 yinyin.setVisibility(View.GONE);
@@ -564,7 +670,7 @@ public class ShowProductionActivity extends BaseActivity {
         second_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                priceAndSortToBack();
                 endTime = System.currentTimeMillis();
                 action.setEndTime(new Date(endTime));
                 if (flag == 1) {
@@ -813,7 +919,10 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
 
-                page4 = headers[4].getValue();
+                if (list.size() != 0){
+                    page4 = headers[4].getValue();
+                }
+
                 if (upLoad) {
                     gridViewAdapter.add(list);
                 } else {
@@ -850,7 +959,9 @@ public class ShowProductionActivity extends BaseActivity {
                 progressDialog.dismiss();
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                page2 = headers[4].getValue();
+                if (list.size() != 0){
+                    page2 = headers[4].getValue();
+                }
                 if (upLoad){
                     gridViewAdapter.add( list);
                 }else{
@@ -865,12 +976,13 @@ public class ShowProductionActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                String s = (String) JacksonMapper.parse(responseString).get("message");
                 upLoad = false;
                 flag1 = 2;
                 main_gridview.onRefreshComplete();
                 params = new RequestParams();
                 progressDialog.dismiss();
-                Toast.makeText(ShowProductionActivity.this, "查看关联人格" + responseString, Toast.LENGTH_LONG).show();
+                Toast.makeText(ShowProductionActivity.this, "当前选择" + s, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -889,18 +1001,20 @@ public class ShowProductionActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                page0 = headers[4].getValue();
-                    if (upLoad){
-                        gridViewAdapter.add(list);
-                    }else{
-                        gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                        main_gridview.setAdapter(gridViewAdapter);
-                    }
-                    upLoad = false;
-                    if (list.size() == 0) {
-                        Toast.makeText(ShowProductionActivity.this, "无搜索结果", Toast.LENGTH_LONG).show();
-                    }
-                    params = new RequestParams();
+                if (list.size() != 0){
+                    page0 = headers[4].getValue();
+                }
+                if (upLoad) {
+                    gridViewAdapter.add(list);
+                } else {
+                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
+                    main_gridview.setAdapter(gridViewAdapter);
+                }
+                upLoad = false;
+                if (list.size() == 0) {
+                    Toast.makeText(ShowProductionActivity.this, "无搜索结果", Toast.LENGTH_LONG).show();
+                }
+                params = new RequestParams();
 
                 main_gridview.onRefreshComplete();
             }
@@ -993,7 +1107,10 @@ public class ShowProductionActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
-                page1 = headers[4].getValue();
+                if (list.size() != 0){
+                    page1 = headers[4].getValue();
+                }
+
 
                     if (upLoad){
                         gridViewAdapter.add( list);
@@ -1088,8 +1205,9 @@ public class ShowProductionActivity extends BaseActivity {
                 ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
                 });
 
-                Log.e("abc", list.size() + "");
-                page3 = headers[4].getValue();
+                if (list.size() != 0){
+                    page3 = headers[4].getValue();
+                }
                     if (upLoad){
                         gridViewAdapter.add( list);
                     }else{
@@ -1178,6 +1296,7 @@ public class ShowProductionActivity extends BaseActivity {
         page2 = "1";
         page3 = "1";
         page4 = "1";
+        page5 = "1";
        /* if (flag1 == 0) {
             if (!second.equals("-1")) {
                 showSearchProduction(second);
@@ -1197,7 +1316,6 @@ public class ShowProductionActivity extends BaseActivity {
         }*/
 
     }
-
     //人格名字转换
     public String changePersonName(int num){
         switch (num){
@@ -1213,7 +1331,6 @@ public class ShowProductionActivity extends BaseActivity {
         }
         return null;
     }
-
     public void isShowPersonName(){
         if (userInfo.isSign().get()){
             my_person_layout.setVisibility(View.VISIBLE);
@@ -1223,60 +1340,57 @@ public class ShowProductionActivity extends BaseActivity {
             my_person_layout.setVisibility(View.GONE);
         }
     }
+    public void chooseApi(){
+        if (flag1 == 0) {
+            params = new RequestParams();
+            params.put("page", Integer.parseInt(page0));
+            params.put("price_range_id", priceAdapter.getList().get(position).getId());
+            params.put("default", b);
+            showSearchProduction(second);
 
+        } else if (flag1 == 1) {
+            params = new RequestParams();
+            params.put("page", Integer.parseInt(page1));
+            params.put("price_range_id", priceAdapter.getList().get(position).getId());
+            params.put("default", b);
+            showSecondProduction(second);
 
-    //商品按照价格正序或倒叙  flag1 = 5
-    public void orderProduction(){
-        params.put("shop_id", userInfo.shop().get());
-        HttpClient.post(this, HttpUrl.POST_ORDER_PRODUCTION, params, new BaseJsonHttpResponseHandler(this){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
-                });
-                page1 = headers[4].getValue();
-
-                if (upLoad){
-                    gridViewAdapter.add( list);
-                }else{
-                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                    main_gridview.setAdapter(gridViewAdapter);
-                }
-                upLoad = false;
-                flag1 = 5;
-                params = new RequestParams();
-                main_gridview.onRefreshComplete();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ShowProductionActivity.this, "排序失败" + statusCode , Toast.LENGTH_LONG).show();
-            }
-        });
+        } else if (flag1 == 2) {
+            params = new RequestParams();
+            params.put("page", Integer.parseInt(page2) );
+            params.put("price_range_id", priceAdapter.getList().get(position).getId());
+            params.put("default", b);
+            initShowProduction();
+        } else if (flag1 == 3) {
+            params = new RequestParams();
+            params.put("page", Integer.parseInt(page3) );
+            params.put("price_range_id", priceAdapter.getList().get(position).getId());
+            params.put("default", b);
+            getErweimaProduction(second);
+        } else if (flag1 == 4) {
+            params = new RequestParams();
+            params.put("page", Integer.parseInt(page4) );
+            params.put("price_range_id", priceAdapter.getList().get(position).getId());
+            params.put("default", b);
+            initWithoutProduction();
+        }else if (flag1 == 5){
+            //按照价格区间取商品
+            params = new RequestParams();
+            params.put("page", Integer.parseInt(page5));
+            params.put("price_range_id", priceAdapter.getList().get(position).getId());
+            params.put("default", b);
+            postPriceRange();
+        }
     }
-    //按照商品价格来取商品 flag1= 6；
-    public void getPriceProduction(){
-        params.put("shop_id", userInfo.shop().get());
-        HttpClient.post(this, HttpUrl.POST_PRICE_PRODUCTION, params, new BaseJsonHttpResponseHandler(this) {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                ArrayList<ProductionItem> list = JacksonMapper.parseToList(responseString, new TypeReference<ArrayList<ProductionItem>>() {
-                });
-                page1 = headers[4].getValue();
 
-                if (upLoad){
-                    gridViewAdapter.add( list);
-                }else{
-                    gridViewAdapter = new GridViewAdapter(ShowProductionActivity.this, list);
-                    main_gridview.setAdapter(gridViewAdapter);
-                }
-                upLoad = false;
-                flag1 = 6;
-                params = new RequestParams();
-                main_gridview.onRefreshComplete();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ShowProductionActivity.this, "获取价格区间商品失败" + statusCode , Toast.LENGTH_LONG).show();
-            }
-        });
+    //将价格和排序还原
+    public void priceAndSortToBack(){
+        price_low.setTextColor(getResources().getColor(R.color.new_black));
+        price_high.setTextColor(getResources().getColor(R.color.new_black));
+        rangeId = 0;
+        for (int i  = 0 ; i < priceAdapter.getColor().length; i++){
+            priceAdapter.getColor()[i] = false;
+        }
+        priceAdapter.notifyDataSetChanged();
     }
 }

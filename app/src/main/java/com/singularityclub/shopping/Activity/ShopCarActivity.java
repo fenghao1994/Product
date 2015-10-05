@@ -175,7 +175,7 @@ public class ShopCarActivity extends BaseActivity {
                 car_gridview.setAdapter(gridViewAdapter);
                 sum = 0;
                 for (int i = 0; i < gridViewAdapter.array.size(); i++) {
-                    sum += Double.parseDouble(gridViewAdapter.array.get(i).getPrice());
+                    sum += Double.parseDouble(gridViewAdapter.array.get(i).getSelfPrice());
                 }
                 price.setText(sum + "");
 

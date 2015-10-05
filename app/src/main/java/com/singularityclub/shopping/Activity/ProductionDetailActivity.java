@@ -385,6 +385,7 @@ public class ProductionDetailActivity extends FragmentActivity {
 
         RequestParams params = new RequestParams();
         params.put("product_id", productId);
+        params.put("sex", userInfo.sex().get());
 
         HttpClient.post(this, HttpUrl.POST_GET_AUDIO, params, new BaseJsonHttpResponseHandler(this) {
             @Override
