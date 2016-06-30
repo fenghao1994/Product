@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="debug"><source path="E:\Android\MyCode\Product\pulltorefreshlibrary\build\intermediates\bundles\debug\assets"/></dataSet><dataSet config="main"><source path="E:\Android\MyCode\Product\pulltorefreshlibrary\src\androidTest\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="debug"><source path="D:\Program Files\Android\App\Product\pulltorefreshlibrary\build\intermediates\bundles\debug\assets"/></dataSet><dataSet config="main"><source path="D:\Program Files\Android\App\Product\pulltorefreshlibrary\src\androidTest\assets"/></dataSet></merger>
